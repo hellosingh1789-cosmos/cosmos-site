@@ -6,1078 +6,368 @@
 <title>COSMOS — Space Explorer</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --void: #02030a;
-    --deep: #070b18;
-    --nebula-blue: #0d1f4e;
-    --star-white: #e8eaf5;
-    --gold: #f0c040;
-    --plasma: #4fc3f7;
-    --aurora: #7c4dff;
-    --nova: #ff6b6b;
-    --mist: rgba(232,234,245,0.08);
+  :root { --void:#02030a;--deep:#070b18;--nebula-blue:#0d1f4e;--star-white:#e8eaf5;--gold:#f0c040;--plasma:#4fc3f7;--aurora:#7c4dff; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--void);color:var(--star-white);font-family:'Space Mono',monospace;overflow-x:hidden;cursor:crosshair;}
+  #starfield{position:fixed;inset:0;z-index:0;pointer-events:none;}
+  .aurora{position:fixed;pointer-events:none;z-index:0;border-radius:50%;filter:blur(100px);opacity:0.07;}
+  .aurora-1{width:700px;height:700px;background:var(--aurora);top:-200px;right:-200px;animation:float1 20s ease-in-out infinite;}
+  .aurora-2{width:500px;height:500px;background:var(--plasma);bottom:10%;left:-150px;animation:float2 25s ease-in-out infinite;}
+  @keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(-80px,80px)}}
+  @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(60px,-60px)}}
+  nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 3rem;background:linear-gradient(to bottom,rgba(2,3,10,0.9),transparent);backdrop-filter:blur(2px);}
+  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.3em;color:var(--gold);text-decoration:none;}
+  .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 3rem;z-index:1;text-align:center;}
+  .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,10vw,9rem);line-height:0.88;letter-spacing:-0.02em;animation:fadeUp 1s ease forwards;opacity:0;animation-delay:0.4s;}
+  .hero-title .line2{color:transparent;-webkit-text-stroke:1px rgba(232,234,245,0.3);display:block;}
+  .hero-title .accent{color:var(--plasma);}
+  .hero-sub{font-family:'Crimson Pro',serif;font-size:1.15rem;font-style:italic;color:rgba(232,234,245,0.5);max-width:480px;margin-top:2rem;line-height:1.7;animation:fadeUp 1s ease forwards;opacity:0;animation-delay:0.6s;}
+  .hero-scroll{position:absolute;bottom:3rem;left:3rem;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(232,234,245,0.4);display:flex;align-items:center;gap:1rem;animation:fadeUp 1s ease forwards;opacity:0;animation-delay:1s;}
+  .scroll-line{width:60px;height:1px;background:rgba(232,234,245,0.2);position:relative;overflow:hidden;}
+  .scroll-line::after{content:'';position:absolute;inset:0;background:var(--plasma);animation:scanline 2s ease-in-out infinite;}
+  .section{position:relative;z-index:1;padding:8rem 3rem;}
+  .section-label{font-size:0.6rem;letter-spacing:0.5em;text-transform:uppercase;color:var(--gold);margin-bottom:4rem;display:flex;align-items:center;gap:1rem;}
+  .section-label::before{content:'';width:40px;height:1px;background:var(--gold);}
+  .section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,5rem);letter-spacing:0.05em;margin-bottom:4rem;}
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5px;background:rgba(255,255,255,0.03);}
+  .card{background:var(--deep);padding:0;position:relative;overflow:hidden;cursor:pointer;transition:transform 0.4s ease;}
+  .card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(79,195,247,0.05),transparent);opacity:0;transition:opacity 0.4s;z-index:1;}
+  .card:hover{transform:translateY(-4px);}
+  .card:hover::before{opacity:1;}
+  .card-img{width:100%;height:180px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+  .card-img img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+  .card-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(7,11,24,0.7) 70%,#070b18 100%);pointer-events:none;}
+  .card-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3.5rem;opacity:0.35;}
+  .card-body{padding:1.5rem 1.5rem 2rem;}
+  .card-name{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.1em;margin-bottom:0.3rem;}
+  .card-type{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--plasma);margin-bottom:0.8rem;}
+  .card-desc{font-family:'Crimson Pro',serif;font-size:0.95rem;color:rgba(232,234,245,0.6);line-height:1.65;margin-bottom:1.2rem;}
+  .card-stats{display:flex;gap:1.2rem;flex-wrap:wrap;}
+  .stat{display:flex;flex-direction:column;gap:0.2rem;}
+  .stat-val{font-size:0.95rem;font-weight:700;color:var(--gold);}
+  .stat-label{font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,234,245,0.4);}
+  .card-cta{position:absolute;bottom:1rem;right:1.5rem;font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--plasma);opacity:0.7;}
+  .facts-section{background:linear-gradient(180deg,var(--void) 0%,var(--nebula-blue) 50%,var(--void) 100%);}
+  .facts-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;}
+  .fact-item{border-left:1px solid rgba(79,195,247,0.3);padding-left:2rem;opacity:0;}
+  .fact-number{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:var(--plasma);line-height:1;margin-bottom:0.5rem;}
+  .fact-title{font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem;}
+  .fact-desc{font-family:'Crimson Pro',serif;font-size:1rem;color:rgba(232,234,245,0.6);line-height:1.7;}
+  .timeline{position:relative;padding-left:3rem;border-left:1px solid rgba(232,234,245,0.1);display:flex;flex-direction:column;gap:3rem;}
+  .timeline-item{position:relative;opacity:0;}
+  .timeline-item::before{content:'';position:absolute;left:-3.4rem;top:0.4rem;width:8px;height:8px;background:var(--gold);border-radius:50%;box-shadow:0 0 12px var(--gold);}
+  .timeline-year{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--gold);letter-spacing:0.2em;margin-bottom:0.3rem;}
+  .timeline-event{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;}
+  .timeline-detail{font-family:'Crimson Pro',serif;font-size:0.95rem;color:rgba(232,234,245,0.5);line-height:1.6;}
+  .galaxy-row{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem;}
+  .galaxy-card{position:relative;padding:2rem;border:1px solid rgba(232,234,245,0.08);overflow:hidden;transition:border-color 0.4s;opacity:0;}
+  .galaxy-card:hover{border-color:rgba(79,195,247,0.4);}
+  .galaxy-visual{width:100%;height:160px;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:center;}
+  .galaxy-name{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.1em;margin-bottom:0.5rem;}
+  .galaxy-desc{font-family:'Crimson Pro',serif;font-size:0.9rem;color:rgba(232,234,245,0.5);line-height:1.65;}
+  footer{position:relative;z-index:1;padding:4rem 3rem;border-top:1px solid rgba(232,234,245,0.06);display:flex;justify-content:space-between;align-items:center;}
+  .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:0.3em;color:var(--gold);opacity:0.4;}
+  .footer-copy{font-size:0.6rem;letter-spacing:0.2em;color:rgba(232,234,245,0.3);text-transform:uppercase;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes scanline{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+  .search-wrapper{position:relative;z-index:1;padding:0 3rem 6rem;display:flex;flex-direction:column;align-items:center;gap:1.2rem;}
+  .search-container{position:relative;width:100%;max-width:680px;}
+  .search-icon{position:absolute;left:1.4rem;top:50%;transform:translateY(-50%);color:rgba(232,234,245,0.5);pointer-events:none;display:flex;align-items:center;}
+  .search-input{width:100%;background:rgba(13,21,37,0.95);border:1px solid rgba(79,195,247,0.3);border-radius:2px;padding:1.1rem 1.5rem 1.1rem 3.2rem;color:var(--star-white);font-family:'Space Mono',monospace;font-size:0.75rem;letter-spacing:0.05em;outline:none;transition:border-color 0.3s;box-shadow:0 4px 24px rgba(0,0,0,0.5);}
+  .search-input::placeholder{color:rgba(232,234,245,0.45);}
+  .search-input:focus{border-color:rgba(79,195,247,0.8);background:rgba(13,21,37,1);}
+  .search-results{position:absolute;top:calc(100% + 8px);left:0;right:0;background:#0a1220;border:1px solid rgba(79,195,247,0.3);border-radius:2px;overflow:hidden;display:none;z-index:50;box-shadow:0 8px 32px rgba(0,0,0,0.6);}
+  .search-results.active{display:block;}
+  .search-result-item{padding:0.9rem 1.5rem;cursor:pointer;display:flex;align-items:center;gap:1rem;transition:background 0.2s;text-decoration:none;color:var(--star-white);}
+  .search-result-item:hover{background:rgba(79,195,247,0.1);}
+  .result-label{font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--plasma);min-width:80px;}
+  .result-desc{font-family:'Crimson Pro',serif;font-size:0.95rem;color:rgba(232,234,245,0.6);}
+  .search-tags{display:flex;gap:0.8rem;flex-wrap:wrap;justify-content:center;}
+  .search-tag{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,234,245,0.6);text-decoration:none;border:1px solid rgba(232,234,245,0.15);background:rgba(13,21,37,0.8);padding:0.45rem 1rem;border-radius:2px;transition:border-color 0.3s,color 0.3s;}
+  .search-tag:hover{border-color:var(--plasma);color:var(--plasma);}
+  .modal-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(2,3,10,0.92);backdrop-filter:blur(8px);overflow-y:auto;}
+  .modal-overlay.open{display:block;}
+  .modal{max-width:800px;margin:4rem auto;background:#0a1220;border:1px solid rgba(79,195,247,0.15);position:relative;}
+  .modal-img{width:100%;height:300px;overflow:hidden;position:relative;}
+  .modal-img img{width:100%;height:100%;object-fit:cover;}
+  .modal-img .modal-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:6rem;opacity:0.25;background:var(--deep);}
+  .modal-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,#0a1220 100%);}
+  .modal-content{padding:2.5rem 3rem 3rem;}
+  .modal-tag{font-size:0.6rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--plasma);margin-bottom:0.5rem;}
+  .modal-title{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;letter-spacing:0.05em;line-height:1;margin-bottom:2rem;}
+  .modal-quickfacts{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:1rem;margin-bottom:2.5rem;padding:1.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(232,234,245,0.06);}
+  .qf-item{display:flex;flex-direction:column;gap:0.3rem;}
+  .qf-val{font-size:1rem;font-weight:700;color:var(--gold);}
+  .qf-label{font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,234,245,0.4);}
+  .modal-body p{font-family:'Crimson Pro',serif;font-size:1.1rem;color:rgba(232,234,245,0.75);line-height:1.85;margin-bottom:1.4rem;}
+  .modal-close{position:absolute;top:1.5rem;right:1.5rem;width:40px;height:40px;border:1px solid rgba(232,234,245,0.2);background:rgba(2,3,10,0.8);color:var(--star-white);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;transition:border-color 0.3s;}
+  .modal-close:hover{border-color:var(--plasma);}
+  @media(max-width:768px){
+    nav{padding:1rem 1.5rem;}.hero{padding:0 1.5rem;}.section{padding:5rem 1.5rem;}
+    .search-wrapper{padding:0 1.5rem 4rem;}.facts-grid{grid-template-columns:1fr;}.galaxy-row{grid-template-columns:1fr;}
+    footer{flex-direction:column;gap:1rem;text-align:center;}.modal-content{padding:1.5rem;}
+    .modal{margin:1rem;}.modal-img{height:200px;}.modal-title{font-size:2.5rem;}
   }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--void);
-    color: var(--star-white);
-    font-family: 'Space Mono', monospace;
-    overflow-x: hidden;
-    cursor: crosshair;
-  }
-
-  /* STARFIELD */
-  #starfield {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 3rem;
-    background: linear-gradient(to bottom, rgba(2,3,10,0.9), transparent);
-    backdrop-filter: blur(2px);
-  }
-
-  .nav-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
-    letter-spacing: 0.3em;
-    color: var(--gold);
-    text-decoration: none;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 2.5rem;
-    list-style: none;
-  }
-
-  .nav-links a {
-    color: var(--star-white);
-    text-decoration: none;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    opacity: 0.7;
-    transition: opacity 0.3s, color 0.3s;
-  }
-
-  .nav-links a:hover { opacity: 1; color: var(--plasma); }
-
-  /* HERO */
-  .hero {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 3rem;
-    z-index: 1;
-  }
-
-  .hero-eyebrow {
-    font-size: 0.65rem;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1.5rem;
-    animation: fadeUp 1s ease forwards;
-    opacity: 0;
-    animation-delay: 0.2s;
-  }
-
-  .hero-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(5rem, 15vw, 14rem);
-    line-height: 0.88;
-    letter-spacing: -0.02em;
-    animation: fadeUp 1s ease forwards;
-    opacity: 0;
-    animation-delay: 0.4s;
-  }
-
-  .hero-title .line2 {
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(232,234,245,0.3);
-    display: block;
-  }
-
-  .hero-title .accent { color: var(--plasma); }
-
-  .hero-sub {
-    font-family: 'Crimson Pro', serif;
-    font-size: 1.3rem;
-    font-style: italic;
-    color: rgba(232,234,245,0.5);
-    max-width: 520px;
-    margin-top: 2rem;
-    line-height: 1.7;
-    animation: fadeUp 1s ease forwards;
-    opacity: 0;
-    animation-delay: 0.6s;
-  }
-
-  .hero-scroll {
-    position: absolute;
-    bottom: 3rem;
-    left: 3rem;
-    font-size: 0.6rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: rgba(232,234,245,0.4);
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    animation: fadeUp 1s ease forwards;
-    opacity: 0;
-    animation-delay: 1s;
-  }
-
-  .scroll-line {
-    width: 60px;
-    height: 1px;
-    background: rgba(232,234,245,0.2);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .scroll-line::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--plasma);
-    animation: scanline 2s ease-in-out infinite;
-  }
-
-  /* PLANETS SECTION */
-  .section {
-    position: relative;
-    z-index: 1;
-    padding: 8rem 3rem;
-  }
-
-  .section-label {
-    font-size: 0.6rem;
-    letter-spacing: 0.5em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 4rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .section-label::before {
-    content: '';
-    width: 40px;
-    height: 1px;
-    background: var(--gold);
-  }
-
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(3rem, 6vw, 5rem);
-    letter-spacing: 0.05em;
-    margin-bottom: 4rem;
-  }
-
-  /* PLANET GRID */
-  .planet-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5px;
-    background: rgba(255,255,255,0.03);
-  }
-
-  .planet-card {
-    background: var(--deep);
-    padding: 2.5rem 2rem;
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.4s ease;
-  }
-
-  .planet-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(79,195,247,0.05), transparent);
-    opacity: 0;
-    transition: opacity 0.4s;
-  }
-
-  .planet-card:hover { transform: translateY(-4px); }
-  .planet-card:hover::before { opacity: 1; }
-
-  .planet-icon {
-    width: 100%;
-    height: 200px;
-    margin-bottom: 1.5rem;
-    position: relative;
-    overflow: hidden;
-    border-radius: 4px;
-  }
-
-  .planet-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    display: block;
-  }
-
-  .planet-icon::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, transparent 25%, rgba(7,11,24,0.6) 65%, #070b18 100%);
-    pointer-events: none;
-  }
-
-  .planet-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.5rem;
-  }
-
-  .planet-type {
-    font-size: 0.6rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--plasma);
-    margin-bottom: 1rem;
-  }
-
-  .planet-desc {
-    font-family: 'Crimson Pro', serif;
-    font-size: 1rem;
-    color: rgba(232,234,245,0.6);
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
-  }
-
-  .planet-stats {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-  }
-
-  .stat {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-  }
-
-  .stat-val {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--gold);
-  }
-
-  .stat-label {
-    font-size: 0.55rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgba(232,234,245,0.4);
-  }
-
-  /* COSMOS FACTS */
-  .facts-section {
-    background: linear-gradient(180deg, var(--void) 0%, var(--nebula-blue) 50%, var(--void) 100%);
-  }
-
-  .facts-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-  }
-
-  .fact-item {
-    border-left: 1px solid rgba(79,195,247,0.3);
-    padding-left: 2rem;
-    animation: fadeUp 0.8s ease forwards;
-    opacity: 0;
-  }
-
-  .fact-number {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 4rem;
-    color: var(--plasma);
-    line-height: 1;
-    margin-bottom: 0.5rem;
-  }
-
-  .fact-title {
-    font-size: 0.65rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 0.8rem;
-  }
-
-  .fact-desc {
-    font-family: 'Crimson Pro', serif;
-    font-size: 1rem;
-    color: rgba(232,234,245,0.6);
-    line-height: 1.7;
-  }
-
-  /* TIMELINE */
-  .timeline {
-    position: relative;
-    padding-left: 3rem;
-    border-left: 1px solid rgba(232,234,245,0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-  }
-
-  .timeline-item {
-    position: relative;
-  }
-
-  .timeline-item::before {
-    content: '';
-    position: absolute;
-    left: -3.4rem;
-    top: 0.4rem;
-    width: 8px;
-    height: 8px;
-    background: var(--gold);
-    border-radius: 50%;
-    box-shadow: 0 0 12px var(--gold);
-  }
-
-  .timeline-year {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.3rem;
-    color: var(--gold);
-    letter-spacing: 0.2em;
-    margin-bottom: 0.3rem;
-  }
-
-  .timeline-event {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-  }
-
-  .timeline-detail {
-    font-family: 'Crimson Pro', serif;
-    font-size: 0.95rem;
-    color: rgba(232,234,245,0.5);
-    line-height: 1.6;
-  }
-
-  /* GALAXY TYPES */
-  .galaxy-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    margin-top: 3rem;
-  }
-
-  .galaxy-card {
-    position: relative;
-    padding: 2rem;
-    border: 1px solid rgba(232,234,245,0.08);
-    overflow: hidden;
-    transition: border-color 0.4s;
-  }
-
-  .galaxy-card:hover { border-color: rgba(79,195,247,0.4); }
-
-  .galaxy-visual {
-    width: 100%;
-    height: 160px;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .galaxy-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.5rem;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.5rem;
-  }
-
-  .galaxy-desc {
-    font-family: 'Crimson Pro', serif;
-    font-size: 0.9rem;
-    color: rgba(232,234,245,0.5);
-    line-height: 1.65;
-  }
-
-  /* FOOTER */
-  footer {
-    position: relative;
-    z-index: 1;
-    padding: 4rem 3rem;
-    border-top: 1px solid rgba(232,234,245,0.06);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .footer-brand {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.5rem;
-    letter-spacing: 0.3em;
-    color: var(--gold);
-    opacity: 0.4;
-  }
-
-  .footer-copy {
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    color: rgba(232,234,245,0.3);
-    text-transform: uppercase;
-  }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes orbit-bob {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-  }
-
-  @keyframes scanline {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-  }
-
-  @keyframes twinkle {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.2; }
-  }
-
-  @keyframes spin-slow {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  /* AURORA background effect */
-  .aurora {
-    position: fixed;
-    pointer-events: none;
-    z-index: 0;
-    border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.07;
-  }
-
-  .aurora-1 {
-    width: 700px; height: 700px;
-    background: var(--aurora);
-    top: -200px; right: -200px;
-    animation: float1 20s ease-in-out infinite;
-  }
-
-  .aurora-2 {
-    width: 500px; height: 500px;
-    background: var(--plasma);
-    bottom: 10%; left: -150px;
-    animation: float2 25s ease-in-out infinite;
-  }
-
-  @keyframes float1 {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(-80px, 80px); }
-  }
-
-  @keyframes float2 {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(60px, -60px); }
-  }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    nav { padding: 1rem 1.5rem; }
-    .nav-links { display: none; }
-    .hero { padding: 0 1.5rem; }
-    .section { padding: 5rem 1.5rem; }
-    .facts-grid { grid-template-columns: 1fr; }
-    .galaxy-row { grid-template-columns: 1fr; }
-    footer { flex-direction: column; gap: 1rem; text-align: center; }
-  }
-  /* SEARCH BAR */
-  .search-wrapper {
-    position: relative;
-    z-index: 1;
-    padding: 0 3rem 6rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.2rem;
-  }
-
-  .search-container {
-    position: relative;
-    width: 100%;
-    max-width: 680px;
-  }
-
-  .search-icon {
-    position: absolute;
-    left: 1.4rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: rgba(232,234,245,0.35);
-    pointer-events: none;
-    display: flex;
-    align-items: center;
-  }
-
-  .search-input {
-    width: 100%;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(232,234,245,0.12);
-    border-radius: 2px;
-    padding: 1.1rem 1.5rem 1.1rem 3.2rem;
-    color: var(--star-white);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
-    outline: none;
-    transition: border-color 0.3s, background 0.3s;
-  }
-
-  .search-input::placeholder {
-    color: rgba(232,234,245,0.3);
-  }
-
-  .search-input:focus {
-    border-color: rgba(79,195,247,0.5);
-    background: rgba(79,195,247,0.04);
-  }
-
-  .search-results {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0; right: 0;
-    background: #0d1525;
-    border: 1px solid rgba(79,195,247,0.2);
-    border-radius: 2px;
-    overflow: hidden;
-    display: none;
-    z-index: 50;
-  }
-
-  .search-results.active { display: block; }
-
-  .search-result-item {
-    padding: 0.9rem 1.5rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    transition: background 0.2s;
-    text-decoration: none;
-    color: var(--star-white);
-  }
-
-  .search-result-item:hover { background: rgba(79,195,247,0.08); }
-
-  .result-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--plasma);
-    min-width: 80px;
-  }
-
-  .result-desc {
-    font-family: 'Crimson Pro', serif;
-    font-size: 0.95rem;
-    color: rgba(232,234,245,0.6);
-  }
-
-  .search-tags {
-    display: flex;
-    gap: 0.8rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .search-tag {
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgba(232,234,245,0.5);
-    text-decoration: none;
-    border: 1px solid rgba(232,234,245,0.1);
-    padding: 0.45rem 1rem;
-    border-radius: 2px;
-    transition: border-color 0.3s, color 0.3s;
-  }
-
-  .search-tag:hover {
-    border-color: var(--plasma);
-    color: var(--plasma);
-  }
-
-  @media (max-width: 768px) {
-    .search-wrapper { padding: 0 1.5rem 4rem; }
-  }
-
 </style>
 </head>
 <body>
-
 <canvas id="starfield"></canvas>
 <div class="aurora aurora-1"></div>
 <div class="aurora aurora-2"></div>
 
-<nav>
-  <a href="#" class="nav-logo">COSMOS</a>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <h1 class="hero-title">
-    BEYOND<br>
-    <span class="line2">THE</span>
-    <span class="accent">HORIZON</span>
-  </h1>
-  <p class="hero-sub">Eight worlds. Infinite wonder. One fleeting chance to understand it all.</p>
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
-    Scroll to explore
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose">&#x2715;</button>
+    <div class="modal-img" id="modalImg"></div>
+    <div class="modal-content">
+      <div class="modal-tag" id="modalTag"></div>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-quickfacts" id="modalFacts"></div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
   </div>
+</div>
+
+<nav><a href="#" class="nav-logo">COSMOS</a></nav>
+
+<section class="hero">
+  <h1 class="hero-title">BEYOND<br><span class="line2">THE</span><span class="accent">HORIZON</span></h1>
+  <p class="hero-sub">Eight worlds. Infinite wonder. One fleeting chance to understand it all.</p>
+  <div class="hero-scroll"><div class="scroll-line"></div>Scroll to explore</div>
 </section>
 
-<!-- SEARCH BAR -->
 <div class="search-wrapper">
   <div class="search-container">
-    <div class="search-icon">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-      </svg>
-    </div>
-    <input type="text" class="search-input" id="searchInput" placeholder="Search a section — try &quot;planets&quot;, &quot;facts&quot;, &quot;history&quot;, &quot;galaxies&quot;" autocomplete="off" />
+    <div class="search-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+    <input type="text" class="search-input" id="searchInput" placeholder='Search — try "planets", "stars", "facts", "history"' autocomplete="off"/>
     <div class="search-results" id="searchResults"></div>
   </div>
   <div class="search-tags">
-    <a href="#planets" class="search-tag">🪐 Planets</a>
-    <a href="#facts" class="search-tag">✨ Facts</a>
-    <a href="#history" class="search-tag">🚀 History</a>
-    <a href="#galaxies" class="search-tag">🌌 Galaxies</a>
+    <a href="#facts" class="search-tag">&#10024; Facts</a>
+    <a href="#planets" class="search-tag">&#x1FA90; Planets</a>
+    <a href="#stars" class="search-tag">&#11088; Stars</a>
+    <a href="#worlds" class="search-tag">&#x1F311; Worlds Beyond</a>
+    <a href="#galaxies" class="search-tag">&#x1F30C; Galaxies</a>
+    <a href="#history" class="search-tag">&#x1F680; History</a>
   </div>
 </div>
-<section class="section" id="planets">
-  <p class="section-label">Solar System</p>
-  <h2 class="section-title">THE EIGHT WORLDS</h2>
 
-  <div class="planet-grid">
-    <!-- Mercury -->
-    <div class="planet-card">
-      <div class="planet-icon"><img src="mercury.jpg" alt="Mercury"></div>
-      <div class="planet-name">Mercury</div>
-      <div class="planet-type">Terrestrial Planet</div>
-      <p class="planet-desc">The swiftest world, scorched by day and frozen by night. No atmosphere means extreme temperature swings of over 600°C.</p>
-      <div class="planet-stats">
-        <div class="stat"><span class="stat-val">88</span><span class="stat-label">Day Orbit</span></div>
-        <div class="stat"><span class="stat-val">4,879</span><span class="stat-label">km Diameter</span></div>
-        <div class="stat"><span class="stat-val">0</span><span class="stat-label">Moons</span></div>
-      </div>
-    </div>
-
-    <!-- Venus -->
-    <div class="planet-card">
-      <div class="planet-icon"><img src="venus.jpg" alt="Venus"></div>
-      <div class="planet-name">Venus</div>
-      <div class="planet-type">Terrestrial Planet</div>
-      <p class="planet-desc">The brightest object in our sky after the Sun and Moon. Its thick toxic atmosphere creates a runaway greenhouse effect at 465°C.</p>
-      <div class="planet-stats">
-        <div class="stat"><span class="stat-val">225</span><span class="stat-label">Day Orbit</span></div>
-        <div class="stat"><span class="stat-val">12,104</span><span class="stat-label">km Diameter</span></div>
-        <div class="stat"><span class="stat-val">0</span><span class="stat-label">Moons</span></div>
-      </div>
-    </div>
-
-    <!-- Earth -->
-    <div class="planet-card">
-      <div class="planet-icon"><img src="earth.jpg" alt="Earth"></div>
-      <div class="planet-name">Earth</div>
-      <div class="planet-type">Terrestrial Planet</div>
-      <p class="planet-desc">The only known harbor for life in the cosmos. Its magnetic field, liquid water, and oxygen-rich atmosphere create a rare oasis.</p>
-      <div class="planet-stats">
-        <div class="stat"><span class="stat-val">365</span><span class="stat-label">Day Orbit</span></div>
-        <div class="stat"><span class="stat-val">12,742</span><span class="stat-label">km Diameter</span></div>
-        <div class="stat"><span class="stat-val">1</span><span class="stat-label">Moon</span></div>
-      </div>
-    </div>
-
-    <!-- Mars -->
-    <div class="planet-card">
-      <div class="planet-icon"><img src="mars.jpg" alt="Mars"></div>
-      <div class="planet-name">Mars</div>
-      <div class="planet-type">Terrestrial Planet</div>
-      <p class="planet-desc">The Red Planet harbors Olympus Mons — the tallest volcano in the solar system at 22 km. Once had rivers and possibly ancient life.</p>
-      <div class="planet-stats">
-        <div class="stat"><span class="stat-val">687</span><span class="stat-label">Day Orbit</span></div>
-        <div class="stat"><span class="stat-val">6,779</span><span class="stat-label">km Diameter</span></div>
-        <div class="stat"><span class="stat-val">2</span><span class="stat-label">Moons</span></div>
-      </div>
-    </div>
-
-    <!-- Jupiter -->
-    <div class="planet-card">
-      <div class="planet-icon"><img src="jupiter.jpg" alt="Jupiter"></div>
-      <div class="planet-name">Jupiter</div>
-      <div class="planet-type">Gas Giant</div>
-      <p class="planet-desc">The undisputed king, 1,300 Earths could fit inside it. The Great Red Spot — a storm larger than Earth — has raged for 400 years.</p>
-      <div class="planet-stats">
-        <div class="stat"><span class="stat-val">12</span><span class="stat-label">Yr Orbit</span></div>
-        <div class="stat"><span class="stat-val">139,820</span><span class="stat-label">km Diameter</span></div>
-        <div class="stat"><span class="stat-val">95</span><span class="stat-label">Moons</span></div>
-      </div>
-    </div>
-
-    <!-- Saturn -->
-    <div class="planet-card">
-      <div class="planet-icon"><img src="saturn.jpg" alt="Saturn"></div>
-      <div class="planet-name">Saturn</div>
-      <div class="planet-type">Gas Giant</div>
-      <p class="planet-desc">Its iconic rings — made of ice and rock — stretch 282,000 km but are only 10–100 meters thick. The least dense planet in our solar system.</p>
-      <div class="planet-stats">
-        <div class="stat"><span class="stat-val">29</span><span class="stat-label">Yr Orbit</span></div>
-        <div class="stat"><span class="stat-val">116,460</span><span class="stat-label">km Diameter</span></div>
-        <div class="stat"><span class="stat-val">146</span><span class="stat-label">Moons</span></div>
-      </div>
-    </div>
-
-    <!-- Uranus -->
-    <div class="planet-card">
-      <div class="planet-icon"><img src="uranus.jpg" alt="Uranus"></div>
-      <div class="planet-name">Uranus</div>
-      <div class="planet-type">Ice Giant</div>
-      <p class="planet-desc">The sideways planet — tilted at 98°, it literally rolls around the Sun. Its diamond rain and methane atmosphere give it an eerie cyan glow.</p>
-      <div class="planet-stats">
-        <div class="stat"><span class="stat-val">84</span><span class="stat-label">Yr Orbit</span></div>
-        <div class="stat"><span class="stat-val">50,724</span><span class="stat-label">km Diameter</span></div>
-        <div class="stat"><span class="stat-val">28</span><span class="stat-label">Moons</span></div>
-      </div>
-    </div>
-
-    <!-- Neptune -->
-    <div class="planet-card">
-      <div class="planet-icon"><img src="neptune.jpg" alt="Neptune"></div>
-      <div class="planet-name">Neptune</div>
-      <div class="planet-type">Ice Giant</div>
-      <p class="planet-desc">The windiest world — supersonic storms of 2,100 km/h. Invisible to the naked eye, it was predicted mathematically before it was ever seen.</p>
-      <div class="planet-stats">
-        <div class="stat"><span class="stat-val">165</span><span class="stat-label">Yr Orbit</span></div>
-        <div class="stat"><span class="stat-val">49,244</span><span class="stat-label">km Diameter</span></div>
-        <div class="stat"><span class="stat-val">16</span><span class="stat-label">Moons</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FACTS -->
 <section class="section facts-section" id="facts">
   <p class="section-label">Cosmic Scale</p>
   <h2 class="section-title">MIND-BENDING FACTS</h2>
-
   <div class="facts-grid">
-    <div class="fact-item" style="animation-delay:0.1s">
-      <div class="fact-number">93B</div>
-      <div class="fact-title">Light-Year Diameter</div>
-      <p class="fact-desc">The observable universe spans 93 billion light-years. Even travelling at the speed of light, it would take longer than the universe has existed to cross it.</p>
-    </div>
-    <div class="fact-item" style="animation-delay:0.2s">
-      <div class="fact-number">2T</div>
-      <div class="fact-title">Galaxies Estimated</div>
-      <p class="fact-desc">Modern telescope data suggests there are over 2 trillion galaxies in the observable universe — ten times more than previously thought.</p>
-    </div>
-    <div class="fact-item" style="animation-delay:0.3s">
-      <div class="fact-number">13.8B</div>
-      <div class="fact-title">Years Since Big Bang</div>
-      <p class="fact-desc">The universe began 13.8 billion years ago from an infinitely dense point. The cosmic microwave background radiation is its faint afterglow, still detectable today.</p>
-    </div>
-    <div class="fact-item" style="animation-delay:0.4s">
-      <div class="fact-number">300K</div>
-      <div class="fact-title">km/s — Speed of Light</div>
-      <p class="fact-desc">Light travels 299,792 km per second. Sunlight takes 8 minutes to reach Earth. The nearest star, Proxima Centauri, is 4.24 light-years away.</p>
-    </div>
-    <div class="fact-item" style="animation-delay:0.5s">
-      <div class="fact-number">68%</div>
-      <div class="fact-title">Dark Energy</div>
-      <p class="fact-desc">About 68% of the universe is dark energy, 27% is dark matter. Everything we can see — stars, planets, galaxies — makes up just 5% of the cosmos.</p>
-    </div>
-    <div class="fact-item" style="animation-delay:0.6s">
-      <div class="fact-number">4B</div>
-      <div class="fact-title">Years Until Andromeda Collision</div>
-      <p class="fact-desc">Our Milky Way is on a collision course with the Andromeda galaxy. In about 4 billion years, the two galaxies will begin merging into a single elliptical galaxy.</p>
-    </div>
+    <div class="fact-item"><div class="fact-number">93B</div><div class="fact-title">Light-Year Diameter</div><p class="fact-desc">The observable universe spans 93 billion light-years. Even travelling at the speed of light, it would take longer than the universe has existed to cross it.</p></div>
+    <div class="fact-item"><div class="fact-number">2T</div><div class="fact-title">Galaxies Estimated</div><p class="fact-desc">Modern telescope data suggests there are over 2 trillion galaxies in the observable universe — ten times more than previously thought.</p></div>
+    <div class="fact-item"><div class="fact-number">13.8B</div><div class="fact-title">Years Since Big Bang</div><p class="fact-desc">The universe began 13.8 billion years ago from an infinitely dense point. The cosmic microwave background radiation is its faint afterglow, still detectable today.</p></div>
+    <div class="fact-item"><div class="fact-number">300K</div><div class="fact-title">km/s — Speed of Light</div><p class="fact-desc">Light travels 299,792 km per second. Sunlight takes 8 minutes to reach Earth. The nearest star, Proxima Centauri, is 4.24 light-years away.</p></div>
+    <div class="fact-item"><div class="fact-number">68%</div><div class="fact-title">Dark Energy</div><p class="fact-desc">About 68% of the universe is dark energy, 27% is dark matter. Everything we can see — stars, planets, galaxies — makes up just 5% of the cosmos.</p></div>
+    <div class="fact-item"><div class="fact-number">4B</div><div class="fact-title">Years Until Andromeda Collision</div><p class="fact-desc">Our Milky Way is on a collision course with the Andromeda galaxy. In about 4 billion years, the two galaxies will begin merging into a single elliptical galaxy.</p></div>
   </div>
 </section>
 
-<!-- HISTORY -->
-<section class="section" id="history">
-  <p class="section-label">Human Exploration</p>
-  <h2 class="section-title">REACHING FOR THE STARS</h2>
-
-  <div style="max-width: 700px;">
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-year">1957</div>
-        <div class="timeline-event">Sputnik 1 — The Space Age Begins</div>
-        <p class="timeline-detail">The Soviet Union launches the first artificial satellite. Its radio beeps, audible on Earth, mark humanity's first foray beyond the atmosphere.</p>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-year">1961</div>
-        <div class="timeline-event">Yuri Gagarin Orbits Earth</div>
-        <p class="timeline-detail">The Soviet cosmonaut becomes the first human in space, completing one orbit in 108 minutes aboard Vostok 1. "The Earth is blue. How wonderful."</p>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-year">1969</div>
-        <div class="timeline-event">Apollo 11 — First Moon Landing</div>
-        <p class="timeline-detail">Neil Armstrong and Buzz Aldrin walk on the Moon's surface. Armstrong's words — "one giant leap for mankind" — are broadcast to 600 million viewers worldwide.</p>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-year">1990</div>
-        <div class="timeline-event">Hubble Space Telescope Launch</div>
-        <p class="timeline-detail">Hubble revolutionizes our understanding of the universe, capturing images of objects 13+ billion light-years away and measuring the universe's expansion rate.</p>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-year">2004</div>
-        <div class="timeline-event">Mars Rovers Spirit & Opportunity</div>
-        <p class="timeline-detail">NASA's twin rovers land on Mars. Opportunity was expected to last 90 days but operated for 14 years, traveling over 45 km across the Martian surface.</p>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-year">2021</div>
-        <div class="timeline-event">James Webb Space Telescope</div>
-        <p class="timeline-detail">Launched on Christmas Day, Webb can see the universe's first galaxies forming just 300 million years after the Big Bang, in unprecedented infrared detail.</p>
-      </div>
-    </div>
-  </div>
+<section class="section" id="planets">
+  <p class="section-label">Solar System</p>
+  <h2 class="section-title">THE EIGHT WORLDS</h2>
+  <div class="card-grid" id="planetGrid"></div>
 </section>
 
-<!-- GALAXIES -->
+<section class="section" id="stars" style="background:linear-gradient(180deg,var(--void) 0%,rgba(15,10,40,0.6) 50%,var(--void) 100%);">
+  <p class="section-label">Stellar Classification</p>
+  <h2 class="section-title">TYPES OF STARS</h2>
+  <div class="card-grid" id="starGrid"></div>
+</section>
+
+<section class="section" id="worlds">
+  <p class="section-label">Beyond the Solar System</p>
+  <h2 class="section-title">WORLDS BEYOND PLANETS</h2>
+  <div class="card-grid" id="worldsGrid"></div>
+</section>
+
 <section class="section" id="galaxies">
   <p class="section-label">Cosmic Structures</p>
   <h2 class="section-title">GALAXY TYPES</h2>
-
   <div class="galaxy-row">
-    <!-- Spiral -->
-    <div class="galaxy-card">
-      <div class="galaxy-visual">
-        <svg viewBox="0 0 160 160" width="140" height="140">
-          <defs>
-            <radialGradient id="sg" cx="50%" cy="50%">
-              <stop offset="0%" stop-color="#f0c040" stop-opacity="0.9"/>
-              <stop offset="30%" stop-color="#4fc3f7" stop-opacity="0.5"/>
-              <stop offset="100%" stop-color="#4fc3f7" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <g transform="translate(80,80)">
-            <ellipse cx="0" cy="0" rx="60" ry="20" fill="none" stroke="rgba(79,195,247,0.1)" stroke-width="1"/>
-            <path d="M0,0 Q30,-20 50,-40 Q60,-50 40,-55 Q20,-58 0,-50 Q-20,-40 -30,-20 Q-35,-5 0,0" fill="none" stroke="rgba(79,195,247,0.6)" stroke-width="1.5"/>
-            <path d="M0,0 Q-30,20 -50,40 Q-60,50 -40,55 Q-20,58 0,50 Q20,40 30,20 Q35,5 0,0" fill="none" stroke="rgba(79,195,247,0.6)" stroke-width="1.5"/>
-            <ellipse cx="0" cy="0" rx="12" ry="8" fill="url(#sg)"/>
-            <circle cx="0" cy="0" r="3" fill="#f0c040"/>
-            <circle cx="35" cy="-30" r="1" fill="rgba(255,255,255,0.6)"/>
-            <circle cx="-35" cy="30" r="1" fill="rgba(255,255,255,0.6)"/>
-            <circle cx="48" cy="-15" r="0.8" fill="rgba(255,255,255,0.5)"/>
-            <circle cx="-48" cy="15" r="0.8" fill="rgba(255,255,255,0.5)"/>
-          </g>
-        </svg>
-      </div>
-      <div class="galaxy-name">Spiral</div>
-      <p class="galaxy-desc">Flat rotating discs with elegant spiral arms. Our Milky Way is a barred spiral — home to 200–400 billion stars. The arms are regions of dense star formation, lit by blue supergiant stars.</p>
-    </div>
+    <div class="galaxy-card"><div class="galaxy-visual"><svg viewBox="0 0 160 160" width="140" height="140"><defs><radialGradient id="sg" cx="50%" cy="50%"><stop offset="0%" stop-color="#f0c040" stop-opacity="0.9"/><stop offset="30%" stop-color="#4fc3f7" stop-opacity="0.5"/><stop offset="100%" stop-color="#4fc3f7" stop-opacity="0"/></radialGradient></defs><g transform="translate(80,80)"><path d="M0,0 Q30,-20 50,-40 Q60,-50 40,-55 Q20,-58 0,-50 Q-20,-40 -30,-20 Q-35,-5 0,0" fill="none" stroke="rgba(79,195,247,0.6)" stroke-width="1.5"/><path d="M0,0 Q-30,20 -50,40 Q-60,50 -40,55 Q-20,58 0,50 Q20,40 30,20 Q35,5 0,0" fill="none" stroke="rgba(79,195,247,0.6)" stroke-width="1.5"/><ellipse cx="0" cy="0" rx="12" ry="8" fill="url(#sg)"/><circle cx="0" cy="0" r="3" fill="#f0c040"/></g></svg></div><div class="galaxy-name">Spiral</div><p class="galaxy-desc">Flat rotating discs with elegant spiral arms. Our Milky Way is a barred spiral — home to 200–400 billion stars.</p></div>
+    <div class="galaxy-card"><div class="galaxy-visual"><svg viewBox="0 0 160 160" width="140" height="140"><defs><radialGradient id="eg" cx="50%" cy="50%"><stop offset="0%" stop-color="#f0c040" stop-opacity="0.9"/><stop offset="50%" stop-color="#e8a040" stop-opacity="0.4"/><stop offset="100%" stop-color="#c07030" stop-opacity="0"/></radialGradient></defs><ellipse cx="80" cy="80" rx="60" ry="45" fill="url(#eg)"/><circle cx="75" cy="77" r="1" fill="rgba(255,255,255,0.7)"/><circle cx="90" cy="85" r="0.8" fill="rgba(255,255,255,0.5)"/></svg></div><div class="galaxy-name">Elliptical</div><p class="galaxy-desc">The largest galaxies in the universe — smooth ellipsoids of mostly old stars. Giant ellipticals form from galaxy mergers over billions of years.</p></div>
+    <div class="galaxy-card"><div class="galaxy-visual"><svg viewBox="0 0 160 160" width="140" height="140"><defs><radialGradient id="ig1" cx="30%" cy="40%"><stop offset="0%" stop-color="#7c4dff" stop-opacity="0.8"/><stop offset="100%" stop-color="#7c4dff" stop-opacity="0"/></radialGradient><radialGradient id="ig2" cx="70%" cy="60%"><stop offset="0%" stop-color="#4fc3f7" stop-opacity="0.7"/><stop offset="100%" stop-color="#4fc3f7" stop-opacity="0"/></radialGradient></defs><ellipse cx="60" cy="70" rx="35" ry="28" fill="url(#ig1)"/><ellipse cx="100" cy="90" rx="25" ry="20" fill="url(#ig2)"/><circle cx="55" cy="65" r="2" fill="rgba(255,255,255,0.8)"/><circle cx="95" cy="88" r="2" fill="rgba(255,255,255,0.7)"/></svg></div><div class="galaxy-name">Irregular</div><p class="galaxy-desc">Chaotic in shape, often the result of gravitational disturbances. The Large Magellanic Cloud is an irregular satellite galaxy of our Milky Way.</p></div>
+  </div>
+</section>
 
-    <!-- Elliptical -->
-    <div class="galaxy-card">
-      <div class="galaxy-visual">
-        <svg viewBox="0 0 160 160" width="140" height="140">
-          <defs>
-            <radialGradient id="eg" cx="50%" cy="50%">
-              <stop offset="0%" stop-color="#f0c040" stop-opacity="0.9"/>
-              <stop offset="50%" stop-color="#e8a040" stop-opacity="0.4"/>
-              <stop offset="100%" stop-color="#c07030" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <ellipse cx="80" cy="80" rx="60" ry="45" fill="url(#eg)"/>
-          <circle cx="75" cy="77" r="1" fill="rgba(255,255,255,0.7)"/>
-          <circle cx="90" cy="85" r="0.8" fill="rgba(255,255,255,0.5)"/>
-          <circle cx="65" cy="90" r="1" fill="rgba(255,255,255,0.4)"/>
-          <circle cx="100" cy="72" r="0.7" fill="rgba(255,255,255,0.5)"/>
-          <circle cx="60" cy="70" r="0.8" fill="rgba(255,255,255,0.4)"/>
-        </svg>
-      </div>
-      <div class="galaxy-name">Elliptical</div>
-      <p class="galaxy-desc">The largest galaxies in the universe — smooth, featureless ellipsoids containing mostly old, red stars. Little new star formation occurs. Giant ellipticals form from galaxy mergers over billions of years.</p>
-    </div>
-
-    <!-- Irregular -->
-    <div class="galaxy-card">
-      <div class="galaxy-visual">
-        <svg viewBox="0 0 160 160" width="140" height="140">
-          <defs>
-            <radialGradient id="ig1" cx="30%" cy="40%">
-              <stop offset="0%" stop-color="#7c4dff" stop-opacity="0.8"/>
-              <stop offset="100%" stop-color="#7c4dff" stop-opacity="0"/>
-            </radialGradient>
-            <radialGradient id="ig2" cx="70%" cy="60%">
-              <stop offset="0%" stop-color="#4fc3f7" stop-opacity="0.7"/>
-              <stop offset="100%" stop-color="#4fc3f7" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <ellipse cx="60" cy="70" rx="35" ry="28" fill="url(#ig1)"/>
-          <ellipse cx="100" cy="90" rx="25" ry="20" fill="url(#ig2)"/>
-          <circle cx="55" cy="65" r="2" fill="rgba(255,255,255,0.8)"/>
-          <circle cx="70" cy="80" r="1.5" fill="rgba(255,255,255,0.6)"/>
-          <circle cx="95" cy="88" r="2" fill="rgba(255,255,255,0.7)"/>
-          <circle cx="110" cy="95" r="1" fill="rgba(255,255,255,0.5)"/>
-          <circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.4)"/>
-        </svg>
-      </div>
-      <div class="galaxy-name">Irregular</div>
-      <p class="galaxy-desc">Chaotic in shape, often the result of gravitational disturbances from nearby galaxies. The Large Magellanic Cloud — visible from Earth's Southern Hemisphere — is an irregular satellite galaxy of our own Milky Way.</p>
+<section class="section" id="history">
+  <p class="section-label">Human Exploration</p>
+  <h2 class="section-title">REACHING FOR THE STARS</h2>
+  <div style="max-width:700px">
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-year">1957</div><div class="timeline-event">Sputnik 1 — The Space Age Begins</div><p class="timeline-detail">The Soviet Union launches the first artificial satellite. Its radio beeps, audible on Earth, mark humanity's first foray beyond the atmosphere.</p></div>
+      <div class="timeline-item"><div class="timeline-year">1961</div><div class="timeline-event">Yuri Gagarin Orbits Earth</div><p class="timeline-detail">The Soviet cosmonaut becomes the first human in space, completing one orbit in 108 minutes aboard Vostok 1.</p></div>
+      <div class="timeline-item"><div class="timeline-year">1969</div><div class="timeline-event">Apollo 11 — First Moon Landing</div><p class="timeline-detail">Neil Armstrong and Buzz Aldrin walk on the Moon's surface. Armstrong's words — "one giant leap for mankind" — are broadcast to 600 million viewers worldwide.</p></div>
+      <div class="timeline-item"><div class="timeline-year">1990</div><div class="timeline-event">Hubble Space Telescope Launch</div><p class="timeline-detail">Hubble revolutionizes our understanding of the universe, capturing images of objects 13+ billion light-years away and measuring the universe's expansion rate.</p></div>
+      <div class="timeline-item"><div class="timeline-year">2004</div><div class="timeline-event">Mars Rovers Spirit &amp; Opportunity</div><p class="timeline-detail">NASA's twin rovers land on Mars. Opportunity was expected to last 90 days but operated for 14 years, traveling over 45 km across the Martian surface.</p></div>
+      <div class="timeline-item"><div class="timeline-year">2021</div><div class="timeline-event">James Webb Space Telescope</div><p class="timeline-detail">Launched on Christmas Day, Webb can see the universe's first galaxies forming just 300 million years after the Big Bang, in unprecedented infrared detail.</p></div>
     </div>
   </div>
 </section>
 
 <footer>
   <div class="footer-brand">COSMOS</div>
-  <p class="footer-copy">An exploration of the universe &nbsp;—&nbsp; Space information website</p>
+  <p class="footer-copy">An exploration of the universe &nbsp;&mdash;&nbsp; Space information website</p>
 </footer>
 
 <script>
-// === STARFIELD ===
+const PLANETS = [
+  {name:"Mercury",type:"Terrestrial Planet",emoji:"\u263F",img:"mercury.jpg",
+   facts:[{v:"88 days",l:"Orbit"},{v:"4,879 km",l:"Diameter"},{v:"0",l:"Moons"},{v:"430\u00b0C",l:"Max Temp"},{v:"0.39 AU",l:"From Sun"}],
+   short:"The swiftest world, scorched by day and frozen by night. No atmosphere means extreme temperature swings of over 600\u00b0C.",
+   body:["Mercury is the smallest planet in our solar system and the closest to the Sun. Despite this proximity, it is not the hottest planet — that title belongs to Venus. Mercury has almost no atmosphere to trap heat, which means its surface experiences the most extreme temperature swings in the solar system, ranging from 430\u00b0C during the day to -180\u00b0C at night.","The planet's surface is heavily cratered, resembling our Moon, and bears the scars of billions of years of asteroid impacts. One of the most prominent features is the Caloris Basin, a massive impact crater roughly 1,550 km in diameter — one of the largest in the solar system. The impact that created it was so powerful it sent shockwaves around the entire planet.","Mercury has a surprisingly large iron core that makes up about 85% of its radius. Scientists believe the planet may have been much larger in the past, with its outer layers stripped away by a giant impact early in the solar system's history. This core generates a weak but detectable magnetic field — the only other rocky planet besides Earth to have one.","A day on Mercury (one full rotation) takes 59 Earth days, but a year (one full orbit around the Sun) takes only 88 Earth days. This unusual ratio means that from the surface, the Sun would appear to rise, briefly reverse, and rise again — a bizarre double sunrise caused by the combination of Mercury's slow spin and fast orbit.","Mercury has been visited by two spacecraft: Mariner 10 in the 1970s and MESSENGER, which orbited the planet from 2011 to 2015. A third mission, BepiColombo — a joint ESA and JAXA project — is currently en route and is expected to enter orbit around Mercury in 2025."]},
+  {name:"Venus",type:"Terrestrial Planet",emoji:"\u2640",img:"venus.jpg",
+   facts:[{v:"225 days",l:"Orbit"},{v:"12,104 km",l:"Diameter"},{v:"0",l:"Moons"},{v:"465\u00b0C",l:"Surface Temp"},{v:"0.72 AU",l:"From Sun"}],
+   short:"The brightest object in our sky after the Sun and Moon. Its thick toxic atmosphere creates a runaway greenhouse effect at 465\u00b0C.",
+   body:["Venus is often called Earth's twin due to its similar size and mass, but the two planets could not be more different. Venus has the most extreme greenhouse effect in the solar system — its thick atmosphere of carbon dioxide traps heat so effectively that surface temperatures reach 465\u00b0C, hot enough to melt lead. This makes Venus the hottest planet in the solar system, despite Mercury being closer to the Sun.","The atmosphere of Venus is roughly 90 times denser than Earth's — standing on its surface would feel like being submerged 900 metres underwater. Clouds of sulfuric acid shroud the planet entirely, making it impossible to see the surface from space with visible light. Radar mapping missions have revealed vast volcanic plains, mountain ranges, and thousands of volcanoes, some of which may still be active.","Venus rotates in the opposite direction to most planets — if you could stand on its surface, the Sun would rise in the west and set in the east. It also rotates extraordinarily slowly: a single Venusian day is longer than its year. One rotation takes 243 Earth days, while its orbit around the Sun takes only 225 Earth days.","Because Venus is closer to the Sun than Earth, it always appears in Earth's sky near the Sun — visible just after sunset or just before sunrise. This earned it the names 'Evening Star' and 'Morning Star' in ancient cultures. It is the third brightest object in Earth's sky, after the Sun and the Moon.","The Soviet Venera program sent several probes to Venus's surface in the 1970s and 80s, revealing a barren, orange-lit landscape under crushing pressure. The longest any lander survived was about two hours before being destroyed by the extreme heat and pressure. NASA's DAVINCI and VERITAS missions, planned for the 2030s, aim to return to Venus with far more advanced technology."]},
+  {name:"Earth",type:"Terrestrial Planet",emoji:"\ud83c\udf0d",img:"earth.jpg",
+   facts:[{v:"365 days",l:"Orbit"},{v:"12,742 km",l:"Diameter"},{v:"1",l:"Moon"},{v:"15\u00b0C",l:"Avg Temp"},{v:"1 AU",l:"From Sun"}],
+   short:"The only known harbor for life in the cosmos. Its magnetic field, liquid water, and oxygen-rich atmosphere create a rare oasis.",
+   body:["Earth is the only known planet in the universe confirmed to harbor life. Its position in the 'habitable zone' of the Sun — far enough to avoid scorching, close enough to prevent freezing — allows liquid water to exist on its surface. Water covers roughly 71% of Earth's surface, and this liquid ocean is believed to be essential to the origin and sustenance of life as we know it.","Earth's atmosphere is a thin, protective layer of nitrogen (78%) and oxygen (21%) that shields life from harmful solar radiation and maintains the planet's surface temperature. The magnetosphere — generated by Earth's rotating iron core — deflects charged particles from the Sun that would otherwise strip away the atmosphere over millions of years. Without it, Earth might look more like Mars.","Earth is geologically active, with tectonic plates constantly shifting, colliding, and pulling apart. This activity drives volcanic eruptions, builds mountain ranges, and causes earthquakes. Over billions of years, plate tectonics have recycled carbon from the atmosphere back into the crust, helping to regulate the planet's temperature and keep it hospitable to life.","Earth's single large moon plays a crucial stabilizing role. The Moon's gravitational pull keeps Earth's axial tilt relatively stable at around 23.5\u00b0, which moderates climate and prevents wild swings in seasons. The Moon also drives the ocean tides, which are thought to have been important for the evolution of early life forms transitioning from ocean to land.","Earth formed approximately 4.5 billion years ago from the accretion disk around the young Sun. Life emerged at least 3.5 billion years ago, and complex multicellular life appeared roughly 600 million years ago. In the roughly 4 billion years of life on Earth, more than 99% of all species that ever existed have gone extinct — making the current diversity of life a snapshot of an ever-changing process."]},
+  {name:"Mars",type:"Terrestrial Planet",emoji:"\ud83d\udd34",img:"mars.jpg",
+   facts:[{v:"687 days",l:"Orbit"},{v:"6,779 km",l:"Diameter"},{v:"2",l:"Moons"},{v:"-60\u00b0C",l:"Avg Temp"},{v:"1.52 AU",l:"From Sun"}],
+   short:"The Red Planet harbors Olympus Mons — the tallest volcano in the solar system at 22 km. Once had rivers and possibly ancient life.",
+   body:["Mars is the fourth planet from the Sun and the most explored world beyond Earth. Its reddish appearance comes from iron oxide — rust — covering much of its surface. Though small (roughly half Earth's diameter), Mars hosts the solar system's tallest volcano, Olympus Mons, which stands 22 km high and spans an area the size of France. It also features Valles Marineris, a canyon system stretching 4,000 km — long enough to span the entire United States.","Mars once had a much thicker atmosphere and flowing liquid water. Evidence of ancient riverbeds, lake basins, and even ocean shorelines is etched across the planet's surface. About 3.5 billion years ago, Mars lost its global magnetic field, likely due to the cooling of its iron core. Without this magnetic shield, solar wind gradually stripped away the atmosphere, causing the oceans and rivers to evaporate and freeze.","Mars has two small, irregularly-shaped moons: Phobos and Deimos. These moons are thought to be captured asteroids from the outer solar system. Phobos orbits so close to Mars that it completes three orbits for every Martian day, and it is slowly spiraling inward — in roughly 50 million years, it will either crash into Mars or break apart to form a ring.","Today, Mars has a thin atmosphere of mostly carbon dioxide, with surface pressure less than 1% of Earth's. Average temperatures are around -60\u00b0C, though summer afternoons near the equator can reach a relatively mild 20\u00b0C. Massive dust storms can engulf the entire planet for months, dramatically reducing sunlight and temperatures. It was one of these storms that ended NASA's Opportunity rover mission in 2018.","Mars is currently hosting five active spacecraft on its surface and in orbit, including NASA's Perseverance rover which is collecting rock samples for future return to Earth. Several space agencies and private companies have outlined plans for crewed missions to Mars in the 2030s and 2040s, making it the most likely destination for the first humans to set foot on another planet."]},
+  {name:"Jupiter",type:"Gas Giant",emoji:"\ud83d\udfe0",img:"jupiter.jpg",
+   facts:[{v:"12 years",l:"Orbit"},{v:"139,820 km",l:"Diameter"},{v:"95",l:"Moons"},{v:"-110\u00b0C",l:"Cloud Temp"},{v:"5.2 AU",l:"From Sun"}],
+   short:"The undisputed king — 1,300 Earths could fit inside it. The Great Red Spot, a storm larger than Earth, has raged for 400 years.",
+   body:["Jupiter is the largest planet in the solar system by a significant margin — it is so massive that all other planets combined would still only be about 70% of its mass. Its diameter is 11 times that of Earth, and 1,300 Earths could fit inside it by volume. Despite its size, Jupiter rotates faster than any other planet — a single day on Jupiter lasts only about 10 hours, causing its equator to bulge outward and giving it an oblate shape.","Jupiter is a gas giant with no solid surface. What we see as its 'surface' is actually the top of a thick atmosphere of hydrogen and helium, streaked with colorful bands of clouds driven by powerful jet streams. Below the visible clouds, pressures increase rapidly, compressing hydrogen gas into liquid, and eventually into a state called metallic hydrogen — a phase of hydrogen that conducts electricity like a metal. This metallic hydrogen layer generates Jupiter's immense magnetic field, the strongest of any planet.","The Great Red Spot is a storm that has been raging continuously for at least 400 years — possibly much longer. At its peak, the storm was three times the size of Earth, though it has been slowly shrinking in recent decades. Winds inside the storm reach 500 km/h. The exact mechanism keeping the storm alive for so long remains an active area of research, but it is thought to draw energy from Jupiter's internal heat.","Jupiter has 95 known moons, four of which were discovered by Galileo in 1610 and are known as the Galilean moons: Io, Europa, Ganymede, and Callisto. Io is the most volcanically active body in the solar system, with hundreds of active volcanoes driven by tidal heating from Jupiter's gravity. Europa has a global liquid water ocean beneath its icy crust and is considered one of the best candidates for finding extraterrestrial life in our solar system.","Jupiter acts as a gravitational shield for the inner solar system. Its massive gravity attracts and captures many comets and asteroids that might otherwise travel into the inner solar system and strike Earth. This protective role is thought to have been crucial for the long-term stability of Earth's environment, giving life time to evolve. However, Jupiter can also deflect objects toward the inner planets, so the relationship is complex."]},
+  {name:"Saturn",type:"Gas Giant",emoji:"\ud83e\ude90",img:"saturn.jpg",
+   facts:[{v:"29 years",l:"Orbit"},{v:"116,460 km",l:"Diameter"},{v:"146",l:"Moons"},{v:"0.69",l:"Density (g/cm\u00b3)"},{v:"9.5 AU",l:"From Sun"}],
+   short:"Its iconic rings stretch 282,000 km but are only 10\u2013100 meters thick. The least dense planet \u2014 it could float on water.",
+   body:["Saturn is one of the most visually stunning objects in the solar system, instantly recognizable by its spectacular ring system. The rings extend up to 282,000 km from the planet but are extraordinarily thin — in most places only 10 to 100 metres thick. They are made primarily of ice particles, rocky debris, and dust ranging in size from tiny grains to chunks as large as a house. Despite their immense width, if the rings were shrunk to the thickness of a sheet of paper, they would extend proportionally as far as a football field.","Saturn is the least dense planet in the solar system — with an average density of just 0.69 g/cm\u00b3, it is the only planet less dense than water, meaning it would technically float in a large enough ocean. Like Jupiter, it is mostly composed of hydrogen and helium, and it radiates more heat from its interior than it receives from the Sun. Saturn's rapid rotation (about 10.7 hours) causes significant polar flattening.","Saturn has 146 known moons — more than any other planet. Its largest, Titan, is the second largest moon in the solar system and is remarkable for having a thick nitrogen atmosphere and lakes of liquid methane and ethane on its surface. NASA's Cassini spacecraft deployed the Huygens probe onto Titan's surface in 2005, revealing a world with river channels, dunes, and rain — though made of hydrocarbons rather than water.","Another fascinating Saturnian moon is Enceladus, which has geysers of water vapor and ice erupting from its south pole. These geysers feed material into one of Saturn's outer rings (the E ring) and suggest that Enceladus harbors a liquid water ocean beneath its icy surface, making it another prime candidate for potential life in the outer solar system.","Saturn's rings are not permanent features — they are thought to be geologically young, perhaps only 100 to 400 million years old, and are slowly being pulled into Saturn by gravity. Within 100 million years, the rings will have mostly disappeared. Future generations living tens of millions of years from now will know a ringless Saturn. We happen to exist at an exceptionally lucky time to witness this spectacle."]},
+  {name:"Uranus",type:"Ice Giant",emoji:"\ud83d\udd35",img:"uranus.jpg",
+   facts:[{v:"84 years",l:"Orbit"},{v:"50,724 km",l:"Diameter"},{v:"28",l:"Moons"},{v:"-224\u00b0C",l:"Min Temp"},{v:"19.2 AU",l:"From Sun"}],
+   short:"The sideways planet \u2014 tilted at 98\u00b0, it literally rolls around the Sun. Diamond rain and methane give it an eerie cyan glow.",
+   body:["Uranus is one of the strangest planets in the solar system. Its axial tilt is approximately 98 degrees — meaning it essentially lies on its side as it orbits the Sun. This extreme tilt causes the most unusual seasons in the solar system: each pole experiences 42 years of continuous sunlight followed by 42 years of darkness. The origin of this tilt is believed to be a massive collision with an Earth-sized object early in the solar system's history.","Uranus is classified as an ice giant rather than a gas giant because its interior is thought to be primarily composed of water, methane, and ammonia ices beneath a thick hydrogen and helium atmosphere. The upper atmosphere is cold enough — reaching down to -224\u00b0C — that it is the coldest planetary atmosphere in the solar system, even colder than Neptune despite being closer to the Sun. Its cyan color is caused by methane gas in its atmosphere, which absorbs red light and reflects blue.","Deep within Uranus, pressures are so extreme that methane is broken down into carbon atoms, which are then compressed and crystallized into diamond. Scientists theorize that it rains diamonds in the interiors of both Uranus and Neptune — a phenomenon that has been confirmed experimentally at small scales using lasers to simulate the conditions. The diamonds would eventually sink to form a diamond layer around the planet's core.","Uranus has 28 known moons, all named after characters from the works of William Shakespeare and Alexander Pope. The five major moons — Miranda, Ariel, Umbriel, Titania, and Oberon — are geologically diverse. Miranda in particular features one of the most dramatic cliffs in the solar system: Verona Rupes, estimated to be up to 20 km tall. A rock dropped from its edge would take approximately 10 minutes to reach the bottom.","Uranus has been visited by only one spacecraft in history — Voyager 2, which flew past in January 1986. During its brief flyby, Voyager 2 discovered 10 new moons and 2 new rings, and revealed a surprisingly featureless blue-green surface. No mission has returned since, making Uranus one of the least explored planets. A dedicated Uranus orbiter has been identified as the highest priority large mission by NASA's planetary science decadal survey."]},
+  {name:"Neptune",type:"Ice Giant",emoji:"\ud83d\udc99",img:"neptune.jpg",
+   facts:[{v:"165 years",l:"Orbit"},{v:"49,244 km",l:"Diameter"},{v:"16",l:"Moons"},{v:"2,100 km/h",l:"Wind Speed"},{v:"30 AU",l:"From Sun"}],
+   short:"The windiest world \u2014 supersonic storms of 2,100 km/h. Invisible to the naked eye, it was predicted mathematically before ever being seen.",
+   body:["Neptune is the most distant planet in our solar system, orbiting so far from the Sun that it takes 165 Earth years to complete a single orbit. It was only fully 'seen' for the first time by Voyager 2 in 1989 — before that, no spacecraft had ever reached it and Earth-based telescopes could only reveal a faint blue dot. One of the most remarkable things about Neptune's discovery is that it was found through mathematics: anomalies in Uranus's orbit led astronomers to predict the existence and location of a new planet, and when telescopes were pointed at that spot, Neptune was there.","Neptune holds the record for the strongest winds in the solar system. Despite being so far from the Sun — receiving 900 times less solar energy than Earth — its winds can reach speeds of over 2,100 km/h. The source of this energy is Neptune's internal heat: the planet radiates 2.6 times more energy than it receives from the Sun, and this internal energy drives the ferocious atmospheric activity. The most famous storm feature was the Great Dark Spot, observed by Voyager 2 in 1989, though it had disappeared by the time the Hubble Space Telescope looked in 1994.","Neptune's deep blue color is similar to Uranus but more vivid, and is partly caused by methane in its atmosphere absorbing red light. However, Neptune appears a deeper, more saturated blue than Uranus despite having a similar methane content, suggesting that some other unknown compound in its atmosphere contributes to its color. Determining exactly what that compound is remains one of the unsolved mysteries of planetary science.","Neptune's largest moon, Triton, orbits the planet in the opposite direction to Neptune's rotation — a retrograde orbit that is unique among large moons in the solar system. This backward orbit is a strong indicator that Triton was not formed alongside Neptune but was instead captured from the Kuiper Belt. Triton is also geologically active, with nitrogen geysers that shoot material up to 8 km into its thin atmosphere. It is slowly spiraling inward and will eventually be torn apart by Neptune's tidal forces in roughly 3.6 billion years.","Like Uranus, Neptune has only been visited once — by Voyager 2 in 1989. In that single flyby, Voyager 2 discovered six new moons, four new rings, and the Great Dark Spot. Since then, all observations have come from Earth-based telescopes and the Hubble Space Telescope. There are currently proposals for a Neptune orbiter mission that could launch in the 2030s, which would finally give scientists a detailed look at this remote, dynamic world."]}
+];
+
+const STARS = [
+  {name:"Red Dwarf",type:"Main Sequence \u2014 Class M",emoji:"\ud83d\udd34",img:"",
+   facts:[{v:"0.1\u20130.5 M\u2609",l:"Mass"},{v:"<4,000 K",l:"Temp"},{v:"Trillions yrs",l:"Lifespan"},{v:"70%",l:"Of all stars"},{v:"<10%",l:"Sun luminosity"}],
+   short:"The most common star in the universe \u2014 dim, cool, and extraordinarily long-lived. Proxima Centauri, our nearest stellar neighbor, is one.",
+   body:["Red dwarf stars are by far the most common type of star in the universe, making up roughly 70% of all stars in the Milky Way alone. They are small, cool, and extraordinarily faint — even the brightest red dwarfs are far too dim to be seen with the naked eye from Earth, despite many being extremely close to us. Our nearest stellar neighbor, Proxima Centauri, just 4.24 light-years away, is a red dwarf.","Red dwarfs burn their hydrogen fuel so slowly and efficiently that they have lifespans measured in the trillions of years — vastly longer than the current age of the universe (13.8 billion years). This means that no red dwarf star has ever died of old age since the universe began. They are, in a sense, the ultimate survivors of the stellar world, outlasting every other type of star by an enormous margin.","Because red dwarfs are so stable and long-lived, they are considered intriguing candidates for hosting habitable planets. The TRAPPIST-1 system, just 39 light-years away, is a red dwarf star with seven Earth-sized planets, at least three of which are in the habitable zone. However, red dwarfs are also known to produce intense flares of radiation, which could strip away planetary atmospheres over time.","Red dwarfs are fully convective — meaning their entire interior circulates, mixing hydrogen from the outer layers all the way to the core. This allows them to use nearly all of their hydrogen as fuel, unlike larger stars which only burn the hydrogen in their cores. The end result is a star that can burn steadily for tens of trillions of years before eventually fading into a cool 'black dwarf'.","When a red dwarf finally exhausts its fuel (in the far, far future), it will not explode as a supernova. Instead, it will simply cool and dim, becoming a white dwarf and eventually, after hundreds of billions more years, a theorized 'black dwarf' — a cold, dark stellar remnant. Since the universe is not yet old enough for any black dwarfs to exist, they remain a purely theoretical object."]},
+  {name:"Yellow Dwarf",type:"Main Sequence \u2014 Class G",emoji:"\u2b50",img:"",
+   facts:[{v:"0.8\u20131.2 M\u2609",l:"Mass"},{v:"5,000\u20136,000 K",l:"Temp"},{v:"~10 Bil yrs",l:"Lifespan"},{v:"7%",l:"Of all stars"},{v:"1 L\u2609",l:"Luminosity"}],
+   short:"Our own Sun is a yellow dwarf \u2014 a mid-sized, middle-aged star that is the template for stable, life-supporting stellar systems.",
+   body:["Yellow dwarf stars, formally classified as G-type main sequence stars, are mid-sized, mid-temperature stars with surface temperatures between about 5,000 and 6,000 Kelvin. Despite their name, they actually emit white light — they appear yellow when viewed through Earth's atmosphere, which scatters and filters their light. Our own Sun is the most familiar example, and it is entirely average for its type.","Our Sun formed about 4.6 billion years ago from a collapsing cloud of gas and dust, and it has enough hydrogen fuel left in its core to continue burning steadily for another approximately 5 billion years. It currently converts about 600 million tonnes of hydrogen into helium every second through nuclear fusion, releasing the energy that powers all life on Earth in the process.","G-type stars are considered prime candidates for hosting life-bearing planets because they are stable over billions of years and emit light in wavelengths that are useful for photosynthesis. They are bright enough to warm planets in their habitable zones without being so energetic that they produce lethal radiation. The Kepler space telescope identified several Earth-sized planets orbiting in the habitable zones of G-type stars.","When the Sun exhausts its hydrogen fuel in about 5 billion years, its core will contract and heat up while its outer layers expand dramatically. The Sun will swell into a red giant, potentially engulfing Mercury, Venus, and possibly Earth. Its outer layers will then be expelled as a glowing shell of gas called a planetary nebula, while the core remains as a white dwarf.","There are only about a thousand G-type stars within 100 light-years of Earth, making them relatively rare compared to red dwarfs but much more numerous than the hotter, brighter star types. Famous G-type stars include Tau Ceti, Alpha Centauri A, and 51 Pegasi — the first Sun-like star discovered to host an exoplanet, detected in 1995."]},
+  {name:"Blue Giant",type:"Main Sequence \u2014 Class O/B",emoji:"\ud83d\udca0",img:"",
+   facts:[{v:"10\u2013150 M\u2609",l:"Mass"},{v:">10,000 K",l:"Temp"},{v:"Millions yrs",l:"Lifespan"},{v:"<0.1%",l:"Of all stars"},{v:"Up to 1M L\u2609",l:"Luminosity"}],
+   short:"The universe's most powerful and short-lived stars \u2014 blazing beacons that burn bright and die young in spectacular supernova explosions.",
+   body:["Blue giant and supergiant stars are the most luminous, most massive, and most short-lived stars in the universe. They range from about 10 to over 150 times the mass of the Sun, and their surface temperatures exceed 10,000 Kelvin — some reaching 50,000 Kelvin or more. This extreme heat makes them radiate predominantly in blue and ultraviolet light, giving them their distinctive color. A single blue supergiant can outshine the Sun by a factor of one million.","The immense luminosity of blue giants comes at a price: they burn through their hydrogen fuel at a ferocious rate and have correspondingly short lifespans. While the Sun will live for about 10 billion years, a blue giant may exhaust its fuel in as little as a few million years. In cosmic terms, they are born, blaze brilliantly, and die almost instantaneously. Despite being rare, they are often the most visible stars in the night sky because of their extraordinary brightness.","Blue giants are the primary factories of heavy elements in the universe. Because they are so massive and hot, they can fuse progressively heavier elements in their cores — hydrogen to helium, helium to carbon, carbon to neon, and so on, building up elements all the way to iron. When the core can no longer sustain fusion, the core collapses catastrophically, triggering a supernova explosion.","The supernova explosion of a massive blue star is one of the most energetic events in the universe, briefly outshining an entire galaxy. In the seconds after the explosion, the collapsing core forms either a neutron star or, if the core is massive enough, a black hole. The explosion itself scatters heavy elements into space, seeding future star systems with the ingredients for planets and life.","Famous blue giant and supergiant stars include Rigel in the constellation Orion (a blue supergiant 120,000 times more luminous than the Sun), and Eta Carinae, a hyperluminous star system that astronomers believe is close to becoming a supernova. Eta Carinae is so massive and unstable that it has already experienced partial eruptions, and its eventual supernova could potentially be visible in daylight from Earth."]},
+  {name:"Red Giant",type:"Evolved Star",emoji:"\ud83d\udfe5",img:"",
+   facts:[{v:"0.8\u20138 M\u2609",l:"Initial Mass"},{v:"3,500\u20135,000 K",l:"Temp"},{v:"10\u20131,000 R\u2609",l:"Radius"},{v:"Billions yrs",l:"Prior MS Life"},{v:"Short",l:"Giant Phase"}],
+   short:"A star in its dying phase \u2014 bloated to hundreds of times its original size as it exhausts the hydrogen in its core.",
+   body:["A red giant is not a distinct type of star but rather a phase that stars like our Sun pass through near the end of their lives. When a star of roughly 0.8 to 8 solar masses exhausts the hydrogen fuel in its core, fusion stops and the core contracts under gravity. The energy released by this contraction causes the outer layers of the star to expand dramatically — sometimes to hundreds of times the star's original diameter.","As the outer layers expand, they also cool, causing the star to shift from yellow-white to a deep orange-red color. Despite being cooler on the surface, red giants are incredibly luminous because of their enormous surface area. Arcturus, the brightest star in the northern hemisphere's night sky, is a red giant — it is 25 times wider than the Sun and about 170 times more luminous.","While the outer envelope is expanding, the core continues to contract and heat up until it becomes hot enough to ignite helium fusion — a new phase of nuclear burning. Helium fuses into carbon and oxygen, giving the star a new but temporary lease on life. This phase lasts far less time than the main sequence hydrogen-burning phase, because helium burning produces energy less efficiently.","Eventually, the star runs out of material to fuse in its core. For stars less than about 8 solar masses, there is not enough mass to compress the core to temperatures sufficient to fuse carbon. The core contracts into a dense white dwarf while the outer layers are expelled into space as a beautiful expanding cloud of gas called a planetary nebula.","Our own Sun will become a red giant in approximately 5 billion years. When it does, it will expand to such an extent that it will likely engulf or severely scorch the inner planets, including Earth. The habitable zone will shift outward toward what are currently the frozen outer reaches of the solar system — moons like Europa and Enceladus may briefly become warm enough to sustain liquid water on their surfaces."]},
+  {name:"White Dwarf",type:"Stellar Remnant",emoji:"\u26aa",img:"",
+   facts:[{v:"~0.6 M\u2609",l:"Avg Mass"},{v:"~Earth size",l:"Diameter"},{v:"Trillions yrs",l:"Cooling Time"},{v:"1 tonne/cm\u00b3",l:"Density"},{v:">97%",l:"Of all star ends"}],
+   short:"The dense, cooling core of a dead star \u2014 one teaspoon of white dwarf material weighs about a tonne. Our Sun's ultimate fate.",
+   body:["A white dwarf is the dense, Earth-sized remnant left behind after a low-to-medium mass star exhausts its nuclear fuel and expels its outer layers as a planetary nebula. What remains is the hot, compressed core — composed mostly of carbon and oxygen — held up not by nuclear burning but by a quantum mechanical effect called electron degeneracy pressure. This pressure prevents the core from collapsing further under its own gravity.","White dwarfs are extraordinarily dense. A typical white dwarf packs roughly 60% of the Sun's mass into a sphere the size of Earth, giving it a density about one million times greater than the Sun. A teaspoon of white dwarf material would weigh approximately one tonne on Earth. Despite this density, white dwarfs have no ongoing fusion, and they slowly radiate their stored heat into space over trillions of years.","When first formed, white dwarfs have surface temperatures exceeding 100,000 Kelvin. Over billions and eventually trillions of years, they cool and dim. Theoretically, after hundreds of billions of years, a white dwarf will cool to room temperature and become a cold, dark 'black dwarf'. However, the universe is not yet old enough for any black dwarfs to have formed.","White dwarfs in binary star systems can have a dramatic second act. If a white dwarf is orbiting close enough to a companion star, it can gravitationally pull material off the companion's surface, accumulating hydrogen on its surface. When enough material builds up, it triggers a runaway nuclear explosion called a Type Ia supernova — an event so predictably bright that astronomers use them as 'standard candles' to measure distances across the universe.","Sirius B, the companion to the brightest star in the night sky, is the most well-known white dwarf. Although Sirius B has a mass slightly greater than the Sun, it is compressed to roughly the size of Earth. Sirius B and Sirius A orbit each other every 50 years in a gravitational dance that has fascinated astronomers since the 19th century."]},
+  {name:"Neutron Star",type:"Stellar Remnant",emoji:"\ud83c\udf00",img:"",
+   facts:[{v:"1.4\u20133 M\u2609",l:"Mass"},{v:"~20 km",l:"Diameter"},{v:"~1B K",l:"Surface Temp"},{v:"400M tonnes/cm\u00b3",l:"Density"},{v:">700/s",l:"Max Spin Rate"}],
+   short:"The collapsed core of a supernova \u2014 the densest stable object in the universe, spinning hundreds of times per second.",
+   body:["A neutron star is one of the most extreme objects in the known universe. It forms when a massive star (between about 8 and 20 solar masses) explodes as a supernova, and the core collapses under gravity with such force that protons and electrons are squeezed together to form neutrons. The result is an object that packs 1.4 to 3 times the mass of the Sun into a sphere only about 20 kilometres in diameter.","The density of a neutron star is almost incomprehensible. One teaspoon of neutron star material would weigh approximately 4 billion tonnes. The gravity at its surface is about 200 billion times stronger than Earth's gravity. The interior of a neutron star represents some of the most extreme conditions of matter that exist in the universe today.","Many neutron stars rotate incredibly rapidly, particularly when they are newly formed. As the core collapses, conservation of angular momentum causes it to spin faster and faster. Some neutron stars spin hundreds of times per second; the fastest known, called millisecond pulsars, complete over 700 rotations per second. Pulsars are neutron stars whose rotation beams jets of radiation past Earth like a cosmic lighthouse, creating a detectable pulse with each rotation.","Neutron stars also have the most powerful magnetic fields of any known object — up to 10^15 times stronger than Earth's magnetic field. A special class of neutron star called a magnetar has fields so extreme that if one were located halfway to the Moon, it would wipe the data from every credit card and hard drive on Earth. The most powerful magnetar flare ever detected briefly outshone all other stars in the Milky Way combined.","When two neutron stars orbit each other and eventually spiral together and merge, they produce an event called a kilonova. Kilonova events are the primary source of heavy elements in the universe, including gold, platinum, and uranium. The detection of a neutron star merger in 2017 (GW170817), observed in both gravitational waves and light, was one of the greatest astronomical discoveries of the 21st century."]}
+];
+
+const WORLDS = [
+  {name:"Exoplanets",type:"Planets Beyond Our Solar System",emoji:"\ud83c\udf10",img:"",
+   facts:[{v:">5,600",l:"Confirmed"},{v:"1992",l:"First found"},{v:"Kepler",l:"Main telescope"},{v:"4,000+ LY",l:"Farthest known"},{v:"~300M",l:"Est. habitable"}],
+   short:"Planets orbiting other stars. Over 5,600 have been confirmed, with billions more estimated to exist in our galaxy alone.",
+   body:["Exoplanets are planets that orbit stars other than our Sun. The first confirmed exoplanet around a Sun-like star was detected in 1995, and since then the field has exploded. As of 2024, over 5,600 exoplanets have been confirmed using a variety of detection methods, with thousands more candidates awaiting confirmation. Astronomers now believe that virtually every star in the Milky Way hosts at least one planet, implying hundreds of billions of worlds in our galaxy alone.","The most productive method of finding exoplanets is the transit method, pioneered by NASA's Kepler Space Telescope. When a planet passes in front of its host star, it causes a tiny, measurable dip in the star's brightness. By analyzing this dip — its depth, duration, and regularity — astronomers can determine the planet's size, orbital period, and distance from its star. Kepler alone discovered over 2,600 exoplanets during its mission from 2009 to 2018.","Exoplanets come in a stunning variety that our own solar system barely hints at. 'Hot Jupiters' are gas giants that orbit so close to their stars that a year lasts only days, and temperatures on their surfaces exceed 2,000\u00b0C. 'Super-Earths' are rocky planets several times more massive than Earth that have no equivalent in our solar system. 'Ocean worlds' may be covered entirely by global oceans hundreds of kilometres deep.","The search for habitable exoplanets focuses on the 'habitable zone' — the range of orbital distances where liquid water could exist on a rocky planet's surface. The TRAPPIST-1 system, 39 light-years away, is one of the most remarkable discoveries: seven Earth-sized rocky planets, at least three of which are in the habitable zone. The James Webb Space Telescope is currently analyzing the atmospheres of these planets for signs of water vapor and other molecules associated with habitability.","Detecting signs of life on an exoplanet — known as biosignatures — is the ultimate goal of exoplanet science. Scientists look for gases in planetary atmospheres that could only exist in significant quantities if produced by living organisms, such as oxygen in combination with methane. No confirmed biosignatures have been detected yet, but the tools to find them are rapidly improving. Within the next few decades, we may have our first credible evidence for life beyond Earth."]},
+  {name:"Brown Dwarfs",type:"Failed Stars",emoji:"\ud83d\udfe4",img:"",
+   facts:[{v:"13\u201380 MJ",l:"Mass"},{v:"<2,200 K",l:"Temp"},{v:"700\u20131,300 K",l:"Coolest known"},{v:"~Jupiter size",l:"Diameter"},{v:"Similar to stars",l:"Est. frequency"}],
+   short:"Too large to be a planet, too small to be a star \u2014 brown dwarfs are the universe's failed stars, glowing faintly in the infrared.",
+   body:["Brown dwarfs occupy a strange middle ground between planets and stars. They form like stars — from the gravitational collapse of clouds of gas and dust — but they do not have enough mass to sustain the hydrogen fusion reactions that power stars like our Sun. Objects below about 80 Jupiter masses cannot ignite hydrogen fusion in their cores, and so they glow only faintly from residual heat left over from their formation and from a limited amount of deuterium burning.","Brown dwarfs span a wide range of temperatures and are classified into three spectral types: L dwarfs (1,300–2,200 K), T dwarfs (700–1,300 K, where methane begins to appear), and Y dwarfs (below 700 K — some cool enough to have water clouds in their atmospheres, comparable in temperature to a warm oven). Because they emit most of their radiation in the infrared, they were not detected until 1995.","Since their discovery, hundreds of brown dwarfs have been found, and astronomers estimate that brown dwarfs may be nearly as common in the universe as regular stars. Some of the nearest known brown dwarfs are closer to Earth than many familiar stars. One of the most intriguing aspects of brown dwarfs is the blurry boundary they create between stars and planets — the least massive overlap in mass with the most massive known exoplanets.","Brown dwarfs have complex atmospheric chemistry, cloud patterns, and even weather. The Spitzer Space Telescope observed variability in some brown dwarfs that suggests patchwork cloud systems of hot and cool regions rotating in and out of view — essentially, weather on a failed star. The distinction between a very massive planet and a very low-mass brown dwarf is sometimes one of formation history rather than mass alone.","Some brown dwarfs have been found to host orbiting companions, including smaller brown dwarfs and even planetary-mass objects, showing that the line between star systems and planetary systems continues to blur. Future infrared space telescopes will be capable of directly imaging the atmospheres of brown dwarfs in unprecedented detail, revealing the chemistry and dynamics of these enigmatic in-between objects."]},
+  {name:"Rogue Planets",type:"Interstellar Objects",emoji:"\ud83c\udf11",img:"",
+   facts:[{v:"Trillions est.",l:"In Milky Way"},{v:"No star",l:"Host"},{v:"-270\u00b0C",l:"Surface Temp"},{v:"Any size",l:"Mass range"},{v:"2021",l:"First confirmed"}],
+   short:"Planets drifting alone through the galaxy with no star to orbit \u2014 ejected from their solar systems or formed in isolation.",
+   body:["Rogue planets — also called free-floating planets — are planetary-mass objects that drift through the galaxy without orbiting any star. They are thought to form in one of two ways: either as normal planets that were ejected from their home solar systems by gravitational interactions with other massive bodies, or as objects that formed directly from collapsing gas clouds too small to ignite as stars.","The number of rogue planets in the Milky Way is thought to be enormous. Some estimates suggest there may be more rogue planets in our galaxy than there are stars — potentially trillions of them. The difficulty in detecting them (they have no star to illuminate them and emit only faint infrared radiation from residual heat) means our census of rogue planets is still in its infancy.","Without a host star, a rogue planet's surface would be extraordinarily cold and dark. Surface temperatures would approach absolute zero — near -270\u00b0C. However, a large enough rogue planet might retain significant internal heat from radioactive decay and could — in theory — maintain subsurface liquid oceans if it had a thick enough hydrogen atmosphere to act as an insulating blanket.","The first confirmed rogue planet detection was announced in 2021, when astronomers identified a free-floating object the mass of Earth using gravitational microlensing — a technique where the rogue planet's gravity briefly bends and amplifies the light from a background star. This method can detect rogue planets regardless of their temperature or luminosity.","An interstellar object passing through our solar system was confirmed in 2017: 'Oumuamua, an elongated, oddly-accelerating object of uncertain origin. In 2019, a second interstellar visitor, Borisov, was identified as a comet. While neither were confirmed as rogue planets, these objects demonstrated that material from other star systems does indeed pass through our solar neighborhood."]},
+  {name:"Dwarf Planets",type:"Solar System Bodies",emoji:"\ud83e\udea8",img:"",
+   facts:[{v:"5 official",l:"Recognized"},{v:">100",l:"Likely exist"},{v:"Pluto",l:"Most famous"},{v:"2006",l:"Category created"},{v:"Kuiper Belt",l:"Main location"}],
+   short:"Worlds large enough to be round but not quite massive enough to clear their orbital paths \u2014 Pluto is the most famous example.",
+   body:["Dwarf planets are a category of solar system body created in 2006 when the International Astronomical Union redefined what counts as a planet. To qualify as a full planet, a body must orbit the Sun, be large enough for gravity to pull it into a roughly spherical shape, and have 'cleared the neighborhood' around its orbit. Dwarf planets meet the first two criteria but not the third — they share their orbital region with other objects and have not gravitationally dominated their vicinity.","The IAU officially recognizes five dwarf planets: Pluto, Eris, Haumea, Makemake, and Ceres. Ceres orbits in the asteroid belt between Mars and Jupiter. The other four reside in the Kuiper Belt. However, many astronomers estimate that the true number of dwarf planets in our solar system could exceed 100 or even several hundred.","Pluto was reclassified from a full planet to a dwarf planet in 2006, a decision that caused significant public controversy. It was discovered in 1930 and for 76 years was considered the ninth planet. Its reclassification followed the discovery of Eris — an object slightly larger than Pluto — which would have necessitated adding a tenth planet. Rather than expand the list, the IAU chose to create the new category.","NASA's New Horizons spacecraft flew past Pluto in 2015, revealing a world of stunning complexity. Pluto has a heart-shaped nitrogen ice plain the size of Texas called Tombaugh Regio, mountains of water ice as tall as the Rockies, and possibly a subsurface liquid water ocean. Its largest moon, Charon, is about half Pluto's diameter — sometimes considered a double dwarf planet system.","Haumea is an elongated, egg-shaped dwarf planet that spins so rapidly — completing a rotation in just under 4 hours — that it has been stretched into an ellipsoid shape. It also has a ring, making it the only known dwarf planet with one. Eris, the most massive dwarf planet, orbits the Sun on an extremely elliptical path that takes it far into the outer solar system."]},
+  {name:"Moons",type:"Natural Satellites",emoji:"\ud83c\udf19",img:"",
+   facts:[{v:"290+",l:"In solar system"},{v:"Titan",l:"Largest (Saturn)"},{v:"Europa",l:"Best life candidate"},{v:"Io",l:"Most volcanic"},{v:"Our Moon",l:"5th largest"}],
+   short:"The solar system's moons range from tiny captured rocks to worlds larger than Mercury, some with subsurface oceans that may harbor life.",
+   body:["The solar system contains over 290 known natural satellites — moons — orbiting planets and dwarf planets. They range enormously in size and complexity, from tiny irregular lumps of rock just a few kilometres across to Ganymede (Jupiter's moon), which is larger than the planet Mercury and has its own magnetic field. Many of the most scientifically interesting places in the solar system are not planets but moons.","Our own Moon is the fifth-largest in the solar system and has played a profound role in Earth's history. The Moon is thought to have formed when a Mars-sized body called Theia collided with the young Earth about 4.5 billion years ago. The Moon stabilizes Earth's axial tilt, drives the ocean tides, and is thought to have played a role in the development of early life. It is the only extraterrestrial body that humans have visited.","Europa, one of Jupiter's four Galilean moons, has an ocean of liquid water beneath its icy crust that contains more water than all of Earth's oceans combined. Tidal heating from Jupiter's gravity keeps the water liquid despite Europa being far from the Sun. This subsurface ocean represents one of the most compelling environments for the potential emergence of life. NASA's Europa Clipper mission, launched in 2024, will study Europa in detail.","Titan, Saturn's largest moon, is the only moon in the solar system with a thick atmosphere. On Titan's surface, methane plays the role that water plays on Earth: it rains methane, flows into rivers, and collects into lakes and seas. The Dragonfly mission (launching in 2028) will send a rotorcraft lander to explore its surface.","Io, Jupiter's innermost large moon, is the most volcanically active body in the solar system. Its intense geological activity is driven by tidal heating from Jupiter's gravity. Some of Io's volcanic plumes eject material hundreds of kilometres into space, and the surface is constantly being reshaped by lava flows, making it one of the youngest-surfaced bodies in the solar system."]},
+  {name:"Asteroids & Comets",type:"Small Solar System Bodies",emoji:"\u2604\ufe0f",img:"",
+   facts:[{v:">1 million",l:"Known asteroids"},{v:"4.6 Bil yrs",l:"Age"},{v:"Halley",l:"Famous comet"},{v:"Mostly water",l:"Comet composition"},{v:"K-Pg event",l:"Famous impact"}],
+   short:"The leftover building blocks of the solar system \u2014 asteroids are rocky, comets are icy, and both have shaped life on Earth.",
+   body:["Asteroids and comets are the leftover debris from the formation of the solar system 4.6 billion years ago. They represent material that never accreted into a planet, preserved in a relatively pristine state. Asteroids are predominantly rocky and metallic, while comets are primarily composed of ice, dust, and organic compounds. The vast majority of asteroids reside in the asteroid belt, a broad region between Mars and Jupiter.","Despite popular depictions, the asteroid belt is surprisingly sparse — the total mass of all asteroids combined is less than 4% of the mass of the Moon. Comets spend most of their time in the outer solar system — either in the Kuiper Belt or in the distant Oort Cloud. As a comet approaches the Sun, solar heating vaporizes its ices, releasing gas and dust that form the spectacular coma and tail. A comet's tail always points away from the Sun.","The impact of asteroids and comets has profoundly shaped Earth's history. The most famous event is the Chicxulub impact 66 million years ago, when an asteroid roughly 10 km in diameter struck Mexico's Yucatan Peninsula, triggering the mass extinction that wiped out roughly 75% of all species, including the non-avian dinosaurs. Conversely, early bombardment by comets may have delivered the water and organic compounds that helped seed life on our planet.","Asteroid and comet missions have dramatically advanced our understanding of the solar system. Japan's Hayabusa2 mission returned samples from asteroid Ryugu in 2020, confirming that asteroids can contain amino acids — the building blocks of proteins. NASA's DART mission in 2022 demonstrated that we could deflect an asteroid by ramming a spacecraft into it, a proof-of-concept for planetary defense.","The European Space Agency's Rosetta mission landed on comet 67P/Churyumov-Gerasimenko in 2014, revealing a bizarre, rubbery world of ancient ice. These missions continue to rewrite our understanding of how the solar system formed and how the ingredients for life were distributed across the young planetary system."]}
+];
+
+function buildCard(item, category) {
+  const d = document.createElement('div');
+  d.className = 'card';
+  d.innerHTML = `<div class="card-img">${item.img?`<img src="${item.img}" alt="${item.name}">`:`<div class="card-placeholder">${item.emoji}</div>`}</div><div class="card-body"><div class="card-name">${item.name}</div><div class="card-type">${item.type}</div><p class="card-desc">${item.short}</p><div class="card-stats">${item.facts.slice(0,3).map(f=>`<div class="stat"><span class="stat-val">${f.v}</span><span class="stat-label">${f.l}</span></div>`).join('')}</div></div><div class="card-cta">Read More &#8594;</div>`;
+  d.addEventListener('click', () => openModal(item, category));
+  return d;
+}
+
+function openModal(item, category) {
+  document.getElementById('modalTag').textContent = category + ' \u2014 ' + item.type;
+  document.getElementById('modalTitle').textContent = item.name;
+  document.getElementById('modalImg').innerHTML = item.img ? `<img src="${item.img}" alt="${item.name}">` : `<div class="modal-placeholder">${item.emoji}</div>`;
+  document.getElementById('modalFacts').innerHTML = item.facts.map(f=>`<div class="qf-item"><div class="qf-val">${f.v}</div><div class="qf-label">${f.l}</div></div>`).join('');
+  document.getElementById('modalBody').innerHTML = item.body.map(p=>`<p>${p}</p>`).join('');
+  const overlay = document.getElementById('modalOverlay');
+  overlay.classList.add('open');
+  overlay.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalOverlay').addEventListener('click', e => { if(e.target===document.getElementById('modalOverlay')) closeModal(); });
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+
+PLANETS.forEach(p => document.getElementById('planetGrid').appendChild(buildCard(p,'Planet')));
+STARS.forEach(s => document.getElementById('starGrid').appendChild(buildCard(s,'Star')));
+WORLDS.forEach(w => document.getElementById('worldsGrid').appendChild(buildCard(w,'World Beyond')));
+
 const canvas = document.getElementById('starfield');
 const ctx = canvas.getContext('2d');
 let stars = [];
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+function initStars(){stars=[];for(let i=0;i<300;i++)stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.4,speed:Math.random()*0.003+0.001,phase:Math.random()*Math.PI*2});}
+function drawStars(t){ctx.clearRect(0,0,canvas.width,canvas.height);stars.forEach(s=>{const a=0.3+0.7*(0.5+0.5*Math.sin(t*s.speed+s.phase));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(232,234,245,${a})`;ctx.fill();});requestAnimationFrame(drawStars);}
+resize();initStars();window.addEventListener('resize',()=>{resize();initStars();});requestAnimationFrame(drawStars);
 
-function resize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
+const io = new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.style.animation='fadeUp 0.8s ease forwards';io.unobserve(e.target);}});},{threshold:0.1});
+document.querySelectorAll('.fact-item,.card,.galaxy-card,.timeline-item').forEach(el=>{el.style.opacity='0';io.observe(el);});
 
-function initStars() {
-  stars = [];
-  for (let i = 0; i < 300; i++) {
-    stars.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 1.4,
-      alpha: Math.random(),
-      speed: Math.random() * 0.003 + 0.001,
-      phase: Math.random() * Math.PI * 2
-    });
-  }
-}
-
-function drawStars(t) {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  stars.forEach(s => {
-    const a = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(232,234,245,${a})`;
-    ctx.fill();
-  });
-  requestAnimationFrame(drawStars);
-}
-
-resize();
-initStars();
-window.addEventListener('resize', () => { resize(); initStars(); });
-requestAnimationFrame(drawStars);
-
-// === SCROLL-TRIGGERED FADE IN ===
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.style.animation = 'fadeUp 0.8s ease forwards';
-      io.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.15 });
-
-document.querySelectorAll('.fact-item, .planet-card, .galaxy-card, .timeline-item').forEach(el => {
-  el.style.opacity = '0';
-  io.observe(el);
-});
-
-// === SEARCH BAR ===
-const sections = [
-  { label: 'Planets', desc: 'The eight worlds of our solar system', href: '#planets', keywords: ['planet','planets','solar','system','mercury','venus','earth','mars','jupiter','saturn','uranus','neptune','world','worlds'] },
-  { label: 'Facts', desc: 'Mind-bending cosmic facts & numbers', href: '#facts', keywords: ['fact','facts','cosmic','number','universe','dark','energy','matter','light','speed','billion'] },
-  { label: 'History', desc: 'Human space exploration timeline', href: '#history', keywords: ['history','timeline','exploration','apollo','moon','sputnik','nasa','astronaut','space','rocket','hubble','webb','gagarin'] },
-  { label: 'Galaxies', desc: 'Spiral, elliptical & irregular galaxies', href: '#galaxies', keywords: ['galaxy','galaxies','spiral','elliptical','irregular','milky','way','andromeda'] },
+const SECTIONS=[
+  {label:'Facts',desc:'Mind-bending cosmic facts & numbers',href:'#facts',keywords:['fact','cosmic','universe','dark','energy','matter','light','speed','billion']},
+  {label:'Planets',desc:'The eight worlds of our solar system',href:'#planets',keywords:['planet','mercury','venus','earth','mars','jupiter','saturn','uranus','neptune']},
+  {label:'Stars',desc:'Types of stars across the universe',href:'#stars',keywords:['star','red dwarf','blue giant','white dwarf','neutron','yellow','giant','supernova']},
+  {label:'Worlds Beyond',desc:'Exoplanets, moons, rogue planets & more',href:'#worlds',keywords:['exoplanet','rogue','brown dwarf','moon','asteroid','comet','dwarf planet','titan','europa']},
+  {label:'Galaxies',desc:'Spiral, elliptical & irregular galaxies',href:'#galaxies',keywords:['galaxy','spiral','elliptical','irregular','milky way','andromeda']},
+  {label:'History',desc:'Human space exploration timeline',href:'#history',keywords:['history','timeline','apollo','moon landing','sputnik','nasa','hubble','webb','gagarin']},
 ];
-
-const input = document.getElementById('searchInput');
-const results = document.getElementById('searchResults');
-
-input.addEventListener('input', () => {
-  const q = input.value.toLowerCase().trim();
-  if (!q) { results.classList.remove('active'); return; }
-
-  const matches = sections.filter(s =>
-    s.label.toLowerCase().includes(q) ||
-    s.keywords.some(k => k.includes(q))
-  );
-
-  if (matches.length === 0) {
-    results.innerHTML = `<div class="search-result-item"><span class="result-desc" style="color:rgba(232,234,245,0.35)">No sections found</span></div>`;
-  } else {
-    results.innerHTML = matches.map(s => `
-      <a class="search-result-item" href="${s.href}">
-        <span class="result-label">${s.label}</span>
-        <span class="result-desc">${s.desc}</span>
-      </a>`).join('');
-  }
+const input=document.getElementById('searchInput');
+const results=document.getElementById('searchResults');
+input.addEventListener('input',()=>{
+  const q=input.value.toLowerCase().trim();
+  if(!q){results.classList.remove('active');return;}
+  const matches=SECTIONS.filter(s=>s.label.toLowerCase().includes(q)||s.keywords.some(k=>k.includes(q)));
+  results.innerHTML=matches.length===0?`<div class="search-result-item"><span class="result-desc" style="color:rgba(232,234,245,0.35)">No sections found</span></div>`:matches.map(s=>`<a class="search-result-item" href="${s.href}"><span class="result-label">${s.label}</span><span class="result-desc">${s.desc}</span></a>`).join('');
   results.classList.add('active');
 });
-
-// Close results when clicking outside
-document.addEventListener('click', (e) => {
-  if (!e.target.closest('.search-container')) {
-    results.classList.remove('active');
-    input.value = '';
-  }
-});
-
-// Close and navigate on result click
-results.addEventListener('click', () => {
-  results.classList.remove('active');
-  input.value = '';
-});
-
-document.addEventListener('mousemove', (e) => {
-  const x = (e.clientX / window.innerWidth - 0.5) * 20;
-  const y = (e.clientY / window.innerHeight - 0.5) * 20;
-  const title = document.querySelector('.hero-title');
-  if (title) title.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
-});
+document.addEventListener('click',e=>{if(!e.target.closest('.search-container')){results.classList.remove('active');input.value='';}});
+results.addEventListener('click',()=>{results.classList.remove('active');input.value='';});
+document.addEventListener('mousemove',e=>{const x=(e.clientX/window.innerWidth-0.5)*20,y=(e.clientY/window.innerHeight-0.5)*20;const t=document.querySelector('.hero-title');if(t)t.style.transform=`translate(${x*0.3}px,${y*0.3}px)`;});
 </script>
 </body>
 </html>
