@@ -224,12 +224,28 @@
   .planet-card:hover::before { opacity: 1; }
 
   .planet-icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
+    width: 100%;
+    height: 200px;
     margin-bottom: 1.5rem;
     position: relative;
-    animation: orbit-bob 6s ease-in-out infinite;
+    overflow: hidden;
+    border-radius: 4px;
+  }
+
+  .planet-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  .planet-icon::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 25%, rgba(7,11,24,0.6) 65%, #070b18 100%);
+    pointer-events: none;
   }
 
   .planet-name {
@@ -527,13 +543,12 @@
 
 <!-- HERO -->
 <section class="hero">
-  <p class="hero-eyebrow">// The observable universe is 93 billion light-years wide</p>
   <h1 class="hero-title">
     BEYOND<br>
     <span class="line2">THE</span>
     <span class="accent">HORIZON</span>
   </h1>
-  <p class="hero-sub">A journey through the cosmos — from the rocky inner planets to the vast darkness where no light has ever reached.</p>
+  <p class="hero-sub">Eight worlds. Infinite wonder. One fleeting chance to understand it all.</p>
   <div class="hero-scroll">
     <div class="scroll-line"></div>
     Scroll to explore
@@ -548,7 +563,7 @@
   <div class="planet-grid">
     <!-- Mercury -->
     <div class="planet-card">
-      <div class="planet-icon" style="background: radial-gradient(circle at 35% 35%, #c8b49a, #5a4a3a); box-shadow: inset -15px -10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(200,180,154,0.15);"></div>
+      <div class="planet-icon"><img src="mercury.jpg" alt="Mercury"></div>
       <div class="planet-name">Mercury</div>
       <div class="planet-type">Terrestrial Planet</div>
       <p class="planet-desc">The swiftest world, scorched by day and frozen by night. No atmosphere means extreme temperature swings of over 600°C.</p>
@@ -561,7 +576,7 @@
 
     <!-- Venus -->
     <div class="planet-card">
-      <div class="planet-icon" style="background: radial-gradient(circle at 35% 35%, #f5deb3, #c8860a); box-shadow: inset -15px -10px 30px rgba(0,0,0,0.4), 0 0 30px rgba(245,222,179,0.2);"></div>
+      <div class="planet-icon"><img src="venus.jpg" alt="Venus"></div>
       <div class="planet-name">Venus</div>
       <div class="planet-type">Terrestrial Planet</div>
       <p class="planet-desc">The brightest object in our sky after the Sun and Moon. Its thick toxic atmosphere creates a runaway greenhouse effect at 465°C.</p>
@@ -574,7 +589,7 @@
 
     <!-- Earth -->
     <div class="planet-card">
-      <div class="planet-icon" style="background: radial-gradient(circle at 35% 35%, #4fc3f7, #1a6b2a); box-shadow: inset -15px -10px 30px rgba(0,0,0,0.4), 0 0 30px rgba(79,195,247,0.3);"></div>
+      <div class="planet-icon"><img src="earth.jpg" alt="Earth"></div>
       <div class="planet-name">Earth</div>
       <div class="planet-type">Terrestrial Planet</div>
       <p class="planet-desc">The only known harbor for life in the cosmos. Its magnetic field, liquid water, and oxygen-rich atmosphere create a rare oasis.</p>
@@ -587,7 +602,7 @@
 
     <!-- Mars -->
     <div class="planet-card">
-      <div class="planet-icon" style="background: radial-gradient(circle at 35% 35%, #e07040, #8b1a00); box-shadow: inset -15px -10px 30px rgba(0,0,0,0.5), 0 0 30px rgba(224,112,64,0.2);"></div>
+      <div class="planet-icon"><img src="mars.jpg" alt="Mars"></div>
       <div class="planet-name">Mars</div>
       <div class="planet-type">Terrestrial Planet</div>
       <p class="planet-desc">The Red Planet harbors Olympus Mons — the tallest volcano in the solar system at 22 km. Once had rivers and possibly ancient life.</p>
@@ -600,7 +615,7 @@
 
     <!-- Jupiter -->
     <div class="planet-card">
-      <div class="planet-icon" style="background: radial-gradient(circle at 35% 35%, #e8c89a, #a07840); background-image: repeating-linear-gradient(0deg, transparent, transparent 8px, rgba(160,100,40,0.3) 8px, rgba(160,100,40,0.3) 10px); box-shadow: inset -15px -10px 30px rgba(0,0,0,0.4), 0 0 30px rgba(232,200,154,0.15); width: 100px; height: 100px;"></div>
+      <div class="planet-icon"><img src="jupiter.jpg" alt="Jupiter"></div>
       <div class="planet-name">Jupiter</div>
       <div class="planet-type">Gas Giant</div>
       <p class="planet-desc">The undisputed king, 1,300 Earths could fit inside it. The Great Red Spot — a storm larger than Earth — has raged for 400 years.</p>
@@ -612,11 +627,8 @@
     </div>
 
     <!-- Saturn -->
-    <div class="planet-card" style="overflow: visible;">
-      <div style="position:relative; width:80px; height:80px; margin-bottom:1.5rem;">
-        <div class="planet-icon" style="background: radial-gradient(circle at 35% 35%, #f0e0a0, #b08040); box-shadow: inset -15px -10px 30px rgba(0,0,0,0.4), 0 0 30px rgba(240,224,160,0.2); position:absolute; margin:0;"></div>
-        <div style="position:absolute; top:50%; left:-20px; transform:translateY(-50%) rotateX(70deg); width:120px; height:24px; border-radius:50%; border:4px solid rgba(240,220,140,0.4); pointer-events:none;"></div>
-      </div>
+    <div class="planet-card">
+      <div class="planet-icon"><img src="saturn.jpg" alt="Saturn"></div>
       <div class="planet-name">Saturn</div>
       <div class="planet-type">Gas Giant</div>
       <p class="planet-desc">Its iconic rings — made of ice and rock — stretch 282,000 km but are only 10–100 meters thick. The least dense planet in our solar system.</p>
@@ -629,7 +641,7 @@
 
     <!-- Uranus -->
     <div class="planet-card">
-      <div class="planet-icon" style="background: radial-gradient(circle at 35% 35%, #b0e8e8, #3a9090); box-shadow: inset -15px -10px 30px rgba(0,0,0,0.4), 0 0 30px rgba(176,232,232,0.2);"></div>
+      <div class="planet-icon"><img src="uranus.jpg" alt="Uranus"></div>
       <div class="planet-name">Uranus</div>
       <div class="planet-type">Ice Giant</div>
       <p class="planet-desc">The sideways planet — tilted at 98°, it literally rolls around the Sun. Its diamond rain and methane atmosphere give it an eerie cyan glow.</p>
@@ -642,7 +654,7 @@
 
     <!-- Neptune -->
     <div class="planet-card">
-      <div class="planet-icon" style="background: radial-gradient(circle at 35% 35%, #6090f0, #1a2880); box-shadow: inset -15px -10px 30px rgba(0,0,0,0.5), 0 0 30px rgba(96,144,240,0.25);"></div>
+      <div class="planet-icon"><img src="neptune.jpg" alt="Neptune"></div>
       <div class="planet-name">Neptune</div>
       <div class="planet-type">Ice Giant</div>
       <p class="planet-desc">The windiest world — supersonic storms of 2,100 km/h. Invisible to the naked eye, it was predicted mathematically before it was ever seen.</p>
