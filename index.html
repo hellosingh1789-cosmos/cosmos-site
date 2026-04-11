@@ -18,11 +18,14 @@
   @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(60px,-60px)}}
   nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 3rem;background:linear-gradient(to bottom,rgba(2,3,10,0.9),transparent);backdrop-filter:blur(2px);}
   .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.3em;color:var(--gold);text-decoration:none;}
-  .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 3rem;z-index:1;text-align:center;}
-  .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,10vw,9rem);line-height:0.88;letter-spacing:-0.02em;animation:fadeUp 1s ease forwards;opacity:0;animation-delay:0.4s;}
-  .hero-title .line2{color:transparent;-webkit-text-stroke:1px rgba(232,234,245,0.3);display:block;}
-  .hero-title .accent{color:var(--plasma);}
-  .hero-sub{font-family:'Crimson Pro',serif;font-size:1.15rem;font-style:italic;color:rgba(232,234,245,0.5);max-width:480px;margin-top:2rem;line-height:1.7;animation:fadeUp 1s ease forwards;opacity:0;animation-delay:0.6s;}
+  .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 3rem;z-index:1;text-align:center;overflow:hidden;}
+  .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;opacity:0.45;pointer-events:none;}
+  .hero-video-fade{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to bottom,rgba(2,3,10,0.15) 0%,rgba(2,3,10,0.05) 30%,rgba(2,3,10,0.05) 60%,rgba(2,3,10,0.85) 85%,#02030a 100%);}
+  .hero-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;}
+  .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,10vw,9rem);line-height:0.88;letter-spacing:-0.02em;animation:fadeUp 1s ease forwards;opacity:0;animation-delay:0.4s;text-shadow:0 0 80px rgba(2,3,10,0.8),0 2px 40px rgba(2,3,10,0.6);}
+  .hero-title .line2{color:transparent;-webkit-text-stroke:1px rgba(232,234,245,0.5);display:block;}
+  .hero-title .accent{color:var(--plasma);text-shadow:0 0 40px rgba(79,195,247,0.5),0 0 80px rgba(2,3,10,0.8);}
+  .hero-sub{font-family:'Crimson Pro',serif;font-size:1.15rem;font-style:italic;color:rgba(232,234,245,0.75);max-width:480px;margin-top:2rem;line-height:1.7;animation:fadeUp 1s ease forwards;opacity:0;animation-delay:0.6s;text-shadow:0 1px 20px rgba(2,3,10,0.9);}
   .hero-scroll{position:absolute;bottom:3rem;left:3rem;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(232,234,245,0.4);display:flex;align-items:center;gap:1rem;animation:fadeUp 1s ease forwards;opacity:0;animation-delay:1s;}
   .scroll-line{width:60px;height:1px;background:rgba(232,234,245,0.2);position:relative;overflow:hidden;}
   .scroll-line::after{content:'';position:absolute;inset:0;background:var(--plasma);animation:scanline 2s ease-in-out infinite;}
@@ -106,6 +109,21 @@
     footer{flex-direction:column;gap:1rem;text-align:center;}.modal-content{padding:1.5rem;}
     .modal{margin:1rem;}.modal-img{height:200px;}.modal-title{font-size:2.5rem;}
   }
+  /* ARE WE ALONE */
+  .alone-section{background:linear-gradient(180deg,var(--void) 0%,rgba(7,11,24,0.95) 50%,var(--void) 100%);}
+  .alone-wrapper{max-width:820px;}
+  .alone-quote{margin:0 0 3rem;padding:2rem 2.5rem;border-left:3px solid var(--gold);position:relative;}
+  .alone-quote-mark{font-family:'Crimson Pro',serif;font-size:5rem;color:var(--gold);opacity:0.3;position:absolute;top:-1rem;left:1.5rem;line-height:1;}
+  .alone-quote p{font-family:'Crimson Pro',serif;font-size:1.4rem;font-style:italic;color:rgba(232,234,245,0.85);line-height:1.6;margin-bottom:0.8rem;padding-top:1rem;}
+  .alone-quote cite{font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);font-style:normal;}
+  .alone-body p{font-family:'Crimson Pro',serif;font-size:1.15rem;color:rgba(232,234,245,0.72);line-height:1.9;margin-bottom:2rem;}
+  .alone-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin:2.5rem 0;padding:2rem;background:rgba(255,255,255,0.03);border:1px solid rgba(79,195,247,0.1);}
+  .alone-stat{display:flex;flex-direction:column;gap:0.6rem;}
+  .alone-stat-num{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--plasma);line-height:1;display:flex;align-items:baseline;gap:0.3rem;}
+  .alone-stat-small{font-size:1rem;letter-spacing:0.1em;}
+  .alone-stat-label{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(232,234,245,0.45);line-height:1.5;}
+  @media(max-width:768px){.alone-stats{grid-template-columns:1fr;}.alone-quote p{font-size:1.1rem;}}
+
 </style>
 </head>
 <body>
@@ -129,8 +147,14 @@
 <nav><a href="#" class="nav-logo">COSMOS</a></nav>
 
 <section class="hero">
-  <h1 class="hero-title">BEYOND<br><span class="line2">THE</span><span class="accent">HORIZON</span></h1>
-  <p class="hero-sub">Eight worlds. Infinite wonder. One fleeting chance to understand it all.</p>
+  <video class="hero-video" autoplay muted loop playsinline>
+    <source src="hero-bg.mp4" type="video/mp4">
+  </video>
+  <div class="hero-video-fade"></div>
+  <div class="hero-content">
+    <h1 class="hero-title">BEYOND<br><span class="line2">THE</span><span class="accent">HORIZON</span></h1>
+    <p class="hero-sub">Eight worlds. Infinite wonder. One fleeting chance to understand it all.</p>
+  </div>
   <div class="hero-scroll"><div class="scroll-line"></div>Scroll to explore</div>
 </section>
 
@@ -148,6 +172,7 @@
     <a href="#galaxies" class="search-tag">&#x1F30C; Galaxies</a>
     <a href="#titans" class="search-tag">&#x1F52D; Titans &amp; Mysteries</a>
     <a href="#phenomena" class="search-tag">&#x26A1; Universal Phenomena</a>
+    <a href="#alone" class="search-tag">&#x1F6F8; Are We Alone?</a>
     <a href="#history" class="search-tag">&#x1F680; History</a>
   </div>
 </div>
@@ -213,6 +238,42 @@
       <div class="timeline-item"><div class="timeline-year">2004</div><div class="timeline-event">Mars Rovers Spirit &amp; Opportunity</div><p class="timeline-detail">NASA's twin rovers land on Mars. Opportunity was expected to last 90 days but operated for 14 years, traveling over 45 km across the Martian surface.</p></div>
       <div class="timeline-item"><div class="timeline-year">2021</div><div class="timeline-event">James Webb Space Telescope</div><p class="timeline-detail">Launched on Christmas Day, Webb can see the universe's first galaxies forming just 300 million years after the Big Bang, in unprecedented infrared detail.</p></div>
     </div>
+  </div>
+</section>
+
+<section class="section alone-section" id="alone">
+  <p class="section-label">The Biggest Question</p>
+  <h2 class="section-title">ARE WE ALONE?</h2>
+
+  <div class="alone-wrapper">
+
+    <div class="alone-quote">
+      <span class="alone-quote-mark">&ldquo;</span>
+      <p>The universe is under no obligation to make sense to you.</p>
+      <cite>&mdash; Neil deGrasse Tyson</cite>
+    </div>
+
+    <div class="alone-body">
+      <p>There are more stars in the observable universe than grains of sand on every beach and desert on Earth. The numbers are so vast that the idea of Earth being the only world where something looks up and wonders seems not just improbable &mdash; it seems almost arrogant. Europa hides a liquid water ocean larger than all of Earth's seas combined. Enceladus jets organic molecules into space. Mars bears the scars of ancient rivers. The James Webb Space Telescope has already detected potential biosignature molecules in the atmosphere of a distant exoplanet. The scientific search for life is no longer philosophy &mdash; it is an active, funded, rapidly advancing field of science.</p>
+
+      <div class="alone-stats">
+        <div class="alone-stat">
+          <span class="alone-stat-num">300<span class="alone-stat-small">million</span></span>
+          <span class="alone-stat-label">Potentially habitable planets in the Milky Way alone</span>
+        </div>
+        <div class="alone-stat">
+          <span class="alone-stat-num">5,600<span class="alone-stat-small">+</span></span>
+          <span class="alone-stat-label">Confirmed exoplanets, with thousands more candidates</span>
+        </div>
+        <div class="alone-stat">
+          <span class="alone-stat-num">7</span>
+          <span class="alone-stat-label">Earth-sized planets in TRAPPIST-1, just 39 light-years away</span>
+        </div>
+      </div>
+
+      <p>Then there is the silence. If the universe is so vast, so old, and so full of habitable worlds, where is everybody? The Fermi Paradox has haunted scientists since 1950, and no one has answered it convincingly. The 1977 "Wow! signal" &mdash; a 72-second narrowband radio pulse that matched every expectation of an alien transmission &mdash; was never detected again. We may be rare. We may be early. Or the cosmos may be teeming with life that simply hasn't found us yet. Right now, for the first time in the history of our species, we are actually building the tools to find out. We are just beginning to listen.</p>
+    </div>
+
   </div>
 </section>
 
@@ -370,6 +431,7 @@ const SECTIONS=[
   {label:'Galaxies',desc:'Six galaxy types explained in depth',href:'#galaxies',keywords:['galaxy','spiral','elliptical','irregular','lenticular','barred','peculiar','milky way','andromeda','hubble']},
   {label:'Titans & Mysteries',desc:'Black holes, quasars, nebulae & more',href:'#titans',keywords:['black hole','quasar','supercluster','nebula','void','cmb','cosmic microwave','laniakea','bootes','crab']},
   {label:'Universal Phenomena',desc:'Supernovae, gravitational waves, GRBs & more',href:'#phenomena',keywords:['supernova','stellar explosion','gravitational wave','gamma ray burst','grb','magnetar','galactic collision','star formation','merger','ligo']},
+  {label:'Are We Alone?',desc:'The search for life beyond Earth',href:'#alone',keywords:['alien','life','extraterrestrial','seti','europa','enceladus','trappist','fermi','biosignature','exoplanet life','habitable','wow signal']},
   {label:'History',desc:'Human space exploration timeline',href:'#history',keywords:['history','timeline','apollo','moon landing','sputnik','nasa','hubble','webb','gagarin']},
 ];
 const input=document.getElementById('searchInput');
