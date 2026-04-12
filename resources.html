@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>External Resources — COSMOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root{--void:#02030a;--deep:#070b18;--star-white:#e8eaf5;--gold:#f0c040;--plasma:#4fc3f7;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--void);color:var(--star-white);font-family:'Space Mono',monospace;min-height:100vh;}
+  nav{display:flex;justify-content:space-between;align-items:center;padding:1.5rem 3rem;border-bottom:1px solid rgba(232,234,245,0.06);background:var(--deep);}
+  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.3em;color:var(--gold);text-decoration:none;}
+  .nav-back{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,234,245,0.5);text-decoration:none;transition:color 0.3s;}
+  .nav-back:hover{color:var(--plasma);}
+  .page{max-width:760px;margin:0 auto;padding:5rem 3rem 8rem;}
+  .page-label{font-size:0.6rem;letter-spacing:0.5em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:flex;align-items:center;gap:1rem;}
+  .page-label::before{content:'';width:40px;height:1px;background:var(--gold);}
+  .page-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,8vw,5.5rem);letter-spacing:0.02em;line-height:0.9;margin-bottom:3rem;}
+  .page-intro{font-family:'Crimson Pro',serif;font-size:1.1rem;color:rgba(232,234,245,0.55);line-height:1.85;margin-bottom:4rem;padding-bottom:2rem;border-bottom:1px solid rgba(232,234,245,0.06);}
+  .resource-section{margin-bottom:3.5rem;}
+  .resource-heading{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.1em;color:var(--plasma);margin-bottom:1.5rem;}
+  .resource-grid{display:flex;flex-direction:column;gap:1px;background:rgba(255,255,255,0.03);}
+  .resource-item{background:var(--deep);padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;transition:background 0.3s;}
+  .resource-item:hover{background:rgba(13,21,37,0.9);}
+  .resource-info{}
+  .resource-name{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--star-white);margin-bottom:0.4rem;}
+  .resource-desc{font-family:'Crimson Pro',serif;font-size:0.95rem;color:rgba(232,234,245,0.5);line-height:1.6;}
+  .resource-link{flex-shrink:0;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--plasma);text-decoration:none;border:1px solid rgba(79,195,247,0.3);padding:0.4rem 0.9rem;white-space:nowrap;transition:background 0.3s,border-color 0.3s;}
+  .resource-link:hover{background:rgba(79,195,247,0.08);border-color:var(--plasma);}
+  .credit-note{font-family:'Crimson Pro',serif;font-size:0.9rem;color:rgba(232,234,245,0.3);line-height:1.7;margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(232,234,245,0.06);}
+  footer{padding:2rem 3rem;border-top:1px solid rgba(232,234,245,0.06);display:flex;justify-content:space-between;align-items:center;background:var(--deep);}
+  .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.3em;color:var(--gold);opacity:0.4;text-decoration:none;}
+  .footer-copy{font-size:0.55rem;letter-spacing:0.2em;color:rgba(232,234,245,0.2);text-transform:uppercase;}
+  @media(max-width:600px){nav{padding:1rem 1.5rem;}.page{padding:3rem 1.5rem 6rem;}.resource-item{flex-direction:column;gap:1rem;}footer{flex-direction:column;gap:0.8rem;text-align:center;padding:1.5rem;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">COSMOS</a>
+  <a href="index.html" class="nav-back">&#8592; Back to COSMOS</a>
+</nav>
+
+<div class="page">
+  <p class="page-label">Legal</p>
+  <h1 class="page-title">EXTERNAL<br>RESOURCES</h1>
+  <p class="page-intro">COSMOS draws on the work of the world's leading space agencies, observatories, and research institutions. This page credits all external sources used for imagery, scientific content, typography, and media on this website. All NASA and ESA imagery is in the public domain unless otherwise noted.</p>
+
+  <div class="resource-section">
+    <div class="resource-heading">Imagery &amp; Photography</div>
+    <div class="resource-grid">
+      <div class="resource-item">
+        <div class="resource-info">
+          <div class="resource-name">NASA Image and Video Library</div>
+          <p class="resource-desc">Source for planetary photography, space mission imagery, and astronomical photographs used throughout COSMOS. All NASA imagery is in the public domain.</p>
+        </div>
+        <a href="https://images.nasa.gov" target="_blank" class="resource-link">Visit &#8599;</a>
+      </div>
+      <div class="resource-item">
+        <div class="resource-info">
+          <div class="resource-name">ESA — European Space Agency</div>
+          <p class="resource-desc">Source for European mission imagery, Hubble Space Telescope photographs, and deep-space observations.</p>
+        </div>
+        <a href="https://www.esa.int/ESA_Multimedia/Images" target="_blank" class="resource-link">Visit &#8599;</a>
+      </div>
+      <div class="resource-item">
+        <div class="resource-info">
+          <div class="resource-name">HubbleSite — NASA/STScI</div>
+          <p class="resource-desc">Source for Hubble Space Telescope images of galaxies, nebulae, and deep-field observations used throughout the site.</p>
+        </div>
+        <a href="https://hubblesite.org/images/gallery" target="_blank" class="resource-link">Visit &#8599;</a>
+      </div>
+      <div class="resource-item">
+        <div class="resource-info">
+          <div class="resource-name">JPL Photojournal — NASA Jet Propulsion Laboratory</div>
+          <p class="resource-desc">Source for planetary mission imagery including Voyager, Cassini, New Horizons, and Mars rover photography.</p>
+        </div>
+        <a href="https://photojournal.jpl.nasa.gov" target="_blank" class="resource-link">Visit &#8599;</a>
+      </div>
+      <div class="resource-item">
+        <div class="resource-info">
+          <div class="resource-name">James Webb Space Telescope — STScI</div>
+          <p class="resource-desc">Source for JWST imagery of galaxies, nebulae, exoplanet atmospheres, and early universe observations.</p>
+        </div>
+        <a href="https://webbtelescope.org/images" target="_blank" class="resource-link">Visit &#8599;</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="resource-section">
+    <div class="resource-heading">Scientific Content</div>
+    <div class="resource-grid">
+      <div class="resource-item">
+        <div class="resource-info">
+          <div class="resource-name">NASA Science — Solar System Exploration</div>
+          <p class="resource-desc">Primary reference for planetary data, facts, and mission information presented throughout COSMOS.</p>
+        </div>
+        <a href="https://science.nasa.gov/solar-system" target="_blank" class="resource-link">Visit &#8599;</a>
+      </div>
+      <div class="resource-item">
+        <div class="resource-info">
+          <div class="resource-name">NASA Exoplanet Exploration</div>
+          <p class="resource-desc">Reference for exoplanet counts, detection methods, and habitability data used in the Worlds Beyond section.</p>
+        </div>
+        <a href="https://exoplanets.nasa.gov" target="_blank" class="resource-link">Visit &#8599;</a>
+      </div>
+      <div class="resource-item">
+        <div class="resource-info">
+          <div class="resource-name">ESA Science &amp; Technology</div>
+          <p class="resource-desc">Reference for Planck CMB data, Gaia star catalogue information, and mission science results.</p>
+        </div>
+        <a href="https://sci.esa.int" target="_blank" class="resource-link">Visit &#8599;</a>
+      </div>
+      <div class="resource-item">
+        <div class="resource-info">
+          <div class="resource-name">LIGO Scientific Collaboration</div>
+          <p class="resource-desc">Reference for gravitational wave detection data and neutron star merger science used in the Universal Phenomena section.</p>
+        </div>
+        <a href="https://www.ligo.org" target="_blank" class="resource-link">Visit &#8599;</a>
+      </div>
+      <div class="resource-item">
+        <div class="resource-info">
+          <div class="resource-name">SETI Institute</div>
+          <p class="resource-desc">Reference for the search for extraterrestrial intelligence, biosignature research, and astrobiology content in the Are We Alone? section.</p>
+        </div>
+        <a href="https://www.seti.org" target="_blank" class="resource-link">Visit &#8599;</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="resource-section">
+    <div class="resource-heading">Typography &amp; Media</div>
+    <div class="resource-grid">
+      <div class="resource-item">
+        <div class="resource-info">
+          <div class="resource-name">Google Fonts — Bebas Neue, Space Mono, Crimson Pro</div>
+          <p class="resource-desc">Typefaces used throughout COSMOS, served via Google Fonts. These fonts are open-source and freely available.</p>
+        </div>
+        <a href="https://fonts.google.com" target="_blank" class="resource-link">Visit &#8599;</a>
+      </div>
+      <div class="resource-item">
+        <div class="resource-info">
+          <div class="resource-name">YouTube — Hero Background Video</div>
+          <p class="resource-desc">The hero background video is embedded from YouTube and remains the intellectual property of its original creator. COSMOS does not host or claim ownership of this video.</p>
+        </div>
+        <a href="https://youtube.com" target="_blank" class="resource-link">Visit &#8599;</a>
+      </div>
+    </div>
+  </div>
+
+  <p class="credit-note">All scientific facts presented on COSMOS are derived from publicly available research, NASA mission data, and peer-reviewed astrophysics literature. COSMOS is an independent educational project and is not affiliated with NASA, ESA, or any other space agency or institution. If you believe any content should be credited differently, please get in touch.</p>
+</div>
+
+<footer>
+  <a href="index.html" class="footer-brand">COSMOS</a>
+  <p class="footer-copy">&copy; <script>document.write(new Date().getFullYear())</script> COSMOS. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

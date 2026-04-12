@@ -71,7 +71,7 @@
   .timeline-event{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;}
   .timeline-detail{font-family:'Crimson Pro',serif;font-size:0.95rem;color:rgba(232,234,245,0.5);line-height:1.6;}
   footer{position:relative;z-index:1;border-top:1px solid rgba(232,234,245,0.06);background:var(--deep);}
-  .footer-top{display:grid;grid-template-columns:2fr 1fr 2fr;gap:4rem;padding:5rem 3rem 3rem;}
+  .footer-top{display:grid;grid-template-columns:2fr 1fr;gap:4rem;padding:5rem 3rem 3rem;}
   .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:0.3em;color:var(--gold);margin-bottom:1.2rem;}
   .footer-col-title{font-size:0.6rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;}
   .footer-about-text{font-family:'Crimson Pro',serif;font-size:0.95rem;color:rgba(232,234,245,0.45);line-height:1.7;margin-bottom:0.8rem;}
@@ -304,35 +304,13 @@
       <p class="footer-about-text">All scientific content is based on current research from NASA, ESA, and peer-reviewed astrophysics literature. COSMOS is a passion project, not affiliated with any government space agency or institution.</p>
     </div>
 
-    <!-- Quick Links -->
-    <div class="footer-col">
-      <div class="footer-col-title">Explore</div>
-      <ul class="footer-links">
-        <li><a href="#facts">Mind-Bending Facts</a></li>
-        <li><a href="#planets">The Eight Worlds</a></li>
-        <li><a href="#stars">Types of Stars</a></li>
-        <li><a href="#worlds">Worlds Beyond Planets</a></li>
-        <li><a href="#galaxies">Galaxy Types</a></li>
-        <li><a href="#titans">Cosmic Titans &amp; Mysteries</a></li>
-        <li><a href="#phenomena">Universal Phenomena</a></li>
-        <li><a href="#alone">Are We Alone?</a></li>
-        <li><a href="#history">History of Exploration</a></li>
-      </ul>
-    </div>
-
-    <!-- Privacy & Legal -->
+    <!-- Legal -->
     <div class="footer-col">
       <div class="footer-col-title">Legal</div>
-      <div class="footer-policy">
-        <div class="footer-policy-block">
-          <div class="footer-policy-title">Privacy Policy</div>
-          <p>COSMOS does not collect, store, or share any personal data. This website has no login system, no contact forms, no cookies, and no third-party tracking or analytics. The only external resources loaded are Google Fonts for typography and a YouTube embed for the hero background video, both of which are subject to their respective privacy policies. By using this site you are not providing us with any personal information whatsoever.</p>
-        </div>
-        <div class="footer-policy-block">
-          <div class="footer-policy-title">External Resources</div>
-          <p>Planetary and space imagery is sourced from NASA, ESA, and public domain archives. All scientific facts are derived from publicly available research. Video content is embedded from YouTube and remains the property of its respective owner.</p>
-        </div>
-      </div>
+      <ul class="footer-links">
+        <li><a href="privacy.html" target="_blank">Privacy Policy</a></li>
+        <li><a href="resources.html" target="_blank">External Resources</a></li>
+      </ul>
     </div>
 
   </div>
@@ -538,6 +516,15 @@ if(fy)fy.textContent=new Date().getFullYear();
   container.appendChild(playerDiv);
 
   let player;
+
+  function forcePlay(){
+    if(player&&typeof player.playVideo==='function'){
+      player.mute();
+      player.setVolume(0);
+      player.playVideo();
+    }
+  }
+
   window.onYouTubeIframeAPIReady=function(){
     player=new YT.Player('ytPlayer',{
       videoId:'ztVV54sPOns',
@@ -556,16 +543,22 @@ if(fy)fy.textContent=new Date().getFullYear();
         playsinline:1,
         enablejsapi:1,
         origin:window.location.origin,
-        start:0
+        start:0,
+        cc_load_policy:0,
+        color:'white',
+        hl:'en'
       },
       events:{
         onReady:function(e){
           e.target.mute();
           e.target.setVolume(0);
           e.target.playVideo();
+          // Ensure iframe has no pointer events
+          const iframe=document.querySelector('#ytPlayer iframe');
+          if(iframe)iframe.style.pointerEvents='none';
         },
         onStateChange:function(e){
-          if(e.data===YT.PlayerState.CUED||e.data===YT.PlayerState.PAUSED){
+          if(e.data===YT.PlayerState.CUED||e.data===YT.PlayerState.PAUSED||e.data===-1){
             e.target.mute();
             e.target.playVideo();
           }
@@ -574,14 +567,29 @@ if(fy)fy.textContent=new Date().getFullYear();
           }
         },
         onError:function(){
-          // Retry on error
-          setTimeout(()=>{if(player)player.playVideo();},1000);
+          setTimeout(forcePlay,1000);
         }
       }
     });
   };
 
-  // Fallback: if API doesn't fire within 3s, inject it again
+  // Retry every second for 10 seconds until playing
+  let attempts=0;
+  const interval=setInterval(()=>{
+    attempts++;
+    forcePlay();
+    if(attempts>=10)clearInterval(interval);
+  },1000);
+
+  // Also fire on any user interaction as last resort
+  const events=['click','scroll','mousemove','touchstart','keydown'];
+  function onInteract(){
+    forcePlay();
+    events.forEach(ev=>document.removeEventListener(ev,onInteract));
+  }
+  events.forEach(ev=>document.addEventListener(ev,onInteract,{once:true,passive:true}));
+
+  // Fallback: if API doesn't fire within 3s, reinject
   setTimeout(()=>{
     if(!window.YT||!window.YT.Player){
       const s=document.createElement('script');
