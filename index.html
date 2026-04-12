@@ -467,29 +467,25 @@ document.addEventListener('mousemove',e=>{const x=(e.clientX/window.innerWidth-0
 // YouTube video background
 (function(){
   const container=document.getElementById('heroBgContainer');
-  container.style.cssText='position:absolute;inset:0;z-index:0;overflow:hidden;';
+  container.style.cssText='position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;';
 
-  // Add YouTube iframe API script
   const tag=document.createElement('script');
   tag.src='https://www.youtube.com/iframe_api';
   document.head.appendChild(tag);
 
-  // Create div for player
   const playerDiv=document.createElement('div');
   playerDiv.id='ytPlayer';
   container.appendChild(playerDiv);
 
-  // Style overlay to fade to black at bottom
-  const fade=document.getElementById('heroFade');
-
+  let player;
   window.onYouTubeIframeAPIReady=function(){
-    new YT.Player('ytPlayer',{
-      videoId:'Q6eV34RDMec',
+    player=new YT.Player('ytPlayer',{
+      videoId:'ztVV54sPOns',
       playerVars:{
         autoplay:1,
         mute:1,
         loop:1,
-        playlist:'Q6eV34RDMec',
+        playlist:'ztVV54sPOns',
         controls:0,
         disablekb:1,
         fs:0,
@@ -498,21 +494,41 @@ document.addEventListener('mousemove',e=>{const x=(e.clientX/window.innerWidth-0
         rel:0,
         showinfo:0,
         playsinline:1,
-        origin:window.location.origin
+        enablejsapi:1,
+        origin:window.location.origin,
+        start:0
       },
       events:{
         onReady:function(e){
           e.target.mute();
+          e.target.setVolume(0);
           e.target.playVideo();
         },
         onStateChange:function(e){
+          if(e.data===YT.PlayerState.CUED||e.data===YT.PlayerState.PAUSED){
+            e.target.mute();
+            e.target.playVideo();
+          }
           if(e.data===YT.PlayerState.ENDED){
             e.target.playVideo();
           }
+        },
+        onError:function(){
+          // Retry on error
+          setTimeout(()=>{if(player)player.playVideo();},1000);
         }
       }
     });
   };
+
+  // Fallback: if API doesn't fire within 3s, inject it again
+  setTimeout(()=>{
+    if(!window.YT||!window.YT.Player){
+      const s=document.createElement('script');
+      s.src='https://www.youtube.com/iframe_api';
+      document.head.appendChild(s);
+    }
+  },3000);
 })();
 </script>
 </body>
