@@ -70,12 +70,25 @@
   .timeline-year{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--gold);letter-spacing:0.2em;margin-bottom:0.3rem;}
   .timeline-event{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;}
   .timeline-detail{font-family:'Crimson Pro',serif;font-size:0.95rem;color:rgba(232,234,245,0.5);line-height:1.6;}
-  footer{position:relative;z-index:1;padding:4rem 3rem;border-top:1px solid rgba(232,234,245,0.06);display:flex;justify-content:space-between;align-items:center;}
-  .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:0.3em;color:var(--gold);opacity:0.4;}
-  .footer-copy{font-size:0.6rem;letter-spacing:0.2em;color:rgba(232,234,245,0.3);text-transform:uppercase;}
+  footer{position:relative;z-index:1;border-top:1px solid rgba(232,234,245,0.06);background:var(--deep);}
+  .footer-top{display:grid;grid-template-columns:2fr 1fr 2fr;gap:4rem;padding:5rem 3rem 3rem;}
+  .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:0.3em;color:var(--gold);margin-bottom:1.2rem;}
+  .footer-col-title{font-size:0.6rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;}
+  .footer-about-text{font-family:'Crimson Pro',serif;font-size:0.95rem;color:rgba(232,234,245,0.45);line-height:1.7;margin-bottom:0.8rem;}
+  .footer-links{list-style:none;display:flex;flex-direction:column;gap:0.6rem;}
+  .footer-links a{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(232,234,245,0.4);text-decoration:none;transition:color 0.3s;}
+  .footer-links a:hover{color:var(--plasma);}
+  .footer-policy{display:flex;flex-direction:column;gap:1.5rem;}
+  .footer-policy-title{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--plasma);margin-bottom:0.5rem;}
+  .footer-policy p{font-family:'Crimson Pro',serif;font-size:0.88rem;color:rgba(232,234,245,0.35);line-height:1.7;}
+  .footer-bottom{padding:1.5rem 3rem;border-top:1px solid rgba(232,234,245,0.04);display:flex;justify-content:space-between;align-items:center;}
+  .footer-copyright{font-size:0.6rem;letter-spacing:0.2em;color:rgba(232,234,245,0.25);text-transform:uppercase;}
+  .footer-copy{font-size:0.6rem;letter-spacing:0.2em;color:rgba(232,234,245,0.2);text-transform:uppercase;}
+  @media(max-width:900px){.footer-top{grid-template-columns:1fr 1fr;gap:2rem;}}
+  @media(max-width:600px){.footer-top{grid-template-columns:1fr;padding:3rem 1.5rem 2rem;}.footer-bottom{flex-direction:column;gap:0.5rem;text-align:center;padding:1.2rem 1.5rem;}}
   @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
   @keyframes scanline{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-  .search-wrapper{position:relative;z-index:1;padding:0 3rem 6rem;display:flex;flex-direction:column;align-items:center;gap:1.2rem;}
+  .search-wrapper{position:relative;z-index:1;padding:0 3rem 6rem;display:flex;flex-direction:column;align-items:center;gap:1.2rem;background:var(--void);}
   .search-container{position:relative;width:100%;max-width:680px;}
   .search-icon{position:absolute;left:1.4rem;top:50%;transform:translateY(-50%);color:rgba(232,234,245,0.5);pointer-events:none;display:flex;align-items:center;}
   .search-input{width:100%;background:rgba(13,21,37,0.95);border:1px solid rgba(79,195,247,0.3);border-radius:2px;padding:1.1rem 1.5rem 1.1rem 3.2rem;color:var(--star-white);font-family:'Space Mono',monospace;font-size:0.75rem;letter-spacing:0.05em;outline:none;transition:border-color 0.3s;box-shadow:0 4px 24px rgba(0,0,0,0.5);}
@@ -112,7 +125,7 @@
     nav{padding:1rem 1.5rem;}.hero{padding:0 1.5rem;}.section{padding:5rem 1.5rem;}
     .search-wrapper{padding:0 1.5rem 4rem;}.facts-grid{grid-template-columns:1fr;}
     .galaxy-row{grid-template-columns:1fr;}
-    footer{flex-direction:column;gap:1rem;text-align:center;}.modal-content{padding:1.5rem;}
+    .modal-content{padding:1.5rem;}
     .modal{margin:1rem;}.modal-img{height:200px;}.modal-title{font-size:2.5rem;}
   }
   /* ARE WE ALONE */
@@ -282,8 +295,52 @@
 </section>
 
 <footer>
-  <div class="footer-brand">COSMOS</div>
-  <p class="footer-copy">An exploration of the universe &nbsp;&mdash;&nbsp; Space information website</p>
+  <div class="footer-top">
+
+    <!-- About -->
+    <div class="footer-col footer-about">
+      <div class="footer-brand">COSMOS</div>
+      <p class="footer-about-text">COSMOS is an independent space education website dedicated to making the wonders of the universe accessible to everyone. From the eight worlds of our solar system to the mysteries at the edge of human knowledge, COSMOS explores it all — with accuracy, depth, and a sense of wonder.</p>
+      <p class="footer-about-text">All scientific content is based on current research from NASA, ESA, and peer-reviewed astrophysics literature. COSMOS is a passion project, not affiliated with any government space agency or institution.</p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-col">
+      <div class="footer-col-title">Explore</div>
+      <ul class="footer-links">
+        <li><a href="#facts">Mind-Bending Facts</a></li>
+        <li><a href="#planets">The Eight Worlds</a></li>
+        <li><a href="#stars">Types of Stars</a></li>
+        <li><a href="#worlds">Worlds Beyond Planets</a></li>
+        <li><a href="#galaxies">Galaxy Types</a></li>
+        <li><a href="#titans">Cosmic Titans &amp; Mysteries</a></li>
+        <li><a href="#phenomena">Universal Phenomena</a></li>
+        <li><a href="#alone">Are We Alone?</a></li>
+        <li><a href="#history">History of Exploration</a></li>
+      </ul>
+    </div>
+
+    <!-- Privacy & Legal -->
+    <div class="footer-col">
+      <div class="footer-col-title">Legal</div>
+      <div class="footer-policy">
+        <div class="footer-policy-block">
+          <div class="footer-policy-title">Privacy Policy</div>
+          <p>COSMOS does not collect, store, or share any personal data. This website has no login system, no contact forms, no cookies, and no third-party tracking or analytics. The only external resources loaded are Google Fonts for typography and a YouTube embed for the hero background video, both of which are subject to their respective privacy policies. By using this site you are not providing us with any personal information whatsoever.</p>
+        </div>
+        <div class="footer-policy-block">
+          <div class="footer-policy-title">External Resources</div>
+          <p>Planetary and space imagery is sourced from NASA, ESA, and public domain archives. All scientific facts are derived from publicly available research. Video content is embedded from YouTube and remains the property of its respective owner.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p class="footer-copyright">&copy; <span id="footerYear"></span> COSMOS. All rights reserved.</p>
+    <p class="footer-copy">An exploration of the universe &nbsp;&mdash;&nbsp; Built with curiosity.</p>
+  </div>
 </footer>
 
 <script>
@@ -463,6 +520,9 @@ document.addEventListener('click',e=>{
 });
 document.addEventListener('click',e=>{if(!e.target.closest('.search-container')){results.classList.remove('active');input.value='';}});
 document.addEventListener('mousemove',e=>{const x=(e.clientX/window.innerWidth-0.5)*20,y=(e.clientY/window.innerHeight-0.5)*20;const t=document.querySelector('.hero-title');if(t)t.style.transform=`translate(${x*0.3}px,${y*0.3}px)`;});
+// Auto-update copyright year
+const fy=document.getElementById('footerYear');
+if(fy)fy.textContent=new Date().getFullYear();
 
 // YouTube video background
 (function(){
