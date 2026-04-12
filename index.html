@@ -24,6 +24,8 @@
   .hero-video::-webkit-media-controls-enclosure{display:none !important;}
   .hero-video::-webkit-media-controls-panel{display:none !important;}
   .hero-video::--webkit-media-controls-play-button{display:none !important;}
+  #ytPlayer{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:177.78vh;min-width:100%;height:56.25vw;min-height:100%;opacity:0.45;pointer-events:none;z-index:0;}
+  #ytPlayer iframe{width:100%;height:100%;border:none;}
   .hero-video-fade{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to bottom,rgba(2,3,10,0.15) 0%,rgba(2,3,10,0.05) 30%,rgba(2,3,10,0.05) 60%,rgba(2,3,10,0.85) 85%,#02030a 100%);}
   .hero-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;}
   .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,10vw,9rem);line-height:0.88;letter-spacing:-0.02em;animation:fadeUp 1s ease forwards;opacity:0;animation-delay:0.4s;text-shadow:0 0 80px rgba(2,3,10,0.8),0 2px 40px rgba(2,3,10,0.6);}
@@ -462,46 +464,55 @@ document.addEventListener('click',e=>{
 document.addEventListener('click',e=>{if(!e.target.closest('.search-container')){results.classList.remove('active');input.value='';}});
 document.addEventListener('mousemove',e=>{const x=(e.clientX/window.innerWidth-0.5)*20,y=(e.clientY/window.innerHeight-0.5)*20;const t=document.querySelector('.hero-title');if(t)t.style.transform=`translate(${x*0.3}px,${y*0.3}px)`;});
 
-// Programmatic video background — bypasses browser autoplay restrictions
+// YouTube video background
 (function(){
   const container=document.getElementById('heroBgContainer');
-  const v=document.createElement('video');
-  v.src='https://res.cloudinary.com/dhe1xlrfc/video/upload/vc_h264,q_auto,f_mp4/v1775929493/hero-bg.mp4_vr8zbt.mp4';
-  v.muted=true;
-  v.loop=true;
-  v.playsInline=true;
-  v.setAttribute('playsinline','');
-  v.setAttribute('webkit-playsinline','');
-  v.setAttribute('disablepictureinpicture','');
-  v.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;opacity:0.45;pointer-events:none;';
-  container.appendChild(v);
-  container.style.cssText='position:absolute;inset:0;z-index:0;';
+  container.style.cssText='position:absolute;inset:0;z-index:0;overflow:hidden;';
 
-  function tryPlay(){
-    v.muted=true;
-    v.play().catch(()=>{});
-  }
+  // Add YouTube iframe API script
+  const tag=document.createElement('script');
+  tag.src='https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
 
-  // Try immediately on load
-  v.addEventListener('canplaythrough', tryPlay, {once:true});
-  v.addEventListener('loadedmetadata', tryPlay, {once:true});
-  v.load();
+  // Create div for player
+  const playerDiv=document.createElement('div');
+  playerDiv.id='ytPlayer';
+  container.appendChild(playerDiv);
 
-  // Also try as soon as any interaction happens
-  const events=['click','scroll','mousemove','touchstart','keydown','pointerdown'];
-  function onInteract(){
-    tryPlay();
-    events.forEach(ev=>document.removeEventListener(ev,onInteract));
-  }
-  events.forEach(ev=>document.addEventListener(ev,onInteract,{once:true,passive:true}));
+  // Style overlay to fade to black at bottom
+  const fade=document.getElementById('heroFade');
 
-  // IntersectionObserver — play when hero is visible
-  if('IntersectionObserver' in window){
-    const obs=new IntersectionObserver(entries=>{
-      entries.forEach(e=>{ if(e.isIntersecting) tryPlay(); });
-    },{threshold:0.1});
-    obs.observe(container);
-  }
+  window.onYouTubeIframeAPIReady=function(){
+    new YT.Player('ytPlayer',{
+      videoId:'Q6eV34RDMec',
+      playerVars:{
+        autoplay:1,
+        mute:1,
+        loop:1,
+        playlist:'Q6eV34RDMec',
+        controls:0,
+        disablekb:1,
+        fs:0,
+        iv_load_policy:3,
+        modestbranding:1,
+        rel:0,
+        showinfo:0,
+        playsinline:1,
+        origin:window.location.origin
+      },
+      events:{
+        onReady:function(e){
+          e.target.mute();
+          e.target.playVideo();
+        },
+        onStateChange:function(e){
+          if(e.data===YT.PlayerState.ENDED){
+            e.target.playVideo();
+          }
+        }
+      }
+    });
+  };
 })();
 </script>
 </body>
