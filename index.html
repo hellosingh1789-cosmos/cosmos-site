@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data:;">
 <title>COSMOS — Space Explorer</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <style>
@@ -24,8 +25,7 @@
   .hero-video::-webkit-media-controls-enclosure{display:none !important;}
   .hero-video::-webkit-media-controls-panel{display:none !important;}
   .hero-video::--webkit-media-controls-play-button{display:none !important;}
-  #ytPlayer{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:177.78vh;min-width:100%;height:56.25vw;min-height:100%;opacity:0.45;pointer-events:none;z-index:0;}
-  #ytPlayer iframe{width:100%;height:100%;border:none;}
+  #heroFade{position:absolute;inset:0;z-index:1;pointer-events:none;}
   .hero-video-fade{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to bottom,rgba(2,3,10,0.15) 0%,rgba(2,3,10,0.05) 30%,rgba(2,3,10,0.05) 60%,rgba(2,3,10,0.85) 85%,#02030a 100%);}
   .hero-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;}
   .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,10vw,9rem);line-height:0.88;letter-spacing:-0.02em;animation:fadeUp 1s ease forwards;opacity:0;animation-delay:0.4s;text-shadow:0 0 80px rgba(2,3,10,0.8),0 2px 40px rgba(2,3,10,0.6);}
@@ -502,101 +502,20 @@ document.addEventListener('mousemove',e=>{const x=(e.clientX/window.innerWidth-0
 const fy=document.getElementById('footerYear');
 if(fy)fy.textContent=new Date().getFullYear();
 
-// YouTube video background
+// YouTube video background — direct iframe approach for reliable autoplay
 (function(){
   const container=document.getElementById('heroBgContainer');
   container.style.cssText='position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;';
 
-  const tag=document.createElement('script');
-  tag.src='https://www.youtube.com/iframe_api';
-  document.head.appendChild(tag);
-
-  const playerDiv=document.createElement('div');
-  playerDiv.id='ytPlayer';
-  container.appendChild(playerDiv);
-
-  let player;
-
-  function forcePlay(){
-    if(player&&typeof player.playVideo==='function'){
-      player.mute();
-      player.setVolume(0);
-      player.playVideo();
-    }
-  }
-
-  window.onYouTubeIframeAPIReady=function(){
-    player=new YT.Player('ytPlayer',{
-      videoId:'ztVV54sPOns',
-      playerVars:{
-        autoplay:1,
-        mute:1,
-        loop:1,
-        playlist:'ztVV54sPOns',
-        controls:0,
-        disablekb:1,
-        fs:0,
-        iv_load_policy:3,
-        modestbranding:1,
-        rel:0,
-        showinfo:0,
-        playsinline:1,
-        enablejsapi:1,
-        origin:window.location.origin,
-        start:0,
-        cc_load_policy:0,
-        color:'white',
-        hl:'en'
-      },
-      events:{
-        onReady:function(e){
-          e.target.mute();
-          e.target.setVolume(0);
-          e.target.playVideo();
-          // Ensure iframe has no pointer events
-          const iframe=document.querySelector('#ytPlayer iframe');
-          if(iframe)iframe.style.pointerEvents='none';
-        },
-        onStateChange:function(e){
-          if(e.data===YT.PlayerState.CUED||e.data===YT.PlayerState.PAUSED||e.data===-1){
-            e.target.mute();
-            e.target.playVideo();
-          }
-          if(e.data===YT.PlayerState.ENDED){
-            e.target.playVideo();
-          }
-        },
-        onError:function(){
-          setTimeout(forcePlay,1000);
-        }
-      }
-    });
-  };
-
-  // Retry every second for 10 seconds until playing
-  let attempts=0;
-  const interval=setInterval(()=>{
-    attempts++;
-    forcePlay();
-    if(attempts>=10)clearInterval(interval);
-  },1000);
-
-  // Also fire on any user interaction as last resort
-  const events=['click','scroll','mousemove','touchstart','keydown'];
-  function onInteract(){
-    forcePlay();
-    events.forEach(ev=>document.removeEventListener(ev,onInteract));
-  }
-  events.forEach(ev=>document.addEventListener(ev,onInteract,{once:true,passive:true}));
-
-  // Fallback: if API doesn't fire within 3s, reinject
-  setTimeout(()=>{
-    if(!window.YT||!window.YT.Player){
-      const s=document.createElement('script');
-      s.src='https://www.youtube.com/iframe_api';
-      document.head.appendChild(s);
-    }
-  },3000);
+  const iframe=document.createElement('iframe');
+  iframe.id='ytIframe';
+  iframe.src='https://www.youtube-nocookie.com/embed/ztVV54sPOns?autoplay=1&mute=1&loop=1&playlist=ztVV54sPOns&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&playsinline=1&enablejsapi=0&start=0&cc_load_policy=0';
+  iframe.setAttribute('allow','autoplay; encrypted-media; picture-in-picture');
+  iframe.setAttribute('allowfullscreen','');
+  iframe.setAttribute('frameborder','0');
+  iframe.setAttribute('title','Background video');
+  iframe.style.cssText='position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:177.78vh;min-width:100%;height:56.25vw;min-height:100%;opacity:0.45;pointer-events:none;border:none;';
+  container.appendChild(iframe);
 })();
 </script>
 </body>
