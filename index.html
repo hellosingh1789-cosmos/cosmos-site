@@ -503,53 +503,100 @@ const fy=document.getElementById('footerYear');
 if(fy)fy.textContent=new Date().getFullYear();
 
 // YouTube video background
-// YouTube video background
 (function(){
-  const container = document.getElementById('heroBgContainer');
-  if (!container) return;
+  const container=document.getElementById('heroBgContainer');
+  container.style.cssText='position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;';
 
-  container.style.cssText = 'position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;';
+  const tag=document.createElement('script');
+  tag.src='https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
 
-  const videoId = 'ztVV54sPOns';
-  const params = new URLSearchParams({
-    autoplay: '1',
-    mute: '1',
-    loop: '1',
-    playlist: videoId,
-    controls: '0',
-    disablekb: '1',
-    fs: '0',
-    iv_load_policy: '3',
-    modestbranding: '1',
-    rel: '0',
-    playsinline: '1',
-    enablejsapi: '1'
-  });
-
-  const iframe = document.createElement('iframe');
-  iframe.src = `https://www.youtube.com/embed/${videoId}?${params.toString()}`;
-  iframe.title = 'Hero background video';
-  iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
-  iframe.setAttribute('allowfullscreen', '');
-  iframe.setAttribute('loading', 'eager');
-  iframe.style.pointerEvents = 'none';
-
-  const playerDiv = document.createElement('div');
-  playerDiv.id = 'ytPlayer';
-  playerDiv.appendChild(iframe);
+  const playerDiv=document.createElement('div');
+  playerDiv.id='ytPlayer';
   container.appendChild(playerDiv);
 
-  // Nudge autoplay after load (helps in some browsers)
-  iframe.addEventListener('load', () => {
-    const cmd = (func) =>
-      iframe.contentWindow?.postMessage(
-        JSON.stringify({ event: 'command', func, args: [] }),
-        '*'
-      );
+  let player;
 
-    setTimeout(() => { cmd('mute'); cmd('playVideo'); }, 300);
-    setTimeout(() => { cmd('playVideo'); }, 1200);
-  });
+  function forcePlay(){
+    if(player&&typeof player.playVideo==='function'){
+      player.mute();
+      player.setVolume(0);
+      player.playVideo();
+    }
+  }
+
+  window.onYouTubeIframeAPIReady=function(){
+    player=new YT.Player('ytPlayer',{
+      videoId:'ztVV54sPOns',
+      playerVars:{
+        autoplay:1,
+        mute:1,
+        loop:1,
+        playlist:'ztVV54sPOns',
+        controls:0,
+        disablekb:1,
+        fs:0,
+        iv_load_policy:3,
+        modestbranding:1,
+        rel:0,
+        showinfo:0,
+        playsinline:1,
+        enablejsapi:1,
+        origin:window.location.origin,
+        start:0,
+        cc_load_policy:0,
+        color:'white',
+        hl:'en'
+      },
+      events:{
+        onReady:function(e){
+          e.target.mute();
+          e.target.setVolume(0);
+          e.target.playVideo();
+          // Ensure iframe has no pointer events
+          const iframe=document.querySelector('#ytPlayer iframe');
+          if(iframe)iframe.style.pointerEvents='none';
+        },
+        onStateChange:function(e){
+          if(e.data===YT.PlayerState.CUED||e.data===YT.PlayerState.PAUSED||e.data===-1){
+            e.target.mute();
+            e.target.playVideo();
+          }
+          if(e.data===YT.PlayerState.ENDED){
+            e.target.playVideo();
+          }
+        },
+        onError:function(){
+          setTimeout(forcePlay,1000);
+        }
+      }
+    });
+  };
+
+  // Retry every second for 10 seconds until playing
+  let attempts=0;
+  const interval=setInterval(()=>{
+    attempts++;
+    forcePlay();
+    if(attempts>=10)clearInterval(interval);
+  },1000);
+
+  // Also fire on any user interaction as last resort
+  const events=['click','scroll','mousemove','touchstart','keydown'];
+  function onInteract(){
+    forcePlay();
+    events.forEach(ev=>document.removeEventListener(ev,onInteract));
+  }
+  events.forEach(ev=>document.addEventListener(ev,onInteract,{once:true,passive:true}));
+
+  // Fallback: if API doesn't fire within 3s, reinject
+  setTimeout(()=>{
+    if(!window.YT||!window.YT.Player){
+      const s=document.createElement('script');
+      s.src='https://www.youtube.com/iframe_api';
+      document.head.appendChild(s);
+    }
+  },3000);
 })();
 </script>
 </body>
