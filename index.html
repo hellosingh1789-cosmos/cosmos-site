@@ -143,6 +143,33 @@
   .alone-stat-label{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(232,234,245,0.45);line-height:1.5;}
   @media(max-width:768px){.alone-stats{grid-template-columns:1fr;}.alone-quote p{font-size:1.1rem;}}
 
+  /* DEEP SPACE GALLERY */
+  .gallery-section{background:linear-gradient(180deg,var(--void) 0%,rgba(5,5,20,0.98) 50%,var(--void) 100%);}
+  .gallery-intro{font-family:'Crimson Pro',serif;font-size:1.1rem;font-style:italic;color:rgba(232,234,245,0.45);max-width:640px;margin-bottom:4rem;line-height:1.75;}
+  .masonry{columns:3;column-gap:6px;}
+  .masonry-item{break-inside:avoid;position:relative;overflow:hidden;cursor:pointer;margin-bottom:6px;display:block;}
+  .masonry-item img{width:100%;display:block;transition:transform 0.6s ease,filter 0.6s ease;filter:brightness(0.8) saturate(1.1);}
+  .masonry-item:hover img{transform:scale(1.04);filter:brightness(1) saturate(1.3);}
+  .masonry-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(2,3,10,0.85) 0%,transparent 50%);opacity:0;transition:opacity 0.4s;display:flex;align-items:flex-end;padding:1.2rem;}
+  .masonry-item:hover .masonry-overlay{opacity:1;}
+  .masonry-title{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.15em;color:var(--star-white);}
+  /* LIGHTBOX */
+  .lightbox-overlay{display:none;position:fixed;inset:0;z-index:2000;background:rgba(2,3,10,0.96);backdrop-filter:blur(12px);align-items:center;justify-content:center;flex-direction:column;}
+  .lightbox-overlay.open{display:flex;}
+  .lightbox-close{position:absolute;top:1.5rem;right:1.5rem;width:44px;height:44px;border:1px solid rgba(232,234,245,0.2);background:transparent;color:var(--star-white);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color 0.3s;z-index:10;}
+  .lightbox-close:hover{border-color:var(--plasma);}
+  .lightbox-prev,.lightbox-next{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border:1px solid rgba(232,234,245,0.2);background:transparent;color:var(--star-white);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color 0.3s,background 0.3s;z-index:10;}
+  .lightbox-prev{left:1.5rem;}.lightbox-next{right:1.5rem;}
+  .lightbox-prev:hover,.lightbox-next:hover{border-color:var(--plasma);background:rgba(79,195,247,0.08);}
+  .lightbox-inner{display:flex;flex-direction:column;align-items:center;max-width:1100px;width:90%;gap:1.5rem;padding:3rem 4rem;}
+  .lightbox-img-wrap{width:100%;max-height:65vh;display:flex;align-items:center;justify-content:center;}
+  .lightbox-img-wrap img{max-width:100%;max-height:65vh;object-fit:contain;display:block;}
+  .lightbox-info{text-align:center;max-width:700px;}
+  .lightbox-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.1em;margin-bottom:0.8rem;color:var(--star-white);}
+  .lightbox-caption{font-family:'Crimson Pro',serif;font-size:1rem;color:rgba(232,234,245,0.55);line-height:1.75;}
+  @media(max-width:900px){.masonry{columns:2;}}
+  @media(max-width:560px){.masonry{columns:1;}.lightbox-inner{padding:5rem 1.5rem 2rem;}.lightbox-prev{left:0.5rem;}.lightbox-next{right:0.5rem;}}
+
 </style>
 </head>
 <body>
@@ -190,6 +217,7 @@
     <a href="#titans" class="search-tag">&#x1F52D; Titans &amp; Mysteries</a>
     <a href="#phenomena" class="search-tag">&#x26A1; Universal Phenomena</a>
     <a href="#alone" class="search-tag">&#x1F6F8; Are We Alone?</a>
+    <a href="#gallery" class="search-tag">&#x1F4F7; Gallery</a>
     <a href="#history" class="search-tag">&#x1F680; History</a>
   </div>
 </div>
@@ -242,6 +270,79 @@
   <h2 class="section-title">UNIVERSAL PHENOMENA</h2>
   <div class="card-grid-3" id="phenomenaGrid"></div>
 </section>
+
+<section class="section gallery-section" id="gallery">
+  <p class="section-label">Deep Space Gallery</p>
+  <h2 class="section-title">WINDOWS TO THE UNIVERSE</h2>
+  <p class="gallery-intro">The most iconic images ever captured by humanity's greatest telescopes &mdash; each one a window billions of light-years deep into the cosmos.</p>
+
+  <div class="masonry" id="masonryGrid">
+    <div class="masonry-item" data-img="gallery_pillars.jpg" data-title="Pillars of Creation" data-caption="Eagle Nebula, M16 &mdash; Hubble Space Telescope, 1995 &amp; 2014. Three towering columns of cold gas and dust, 5 light-years tall, where new stars are actively forming inside. One of the most iconic astronomical images ever taken.">
+      <img src="gallery_pillars.jpg" alt="Pillars of Creation" loading="lazy">
+      <div class="masonry-overlay"><span class="masonry-title">Pillars of Creation</span></div>
+    </div>
+    <div class="masonry-item" data-img="gallery_hubble_deep.jpg" data-title="Hubble Ultra Deep Field" data-caption="Hubble Space Telescope, 2004. A tiny patch of sky roughly one thirteen-millionth of the total — yet it contains nearly 10,000 galaxies, each containing hundreds of billions of stars, some dating back to just 400 million years after the Big Bang.">
+      <img src="gallery_hubble_deep.jpg" alt="Hubble Ultra Deep Field" loading="lazy">
+      <div class="masonry-overlay"><span class="masonry-title">Hubble Ultra Deep Field</span></div>
+    </div>
+    <div class="masonry-item" data-img="gallery_crab_nebula.jpg" data-title="Crab Nebula" data-caption="Messier 1 &mdash; Hubble Space Telescope. The expanding remnant of a supernova explosion observed by astronomers in 1054 AD. At its center spins a pulsar &mdash; a neutron star completing 30 rotations per second.">
+      <img src="gallery_crab_nebula.jpg" alt="Crab Nebula" loading="lazy">
+      <div class="masonry-overlay"><span class="masonry-title">Crab Nebula</span></div>
+    </div>
+    <div class="masonry-item" data-img="gallery_sombrero.jpg" data-title="Sombrero Galaxy" data-caption="Messier 104 &mdash; Hubble Space Telescope. A spiral galaxy 28 million light-years away, seen nearly edge-on. Its bright nucleus, large central bulge, and prominent dust lane give it the unmistakable silhouette of a wide-brimmed hat.">
+      <img src="gallery_sombrero.jpg" alt="Sombrero Galaxy" loading="lazy">
+      <div class="masonry-overlay"><span class="masonry-title">Sombrero Galaxy</span></div>
+    </div>
+    <div class="masonry-item" data-img="gallery_cartwheel.jpg" data-title="Cartwheel Galaxy" data-caption="James Webb Space Telescope, 2022. Formed when a smaller galaxy punched directly through the center of a larger one, sending a shockwave of star formation rippling outward like a stone dropped in a pond, creating the spectacular outer ring.">
+      <img src="gallery_cartwheel.jpg" alt="Cartwheel Galaxy" loading="lazy">
+      <div class="masonry-overlay"><span class="masonry-title">Cartwheel Galaxy</span></div>
+    </div>
+    <div class="masonry-item" data-img="gallery_eta_carinae.jpg" data-title="Eta Carinae Nebula" data-caption="Hubble Space Telescope. The hyperluminous star Eta Carinae, one of the most massive and unstable stars known, surrounded by the Homunculus Nebula it expelled in a massive eruption in the 1840s. It may be on the verge of a supernova.">
+      <img src="gallery_eta_carinae.jpg" alt="Eta Carinae" loading="lazy">
+      <div class="masonry-overlay"><span class="masonry-title">Eta Carinae Nebula</span></div>
+    </div>
+    <div class="masonry-item" data-img="gallery_antennae.jpg" data-title="Antennae Galaxies" data-caption="NGC 4038 &amp; NGC 4039 &mdash; Hubble Space Telescope. Two colliding spiral galaxies in the midst of a merger, producing one of the most intense starburst episodes in the local universe. Their long tidal tails resemble the antennae of an insect.">
+      <img src="gallery_antennae.jpg" alt="Antennae Galaxies" loading="lazy">
+      <div class="masonry-overlay"><span class="masonry-title">Antennae Galaxies</span></div>
+    </div>
+    <div class="masonry-item" data-img="gallery_helix.jpg" data-title="Helix Nebula" data-caption="NGC 7293 &mdash; Hubble Space Telescope &amp; CTIO. Sometimes called the Eye of God, the Helix Nebula is one of the closest planetary nebulae to Earth at just 650 light-years. It is the remnant of a Sun-like star that died and shed its outer layers.">
+      <img src="gallery_helix.jpg" alt="Helix Nebula" loading="lazy">
+      <div class="masonry-overlay"><span class="masonry-title">Helix Nebula</span></div>
+    </div>
+    <div class="masonry-item" data-img="gallery_stephans.jpg" data-title="Stephan's Quintet" data-caption="James Webb Space Telescope, 2022. A visual grouping of five galaxies, four of which are in a genuine compact group engaged in a slow gravitational dance. JWST's first-light image of this region revealed unprecedented detail in the interaction zones between the galaxies.">
+      <img src="gallery_stephans.jpg" alt="Stephan's Quintet" loading="lazy">
+      <div class="masonry-overlay"><span class="masonry-title">Stephan's Quintet</span></div>
+    </div>
+    <div class="masonry-item" data-img="gallery_orion.jpg" data-title="Orion Nebula" data-caption="Messier 42 &mdash; Hubble Space Telescope. The nearest large star-forming region to Earth, just 1,344 light-years away and visible to the naked eye as a fuzzy star in Orion's sword. Inside it, hundreds of new stars are actively coalescing from collapsing clouds of gas and dust.">
+      <img src="gallery_orion.jpg" alt="Orion Nebula" loading="lazy">
+      <div class="masonry-overlay"><span class="masonry-title">Orion Nebula</span></div>
+    </div>
+    <div class="masonry-item" data-img="gallery_black_hole.jpg" data-title="M87 Black Hole" data-caption="Event Horizon Telescope, 2019. The first direct image of a black hole ever captured. The supermassive black hole at the center of galaxy M87, 55 million light-years away, has a mass of 6.5 billion suns. The glowing ring is superheated gas orbiting at near light speed.">
+      <img src="gallery_black_hole.jpg" alt="M87 Black Hole" loading="lazy">
+      <div class="masonry-overlay"><span class="masonry-title">M87 Black Hole</span></div>
+    </div>
+    <div class="masonry-item" data-img="gallery_cosmic_cliffs.jpg" data-title="Cosmic Cliffs" data-caption="James Webb Space Telescope, 2022 &mdash; NGC 3324 in the Carina Nebula. One of JWST's first release images, revealing previously invisible populations of new stars forming along a ridge of gas and dust at the edge of a stellar nursery 7,600 light-years from Earth.">
+      <img src="gallery_cosmic_cliffs.jpg" alt="Cosmic Cliffs" loading="lazy">
+      <div class="masonry-overlay"><span class="masonry-title">Cosmic Cliffs</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery Lightbox -->
+<div class="lightbox-overlay" id="lightboxOverlay">
+  <button class="lightbox-close" id="lightboxClose">&#x2715;</button>
+  <button class="lightbox-prev" id="lightboxPrev">&#8592;</button>
+  <button class="lightbox-next" id="lightboxNext">&#8594;</button>
+  <div class="lightbox-inner">
+    <div class="lightbox-img-wrap">
+      <img id="lightboxImg" src="" alt="">
+    </div>
+    <div class="lightbox-info">
+      <div class="lightbox-title" id="lightboxTitle"></div>
+      <p class="lightbox-caption" id="lightboxCaption"></p>
+    </div>
+  </div>
+</div>
 
 <section class="section" id="history">
   <p class="section-label">Human Exploration</p>
@@ -471,6 +572,7 @@ const SECTIONS=[
   {label:'Titans & Mysteries',desc:'Black holes, quasars, nebulae & more',href:'#titans',keywords:['black hole','quasar','supercluster','nebula','void','cmb','cosmic microwave','laniakea','bootes','crab']},
   {label:'Universal Phenomena',desc:'Supernovae, gravitational waves, GRBs & more',href:'#phenomena',keywords:['supernova','stellar explosion','gravitational wave','gamma ray burst','grb','magnetar','galactic collision','star formation','merger','ligo']},
   {label:'Are We Alone?',desc:'The search for life beyond Earth',href:'#alone',keywords:['alien','life','extraterrestrial','seti','europa','enceladus','trappist','fermi','biosignature','exoplanet life','habitable','wow signal']},
+  {label:'Gallery',desc:'Iconic deep space images from Hubble & JWST',href:'#gallery',keywords:['gallery','photo','image','hubble','webb','pillars','nebula','deep field','orion','sombrero','black hole']},
   {label:'History',desc:'Human space exploration timeline',href:'#history',keywords:['history','timeline','apollo','moon landing','sputnik','nasa','hubble','webb','gagarin']},
 ];
 const input=document.getElementById('searchInput');
@@ -502,7 +604,41 @@ document.addEventListener('mousemove',e=>{const x=(e.clientX/window.innerWidth-0
 const fy=document.getElementById('footerYear');
 if(fy)fy.textContent=new Date().getFullYear();
 
-// Hero image background
+// Gallery lightbox
+(function(){
+  const items=Array.from(document.querySelectorAll('.masonry-item'));
+  const overlay=document.getElementById('lightboxOverlay');
+  const lbImg=document.getElementById('lightboxImg');
+  const lbTitle=document.getElementById('lightboxTitle');
+  const lbCaption=document.getElementById('lightboxCaption');
+  let current=0;
+
+  function open(idx){
+    current=idx;
+    const item=items[idx];
+    lbImg.src=item.dataset.img;
+    lbTitle.textContent=item.dataset.title;
+    lbCaption.innerHTML=item.dataset.caption;
+    overlay.classList.add('open');
+    document.body.style.overflow='hidden';
+  }
+  function close(){overlay.classList.remove('open');document.body.style.overflow='';}
+  function prev(){open((current-1+items.length)%items.length);}
+  function next(){open((current+1)%items.length);}
+
+  items.forEach((item,i)=>item.addEventListener('click',()=>open(i)));
+  document.getElementById('lightboxClose').addEventListener('click',close);
+  document.getElementById('lightboxPrev').addEventListener('click',prev);
+  document.getElementById('lightboxNext').addEventListener('click',next);
+  overlay.addEventListener('click',e=>{if(e.target===overlay)close();});
+  document.addEventListener('keydown',e=>{
+    if(!overlay.classList.contains('open'))return;
+    if(e.key==='Escape')close();
+    if(e.key==='ArrowLeft')prev();
+    if(e.key==='ArrowRight')next();
+  });
+})();
+
 (function(){
   const container=document.getElementById('heroBgContainer');
   container.style.cssText='position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;';
