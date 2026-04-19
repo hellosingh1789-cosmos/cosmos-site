@@ -19,6 +19,19 @@
   @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(60px,-60px)}}
   nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 3rem;background:linear-gradient(to bottom,rgba(2,3,10,0.9),transparent);backdrop-filter:blur(2px);}
   .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.3em;color:var(--gold);text-decoration:none;}
+  .nav-links{display:flex;align-items:center;gap:0.2rem;}
+  .nav-dropdown{position:relative;}
+  .nav-dropdown-btn{font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,234,245,0.6);background:none;border:none;cursor:pointer;padding:0.5rem 0.9rem;display:flex;align-items:center;gap:0.4rem;transition:color 0.3s;}
+  .nav-dropdown-btn:hover,.nav-dropdown:hover .nav-dropdown-btn{color:var(--star-white);}
+  .nav-dropdown-btn::after{content:'';display:inline-block;width:5px;height:5px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform 0.3s;}
+  .nav-dropdown:hover .nav-dropdown-btn::after{transform:rotate(-135deg) translateY(-2px);}
+  .nav-dropdown-menu{position:absolute;top:calc(100% + 0.5rem);right:0;min-width:180px;background:rgba(7,11,24,0.97);border:1px solid rgba(79,195,247,0.15);backdrop-filter:blur(12px);display:none;flex-direction:column;overflow:hidden;z-index:300;}
+  .nav-dropdown:hover .nav-dropdown-menu{display:flex;}
+  .nav-dropdown-menu a{font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(232,234,245,0.6);text-decoration:none;padding:0.75rem 1.2rem;border-bottom:1px solid rgba(232,234,245,0.05);transition:background 0.2s,color 0.2s;white-space:nowrap;}
+  .nav-dropdown-menu a:last-child{border-bottom:none;}
+  .nav-dropdown-menu a:hover{background:rgba(79,195,247,0.08);color:var(--plasma);}
+  .nav-dropdown-divider{height:1px;background:rgba(79,195,247,0.12);margin:0.3rem 0;}
+  @media(max-width:768px){.nav-links{gap:0;}.nav-dropdown-btn{padding:0.5rem 0.6rem;font-size:0.55rem;}}
   .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 3rem;z-index:1;text-align:center;overflow:hidden;}
   .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;opacity:0.45;pointer-events:none;}
   .hero-video::-webkit-media-controls{display:none !important;}
@@ -194,7 +207,61 @@
   </div>
 </div>
 
-<nav><a href="#" class="nav-logo">COSMOS</a></nav>
+<nav>
+  <a href="#" class="nav-logo">COSMOS</a>
+  <div class="nav-links">
+
+    <!-- Planets -->
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn">Planets</button>
+      <div class="nav-dropdown-menu">
+        <a href="#planets">The Eight Worlds</a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="#planets" onclick="setTimeout(()=>document.querySelector('[data-name=Mercury]')?.click(),300)">Mercury</a>
+        <a href="#planets" onclick="setTimeout(()=>document.querySelector('[data-name=Venus]')?.click(),300)">Venus</a>
+        <a href="#planets" onclick="setTimeout(()=>document.querySelector('[data-name=Earth]')?.click(),300)">Earth</a>
+        <a href="#planets" onclick="setTimeout(()=>document.querySelector('[data-name=Mars]')?.click(),300)">Mars</a>
+        <a href="#planets" onclick="setTimeout(()=>document.querySelector('[data-name=Jupiter]')?.click(),300)">Jupiter</a>
+        <a href="#planets" onclick="setTimeout(()=>document.querySelector('[data-name=Saturn]')?.click(),300)">Saturn</a>
+        <a href="#planets" onclick="setTimeout(()=>document.querySelector('[data-name=Uranus]')?.click(),300)">Uranus</a>
+        <a href="#planets" onclick="setTimeout(()=>document.querySelector('[data-name=Neptune]')?.click(),300)">Neptune</a>
+      </div>
+    </div>
+
+    <!-- Solar System -->
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn">Solar System</button>
+      <div class="nav-dropdown-menu">
+        <a href="#planets">Planets</a>
+        <a href="#worlds">Worlds Beyond</a>
+        <a href="#history">Exploration Timeline</a>
+      </div>
+    </div>
+
+    <!-- Galaxy -->
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn">Galaxy</button>
+      <div class="nav-dropdown-menu">
+        <a href="#stars">Types of Stars</a>
+        <a href="#galaxies">Galaxy Types</a>
+        <a href="#phenomena">Universal Phenomena</a>
+        <a href="#titans">Cosmic Titans</a>
+      </div>
+    </div>
+
+    <!-- Universe -->
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn">Universe</button>
+      <div class="nav-dropdown-menu">
+        <a href="#facts">Mind-Bending Facts</a>
+        <a href="#titans">Cosmic Titans &amp; Mysteries</a>
+        <a href="#alone">Are We Alone?</a>
+        <a href="#gallery">Deep Space Gallery</a>
+      </div>
+    </div>
+
+  </div>
+</nav>
 
 <section class="hero">
   <div id="heroBgContainer"></div>
@@ -718,6 +785,7 @@ const TITANS=[
 function buildCard(item,category){
   const d=document.createElement('div');
   d.className='card';
+  d.setAttribute('data-name',item.name);
   d.innerHTML=`<div class="card-img">${item.img?`<img src="${item.img}" alt="${item.name}">`:`<div class="card-placeholder">${item.emoji}</div>`}</div><div class="card-body"><div class="card-name">${item.name}</div><div class="card-type">${item.type}</div><p class="card-desc">${item.short}</p><div class="card-stats">${item.facts.slice(0,3).map(f=>`<div class="stat"><span class="stat-val">${f.v}</span><span class="stat-label">${f.l}</span></div>`).join('')}</div></div><div class="card-cta">Read More &#8594;</div>`;
   d.addEventListener('click',()=>openModal(item,category));
   return d;
