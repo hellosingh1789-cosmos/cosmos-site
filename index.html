@@ -23,11 +23,12 @@
   .nav-dropdown{position:relative;padding-bottom:0.3rem;}
   .nav-dropdown-menu::before{content:'';position:absolute;top:-0.4rem;left:0;right:0;height:0.4rem;}
   .nav-dropdown-btn{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);background:none;border:none;cursor:pointer;padding:0.5rem 0.9rem;display:flex;align-items:center;gap:0.5rem;transition:color 0.3s;}
-  .nav-dropdown-btn:hover,.nav-dropdown:hover .nav-dropdown-btn{color:#fff8d6;}
+  .nav-dropdown-btn:hover{color:#fff8d6;}
+  .nav-dropdown.open .nav-dropdown-btn{color:#fff8d6;}
   .nav-dropdown-btn::after{content:'';display:inline-block;width:5px;height:5px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform 0.3s;}
   .nav-dropdown:hover .nav-dropdown-btn::after{transform:rotate(-135deg) translateY(-2px);}
-  .nav-dropdown-menu{position:absolute;top:calc(100% + 0.2rem);right:0;min-width:180px;background:rgba(7,11,24,0.97);border:1px solid rgba(79,195,247,0.15);backdrop-filter:blur(12px);display:flex;flex-direction:column;overflow:hidden;z-index:300;opacity:0;pointer-events:none;transform:translateY(-6px);transition:opacity 0.2s ease,transform 0.2s ease;}
-  .nav-dropdown:hover .nav-dropdown-menu{opacity:1;pointer-events:all;transform:translateY(0);}
+  .nav-dropdown-menu{position:absolute;top:calc(100% + 0.2rem);right:0;min-width:180px;background:rgba(7,11,24,0.97);border:1px solid rgba(79,195,247,0.15);backdrop-filter:blur(12px);display:flex;flex-direction:column;overflow:hidden;z-index:300;opacity:0;pointer-events:none;transform:translateY(-6px);transition:opacity 0.25s ease,transform 0.25s ease;}
+  .nav-dropdown.open .nav-dropdown-menu{opacity:1;pointer-events:all;transform:translateY(0);}
   .nav-dropdown-menu a{font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(232,234,245,0.6);text-decoration:none;padding:0.75rem 1.2rem;border-bottom:1px solid rgba(232,234,245,0.05);transition:background 0.2s,color 0.2s;white-space:nowrap;}
   .nav-dropdown-menu a:last-child{border-bottom:none;}
   .nav-dropdown-menu a:hover{background:rgba(79,195,247,0.08);color:var(--plasma);}
@@ -234,6 +235,7 @@
       <button class="nav-dropdown-btn">Solar System</button>
       <div class="nav-dropdown-menu">
         <a href="#planets">Planets</a>
+        <a href="#stars">Types of Stars</a>
         <a href="#worlds">Worlds Beyond</a>
         <a href="#history">Exploration Timeline</a>
       </div>
@@ -256,6 +258,7 @@
       <div class="nav-dropdown-menu">
         <a href="#facts">Mind-Bending Facts</a>
         <a href="#titans">Cosmic Titans &amp; Mysteries</a>
+        <a href="#phenomena">Universal Phenomena</a>
         <a href="#alone">Are We Alone?</a>
         <a href="#gallery">Deep Space Gallery</a>
       </div>
@@ -938,6 +941,34 @@ document.addEventListener('click',e=>{
 });
 document.addEventListener('click',e=>{if(!e.target.closest('.search-container')){results.classList.remove('active');input.value='';}});
 document.addEventListener('mousemove',e=>{const x=(e.clientX/window.innerWidth-0.5)*20,y=(e.clientY/window.innerHeight-0.5)*20;const t=document.querySelector('.hero-title');if(t)t.style.transform=`translate(${x*0.3}px,${y*0.3}px)`;});
+// Nav dropdowns — JS-controlled with generous close delay
+(function(){
+  const dropdowns=document.querySelectorAll('.nav-dropdown');
+  dropdowns.forEach(dd=>{
+    let closeTimer=null;
+    function openMenu(){
+      clearTimeout(closeTimer);
+      dropdowns.forEach(other=>{if(other!==dd)other.classList.remove('open');});
+      dd.classList.add('open');
+    }
+    function scheduleClose(){
+      closeTimer=setTimeout(()=>dd.classList.remove('open'),400);
+    }
+    dd.addEventListener('mouseenter',openMenu);
+    dd.addEventListener('mouseleave',scheduleClose);
+    dd.querySelector('.nav-dropdown-menu').addEventListener('mouseenter',()=>clearTimeout(closeTimer));
+    dd.querySelector('.nav-dropdown-menu').addEventListener('mouseleave',scheduleClose);
+    dd.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+      clearTimeout(closeTimer);
+      dd.classList.remove('open');
+    }));
+  });
+  document.addEventListener('click',e=>{
+    if(!e.target.closest('.nav-dropdown'))
+      dropdowns.forEach(dd=>dd.classList.remove('open'));
+  });
+})();
+
 // Auto-update copyright year
 const fy=document.getElementById('footerYear');
 if(fy)fy.textContent=new Date().getFullYear();
