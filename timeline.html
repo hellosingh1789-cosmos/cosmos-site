@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>History of Space Exploration — COSMOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+:root{--void:#02030a;--deep:#070b18;--star-white:#e8eaf5;--gold:#f0c040;--plasma:#4fc3f7;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--void);color:var(--star-white);font-family:'Space Mono',monospace;overflow-x:hidden;cursor:crosshair;}
+#starfield{position:fixed;inset:0;z-index:0;pointer-events:none;}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 3rem;background:linear-gradient(to bottom,rgba(2,3,10,0.95),transparent);backdrop-filter:blur(4px);}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.3em;color:var(--gold);text-decoration:none;}
+.nav-back{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(232,234,245,0.5);text-decoration:none;border:1px solid rgba(232,234,245,0.15);padding:0.5rem 1.2rem;transition:color 0.3s,border-color 0.3s;}
+.nav-back:hover{color:var(--plasma);border-color:var(--plasma);}
+.page-header{position:relative;z-index:1;padding:10rem 3rem 5rem;text-align:center;}
+.page-label{font-size:0.6rem;letter-spacing:0.5em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;display:flex;align-items:center;justify-content:center;gap:1rem;}
+.page-label::before,.page-label::after{content:'';width:40px;height:1px;background:var(--gold);}
+.page-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,9vw,8rem);letter-spacing:0.02em;line-height:0.9;margin-bottom:1.5rem;}
+.page-title .accent{color:var(--plasma);}
+.page-subtitle{font-family:'Crimson Pro',serif;font-size:1.15rem;font-style:italic;color:rgba(232,234,245,0.5);max-width:560px;margin:0 auto;line-height:1.8;}
+.timeline-page{position:relative;z-index:1;padding:2rem 3rem 8rem;max-width:1100px;margin:0 auto;}
+.timeline-spine{position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,rgba(79,195,247,0.2) 5%,rgba(79,195,247,0.2) 95%,transparent);transform:translateX(-50%);}
+.event{display:grid;grid-template-columns:1fr 70px 1fr;align-items:start;margin-bottom:5rem;opacity:0;transform:translateY(28px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.event.visible{opacity:1;transform:translateY(0);}
+.event:nth-child(odd) .event-content{grid-column:1;grid-row:1;margin-right:2rem;}
+.event:nth-child(odd) .event-node{grid-column:2;grid-row:1;}
+.event:nth-child(odd) .event-img-col{grid-column:3;grid-row:1;margin-left:2rem;}
+.event:nth-child(even) .event-content{grid-column:3;grid-row:1;margin-left:2rem;}
+.event:nth-child(even) .event-node{grid-column:2;grid-row:1;}
+.event:nth-child(even) .event-img-col{grid-column:1;grid-row:1;margin-right:2rem;}
+.event-node{display:flex;flex-direction:column;align-items:center;padding-top:0.6rem;gap:0.5rem;}
+.event-dot{width:14px;height:14px;background:var(--gold);border-radius:50%;box-shadow:0 0 14px var(--gold),0 0 30px rgba(240,192,64,0.25);flex-shrink:0;}
+.event-year-label{font-family:'Bebas Neue',sans-serif;font-size:0.8rem;letter-spacing:0.2em;color:var(--gold);}
+.event-content{background:var(--deep);border:1px solid rgba(232,234,245,0.06);padding:1.8rem 2rem;transition:border-color 0.3s;}
+.event-content:hover{border-color:rgba(79,195,247,0.2);}
+.event-tag{font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--plasma);margin-bottom:0.4rem;}
+.event-title{font-family:'Bebas Neue',sans-serif;font-size:1.55rem;letter-spacing:0.05em;line-height:1.05;margin-bottom:0.9rem;}
+.event-desc{font-family:'Crimson Pro',serif;font-size:1rem;color:rgba(232,234,245,0.65);line-height:1.85;}
+.event-img-col{display:flex;flex-direction:column;}
+.event-img-col img{width:100%;height:210px;object-fit:cover;display:block;filter:brightness(0.82) saturate(1.1);transition:filter 0.4s,transform 0.4s;}
+.event-img-col img:hover{filter:brightness(1) saturate(1.3);transform:scale(1.02);}
+.event-img-col{overflow:hidden;position:relative;}
+.event-img-cap{font-size:0.52rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(232,234,245,0.3);padding:0.45rem 0.8rem;background:rgba(7,11,24,0.9);}
+.stats-bar{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.04);max-width:1100px;margin:0 auto 6rem;}
+.stat-cell{background:var(--deep);padding:2.5rem 2rem;text-align:center;}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--plasma);line-height:1;}
+.stat-lbl{font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,234,245,0.4);margin-top:0.4rem;}
+footer{position:relative;z-index:1;padding:2rem 3rem;border-top:1px solid rgba(232,234,245,0.06);display:flex;justify-content:space-between;align-items:center;}
+.footer-brand{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.3em;color:var(--gold);opacity:0.4;text-decoration:none;}
+.footer-copy{font-size:0.55rem;letter-spacing:0.2em;color:rgba(232,234,245,0.2);text-transform:uppercase;}
+@media(max-width:900px){
+  .timeline-spine{left:28px;}
+  .event{grid-template-columns:54px 1fr;}
+  .event:nth-child(odd) .event-content,.event:nth-child(even) .event-content{grid-column:2;grid-row:1;margin-left:1rem;margin-right:0;}
+  .event:nth-child(odd) .event-node,.event:nth-child(even) .event-node{grid-column:1;grid-row:1;}
+  .event:nth-child(odd) .event-img-col,.event:nth-child(even) .event-img-col{grid-column:2;grid-row:2;margin-left:1rem;margin-right:0;margin-top:1rem;}
+  .stats-bar{grid-template-columns:1fr 1fr;}
+  nav{padding:1rem 1.5rem;}
+  .timeline-page,.page-header{padding-left:1.5rem;padding-right:1.5rem;}
+}
+@media(max-width:560px){.stats-bar{grid-template-columns:1fr;}footer{flex-direction:column;gap:0.8rem;text-align:center;}}
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo">COSMOS</a>
+  <a href="index.html" class="nav-back">&#8592; Back to COSMOS</a>
+</nav>
+
+<header class="page-header">
+  <p class="page-label">Human Exploration</p>
+  <h1 class="page-title">REACHING FOR<br>THE <span class="accent">STARS</span></h1>
+  <p class="page-subtitle">From the first beeps of Sputnik to the infrared eyes of the James Webb Space Telescope &mdash; the complete chronicle of humanity&rsquo;s journey into the cosmos.</p>
+</header>
+
+<div class="timeline-page">
+  <div class="timeline-spine"></div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">USSR &mdash; October 4, 1957</div>
+      <div class="event-title">Sputnik 1 &mdash; The Space Age Begins</div>
+      <p class="event-desc">On October 4, 1957, the Soviet Union launched the world's first artificial satellite &mdash; a polished aluminium sphere barely 58 cm across &mdash; into low Earth orbit aboard an R-7 rocket. Its rhythmic radio beeps, detectable by amateur radios worldwide, sent a shockwave through Western governments and the general public alike. The Space Age had begun, and with it one of the most consequential technological competitions in human history.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">1957</div></div>
+    <div class="event-img-col">
+      <img src="timeline_sputnik.jpg" alt="Sputnik 1 satellite">
+      <div class="event-img-cap">Sputnik 1 replica &mdash; NASA/Smithsonian</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">USSR &mdash; April 12, 1961</div>
+      <div class="event-title">Yuri Gagarin &mdash; First Human in Space</div>
+      <p class="event-desc">Cosmonaut Yuri Gagarin became the first human to travel into space aboard Vostok 1, completing one full orbit of Earth in 108 minutes before parachuting to the Soviet steppe. His single exclamation at liftoff &mdash; "Poyekhali!" (Let&rsquo;s go!) &mdash; became one of the most iconic utterances of the 20th century. Gagarin&rsquo;s flight proved that humans could survive in the vacuum of space and opened the door to all crewed missions that followed.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">1961</div></div>
+    <div class="event-img-col">
+      <img src="timeline_gagarin.jpg" alt="Yuri Gagarin">
+      <div class="event-img-cap">Yuri Gagarin &mdash; Soviet State Archives</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">USSR &mdash; March 18, 1965</div>
+      <div class="event-title">Alexei Leonov &mdash; First Spacewalk</div>
+      <p class="event-desc">Alexei Leonov floated out of the Voskhod 2 spacecraft and became the first human to perform a spacewalk (EVA), spending 12 minutes outside tethered by a 5-metre cord with only a spacesuit between him and the void. His suit inflated in the vacuum, making re-entry nearly impossible &mdash; he narrowly survived by venting suit pressure, a decision that nearly caused decompression sickness. The feat proved humans could work outside spacecraft, a capability essential to every Moon mission, space station, and satellite repair that followed.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">1965</div></div>
+    <div class="event-img-col">
+      <img src="timeline_spacewalk.jpg" alt="First spacewalk">
+      <div class="event-img-cap">Leonov EVA &mdash; Roscosmos</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">USA &mdash; July 20, 1969</div>
+      <div class="event-title">Apollo 11 &mdash; First Humans on the Moon</div>
+      <p class="event-desc">Neil Armstrong and Buzz Aldrin became the first humans to walk on another world, landing the Eagle lunar module in the Sea of Tranquility while Michael Collins orbited above in Columbia. Armstrong&rsquo;s words &mdash; "one small step for man, one giant leap for mankind" &mdash; were broadcast live to an estimated 600 million viewers worldwide, roughly one fifth of the global population at the time. The mission fulfilled President Kennedy&rsquo;s 1961 challenge to land a man on the Moon before the decade&rsquo;s end, and remains the defining achievement of the Space Age.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">1969</div></div>
+    <div class="event-img-col">
+      <img src="timeline_apollo11.jpg" alt="Buzz Aldrin on the Moon">
+      <div class="event-img-cap">Buzz Aldrin, Sea of Tranquility &mdash; NASA</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">USA &mdash; March 3, 1972</div>
+      <div class="event-title">Pioneer 10 &mdash; First Mission to the Outer Solar System</div>
+      <p class="event-desc">Pioneer 10 became the first spacecraft to traverse the asteroid belt and fly past Jupiter, sending back the first close-up images of the giant planet in December 1973 before continuing outward to become the first human-made object to leave the inner solar system. It carries a gold-anodized aluminium plaque depicting a man, a woman, the solar system&rsquo;s position, and a map of interstellar hydrogen &mdash; a message to any intelligent life that might find it in the distant future. Pioneer 10 sent its last detectable signal to Earth in January 2003 when it was 12 billion kilometres away.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">1972</div></div>
+    <div class="event-img-col">
+      <img src="timeline_pioneer.jpg" alt="Pioneer 10 spacecraft">
+      <div class="event-img-cap">Pioneer 10 plaque &mdash; NASA/ARC</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">USA &mdash; August/September, 1977</div>
+      <div class="event-title">Voyager 1 &amp; 2 &mdash; The Grand Tour</div>
+      <p class="event-desc">Launched weeks apart in 1977, the twin Voyager probes exploited a rare planetary alignment to fly past Jupiter (1979), Saturn (1980&ndash;81), Uranus (1986), and Neptune (1989), collectively discovering active volcanoes on Io, ring systems around Uranus and Neptune, and dozens of new moons. Voyager 1 crossed into interstellar space in August 2012 &mdash; the first human-made object to leave the solar system &mdash; and both probes continue transmitting data from beyond the heliopause after nearly 50 years of operation. The Pale Blue Dot photograph of Earth taken by Voyager 1 in 1990 at Carl Sagan&rsquo;s request remains one of the most profound images ever made.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">1977</div></div>
+    <div class="event-img-col">
+      <img src="timeline_voyager.jpg" alt="Voyager spacecraft">
+      <div class="event-img-cap">Voyager 1 &mdash; NASA/JPL-Caltech</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">USA &mdash; April 12, 1981</div>
+      <div class="event-title">Space Shuttle Columbia &mdash; Reusable Spaceflight Begins</div>
+      <p class="event-desc">On the 20th anniversary of Gagarin&rsquo;s flight, Space Shuttle Columbia made its maiden voyage as the world&rsquo;s first reusable crewed spacecraft, piloted by John Young and Robert Crippen. Over 30 years and 135 missions, the Shuttle program deployed the Hubble Space Telescope, helped assemble the ISS, and carried 355 people into orbit, redefining spaceflight as an ongoing operation rather than a series of historic firsts. Two crews were lost &mdash; Challenger (1986) and Columbia (2003) &mdash; tragedies that reshaped NASA&rsquo;s safety culture and ultimately led to the Shuttle&rsquo;s retirement in 2011.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">1981</div></div>
+    <div class="event-img-col">
+      <img src="timeline_shuttle.jpg" alt="Space Shuttle Columbia launch">
+      <div class="event-img-cap">STS-1 Columbia &mdash; NASA</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">NASA &mdash; April 24, 1990</div>
+      <div class="event-title">Hubble Space Telescope &mdash; The Eye Above the Atmosphere</div>
+      <p class="event-desc">Launched aboard Space Shuttle Discovery, the Hubble Space Telescope became the most scientifically productive astronomical instrument in history despite an initially blurry mirror caused by a manufacturing error of just 2.2 microns. A daring 1993 servicing mission corrected the optics, and Hubble went on to photograph galaxies 13 billion light-years away, measure the age of the universe, discover the accelerating expansion driven by dark energy, and capture images of nebulae and stellar nurseries that became cultural icons. Over 1.5 million observations from Hubble have contributed to more than 21,000 peer-reviewed scientific papers.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">1990</div></div>
+    <div class="event-img-col">
+      <img src="timeline_hubble.jpg" alt="Hubble Space Telescope">
+      <div class="event-img-cap">Hubble deployment &mdash; NASA</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">Switzerland/USA &mdash; October 6, 1995</div>
+      <div class="event-title">51 Pegasi b &mdash; First Exoplanet Around a Sun-Like Star</div>
+      <p class="event-desc">Astronomers Michel Mayor and Didier Queloz announced the discovery of 51 Pegasi b &mdash; the first confirmed exoplanet orbiting a Sun-like star &mdash; detected via the radial velocity method using the ELODIE spectrograph at the Haute-Provence Observatory in France. The planet was a "hot Jupiter," a gas giant completing an orbit in just 4.2 days, a configuration theorists had thought physically impossible, and its discovery fundamentally challenged our models of planetary formation. Mayor and Queloz received the Nobel Prize in Physics in 2019; their discovery directly inspired the Kepler mission and the detection of over 5,600 confirmed planets since.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">1995</div></div>
+    <div class="event-img-col">
+      <img src="timeline_exoplanet.jpg" alt="Exoplanet 51 Pegasi b">
+      <div class="event-img-cap">Hot Jupiter artist impression &mdash; ESO/L. Cal&ccedil;ada</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">International &mdash; November 20, 1998</div>
+      <div class="event-title">International Space Station &mdash; Construction Begins</div>
+      <p class="event-desc">Russia launched the Zarya module on November 20, 1998, beginning the largest and most complex construction project ever undertaken in space. The ISS involved contributions from 15 nations, required over 40 assembly flights across 13 years, and used more than 1,500 hours of spacewalks to assemble its pressurised volume larger than a six-bedroom house. It has been continuously inhabited since November 2, 2000 &mdash; hosting over 270 people from 20 countries &mdash; and serves as both an international research laboratory and a symbol that former adversaries can collaborate peacefully in the exploration of space.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">1998</div></div>
+    <div class="event-img-col">
+      <img src="timeline_iss.jpg" alt="International Space Station">
+      <div class="event-img-cap">ISS from Shuttle &mdash; NASA</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">NASA &mdash; January, 2004</div>
+      <div class="event-title">Spirit &amp; Opportunity &mdash; Ancient Water on Mars</div>
+      <p class="event-desc">NASA&rsquo;s twin Mars Exploration Rovers landed on opposite sides of Mars for missions planned to last 90 Martian days; Spirit operated for over 6 years before becoming stuck, and Opportunity shattered expectations by surviving nearly 15 years and travelling 45.16 km before a global dust storm ended its mission in June 2018. Together they confirmed beyond doubt that ancient Mars had liquid water on its surface, finding evidence of ancient shorelines, lake beds, and water-altered minerals at both landing sites. Their discoveries directly motivated the more sophisticated Curiosity and Perseverance missions and the ongoing search for ancient Martian life.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">2004</div></div>
+    <div class="event-img-col">
+      <img src="timeline_rovers.jpg" alt="Mars Exploration Rovers">
+      <div class="event-img-cap">Opportunity rover tracks &mdash; NASA/JPL</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">NASA &mdash; January 19, 2006</div>
+      <div class="event-title">New Horizons &mdash; A World Revealed at the Edge of the Solar System</div>
+      <p class="event-desc">Launched in January 2006, New Horizons was the fastest spacecraft ever built at liftoff, hurtling toward the outer solar system at over 58,000 km/h. On July 14, 2015, it flew past Pluto at a closest approach of 12,500 km, returning the first high-resolution images of the dwarf planet and its moons &mdash; revealing a world of stunning geological complexity, including the heart-shaped nitrogen ice plain Tombaugh Regio, towering mountains of water ice, a complex atmosphere, and possible cryovolcanism. The mission transformed our understanding of Pluto from a vague telescopic dot to a living, geologically active world unlike anything previously imagined.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">2006</div></div>
+    <div class="event-img-col">
+      <img src="timeline_newhorizons.jpg" alt="New Horizons Pluto flyby">
+      <div class="event-img-cap">Pluto&rsquo;s heart &mdash; NASA/JHUAPL/SwRI</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">NASA &mdash; August 6, 2012</div>
+      <div class="event-title">Curiosity &mdash; An Ancient Habitable Lake on Mars</div>
+      <p class="event-desc">NASA&rsquo;s Curiosity rover made a dramatic "seven minutes of terror" sky crane landing inside Gale Crater, and in its first year confirmed that the crater was once an ancient lake with fresh water and all the chemical ingredients necessary to support microbial life &mdash; the first direct evidence of a Martian environment that could have been habitable. Still operational over a decade later, Curiosity has climbed the 5 km foothills of Mount Sharp, detected complex organic molecules in ancient rock, measured radiation levels relevant to future crewed missions, and directly paved the scientific path for the Perseverance mission. It remains the most capable Mars surface laboratory ever deployed.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">2012</div></div>
+    <div class="event-img-col">
+      <img src="timeline_curiosity.jpg" alt="Curiosity rover on Mars">
+      <div class="event-img-cap">Curiosity self-portrait &mdash; NASA/JPL-Caltech/MSSS</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">SpaceX &mdash; December 21, 2015</div>
+      <div class="event-title">Falcon 9 &mdash; Reusable Orbital Rocketry Arrives</div>
+      <p class="event-desc">SpaceX&rsquo;s Falcon 9 rocket delivered 11 satellites to orbit and then returned its first-stage booster to a precision vertical landing at Cape Canaveral &mdash; the first recovery of an orbital-class rocket booster in history. The achievement fundamentally changed the economics of spaceflight: reusable boosters mean the most expensive part of a rocket can be reflown tens of times rather than discarded in the ocean after a single use. By 2024, SpaceX had reflown first-stage boosters more than 250 times, with some individual boosters flying over 20 missions, slashing launch costs and enabling a new era of commercial, scientific, and eventually crewed spaceflight at unprecedented cadence.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">2015</div></div>
+    <div class="event-img-col">
+      <img src="timeline_falcon9.jpg" alt="Falcon 9 landing">
+      <div class="event-img-cap">Falcon 9 booster landing &mdash; SpaceX</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">LIGO/Virgo &mdash; February 11, 2016</div>
+      <div class="event-title">First Detection of Gravitational Waves</div>
+      <p class="event-desc">Scientists announced the first direct detection of gravitational waves &mdash; ripples in the fabric of spacetime itself &mdash; produced by the merger of two black holes 1.3 billion light-years away, detected on September 14, 2015 by LIGO&rsquo;s twin observatories in Washington and Louisiana. The detection confirmed a century-old prediction of Einstein&rsquo;s general theory of relativity and opened an entirely new observational window on the universe, earning the 2017 Nobel Prize in Physics for Rainer Weiss, Kip Thorne, and Barry Barish. For the first time in history, humanity had not just seen the universe, but heard it &mdash; directly detecting the stretching and squeezing of space itself caused by the most violent events in the cosmos.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">2016</div></div>
+    <div class="event-img-col">
+      <img src="timeline_gravitationalwaves.jpg" alt="LIGO gravitational wave detector">
+      <div class="event-img-cap">LIGO Hanford Observatory &mdash; Caltech/MIT/LIGO Lab</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">Event Horizon Telescope &mdash; April 10, 2019</div>
+      <div class="event-title">First Direct Image of a Black Hole</div>
+      <p class="event-desc">The Event Horizon Telescope collaboration released the first-ever direct image of a black hole: M87*, a 6.5-billion-solar-mass object at the center of galaxy M87, 55 million light-years away, surrounded by a glowing ring of superheated plasma orbiting just outside the event horizon. The image required synchronizing radio telescopes across four continents to create a virtual Earth-sized dish &mdash; one of the greatest feats of scientific coordination in history &mdash; and matched the predictions of Einstein&rsquo;s general relativity with extraordinary precision. In 2022, the same collaboration released the first image of Sagittarius A* &mdash; the 4-million-solar-mass black hole at the center of our own Milky Way.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">2019</div></div>
+    <div class="event-img-col">
+      <img src="timeline_blackhole.jpg" alt="First black hole image M87*">
+      <div class="event-img-cap">M87* &mdash; Event Horizon Telescope Collaboration</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">NASA &mdash; February 18, 2021</div>
+      <div class="event-title">Perseverance &amp; Ingenuity &mdash; First Powered Flight on Mars</div>
+      <p class="event-desc">NASA&rsquo;s Perseverance rover landed in Jezero Crater using a sky crane, carrying the Ingenuity helicopter &mdash; the first powered aircraft ever to fly on another planet. Ingenuity&rsquo;s April 19 flight lasted just 39 seconds and climbed 3 metres, but like the Wright Brothers&rsquo; first flight, it proved controlled powered flight was possible in Mars&rsquo;s thin atmosphere. Perseverance has since confirmed ancient lake sediments and organic molecules in Jezero, collected 23 rock core samples for eventual Earth return, produced breathable oxygen from CO&zwj;&zwj;&#x2082; using the MOXIE experiment, and exceeded its operational lifetime several times over.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">2021</div></div>
+    <div class="event-img-col">
+      <img src="timeline_perseverance.jpg" alt="Perseverance rover and Ingenuity">
+      <div class="event-img-cap">Ingenuity&rsquo;s first flight &mdash; NASA/JPL-Caltech</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">NASA/ESA/CSA &mdash; December 25, 2021</div>
+      <div class="event-title">James Webb Space Telescope &mdash; New Eyes on the Universe</div>
+      <p class="event-desc">Launched on Christmas Day after more than two decades of development and a budget exceeding $10 billion, the James Webb Space Telescope is the largest and most powerful space observatory ever built, observing the universe primarily in infrared light with a 6.5-metre gold-plated mirror that unfurled in space over two weeks after launch. Its first full-colour science images, released in July 2022, revealed galaxies as they appeared just 300 million years after the Big Bang, dissected the atmospheres of exoplanets, and unveiled the hidden stellar nurseries inside molecular clouds with a clarity never before achieved. JWST is already rewriting our understanding of how the first galaxies formed, how stars and planets are born, and what conditions exist on worlds beyond our solar system.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">2021</div></div>
+    <div class="event-img-col">
+      <img src="timeline_jwst.jpg" alt="James Webb Space Telescope">
+      <div class="event-img-cap">JWST first deep field &mdash; NASA/ESA/CSA/STScI</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">NASA &mdash; September 26, 2022</div>
+      <div class="event-title">DART &mdash; Humanity Deflects an Asteroid for the First Time</div>
+      <p class="event-desc">NASA&rsquo;s Double Asteroid Redirection Test spacecraft deliberately collided with the moonlet Dimorphos &mdash; part of the Didymos binary asteroid system &mdash; at 6.6 km/s, marking the first time humanity had intentionally and successfully altered the orbit of a natural solar system body. The impact shortened Dimorphos&rsquo;s orbital period around Didymos by 33 minutes &mdash; far exceeding the 73-second minimum threshold for mission success &mdash; proving that kinetic impactor technology is a viable planetary defense strategy. ESA&rsquo;s Hera mission, launched in 2024, will return to the system to characterise the impact crater in detail and measure the full deflection effect, completing the world&rsquo;s first planetary defense experiment.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">2022</div></div>
+    <div class="event-img-col">
+      <img src="timeline_dart.jpg" alt="DART asteroid impact">
+      <div class="event-img-cap">Dimorphos impact plume &mdash; NASA/JHUAPL</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-content">
+      <div class="event-tag">NASA &mdash; October 14, 2024</div>
+      <div class="event-title">Europa Clipper &mdash; The Search for Life Begins</div>
+      <p class="event-desc">Launched on October 14, 2024 aboard a Falcon Heavy rocket, NASA&rsquo;s Europa Clipper is the largest spacecraft the agency has ever built for a planetary science mission, designed to conduct more than 50 close flybys of Jupiter&rsquo;s ocean moon Europa and assess whether its vast subsurface ocean could support life. Europa&rsquo;s ocean, kept liquid by tidal heating from Jupiter&rsquo;s immense gravity, contains more water than all of Earth&rsquo;s oceans combined and may be in contact with a rocky seafloor warmed by hydrothermal vents &mdash; conditions strikingly similar to the deep-sea environments on Earth where life flourishes without sunlight. If the mission confirms the expected conditions, Europa will become the most scientifically compelling candidate for extraterrestrial life in the solar system and the focus of a future dedicated lander mission.</p>
+    </div>
+    <div class="event-node"><div class="event-dot"></div><div class="event-year-label">2024</div></div>
+    <div class="event-img-col">
+      <img src="timeline_europaclipper.jpg" alt="Europa Clipper spacecraft">
+      <div class="event-img-cap">Europa Clipper &mdash; NASA/JPL-Caltech</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="stats-bar">
+  <div class="stat-cell"><div class="stat-num">67+</div><div class="stat-lbl">Years of Space Exploration</div></div>
+  <div class="stat-cell"><div class="stat-num">600+</div><div class="stat-lbl">Humans Have Flown to Space</div></div>
+  <div class="stat-cell"><div class="stat-num">270+</div><div class="stat-lbl">ISS Residents Since 2000</div></div>
+  <div class="stat-cell"><div class="stat-num">5,600+</div><div class="stat-lbl">Confirmed Exoplanets Found</div></div>
+</div>
+
+<footer>
+  <a href="index.html" class="footer-brand">COSMOS</a>
+  <p class="footer-copy">&copy; <span id="yr"></span> COSMOS &mdash; An exploration of the universe</p>
+</footer>
+
+<script>
+const cv=document.getElementById('starfield');
+const cx=cv.getContext('2d');
+let W,H,stars=[];
+function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+function initStars(){stars=[];for(let i=0;i<280;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+0.1,a:Math.random()*0.8+0.1,tp:Math.random()*Math.PI*2,ts:Math.random()*0.008+0.002});}
+function drawStars(t){cx.clearRect(0,0,W,H);stars.forEach(s=>{s.tp+=s.ts;const a=s.a*(0.4+0.6*(0.5+0.5*Math.sin(s.tp)));cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);cx.fillStyle=`rgba(232,234,245,${a})`;cx.fill();});requestAnimationFrame(drawStars);}
+resize();initStars();window.addEventListener('resize',()=>{resize();initStars();});requestAnimationFrame(drawStars);
+
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});
+},{threshold:0.08});
+document.querySelectorAll('.event').forEach(el=>io.observe(el));
+
+document.getElementById('yr').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
