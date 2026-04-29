@@ -314,6 +314,108 @@
   </div>
 </section>
 
+<!-- ── Interactive Solar System Banner ───────────────────── -->
+<section class="solar-banner-section">
+  <div class="solar-banner-bg">
+    <canvas id="banner-canvas"></canvas>
+  </div>
+  <div class="solar-banner-content">
+    <p class="solar-banner-label">Interactive Experience</p>
+    <h2 class="solar-banner-title">EXPLORE THE<br>SOLAR SYSTEM</h2>
+    <p class="solar-banner-desc">Click each planet to discover its secrets. Watch all eight worlds orbit the Sun in real time.</p>
+    <a href="solar-system.html" class="solar-banner-btn">
+      <span>Launch Experience</span>
+      <span class="solar-banner-arrow">&#8599;</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .solar-banner-section{position:relative;overflow:hidden;height:340px;display:flex;align-items:center;justify-content:center;margin-top:6rem;margin-bottom:6rem;}
+  .solar-banner-bg{position:absolute;inset:0;z-index:0;}
+  #banner-canvas{width:100%;height:100%;display:block;background:transparent;}
+  .solar-banner-content{position:relative;z-index:2;text-align:center;padding:2rem;}
+  .solar-banner-label{font-size:0.55rem;letter-spacing:0.45em;text-transform:uppercase;color:var(--plasma);margin-bottom:0.8rem;}
+  .solar-banner-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,6vw,4.5rem);letter-spacing:0.04em;line-height:0.95;margin-bottom:1.2rem;color:var(--star-white);}
+  .solar-banner-desc{font-family:'Crimson Pro',serif;font-size:1rem;color:rgba(232,234,245,0.5);max-width:400px;margin:0 auto 2rem;line-height:1.7;}
+  .solar-banner-btn{display:inline-flex;align-items:center;gap:0.8rem;font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.2em;color:var(--gold);text-decoration:none;border:1px solid rgba(240,192,64,0.45);padding:0.85rem 2.2rem;transition:background 0.3s,border-color 0.3s,color 0.3s;}
+  .solar-banner-btn:hover{background:rgba(240,192,64,0.08);border-color:var(--gold);color:#fff8d6;}
+  .solar-banner-arrow{font-size:1rem;transition:transform 0.3s;}
+  .solar-banner-btn:hover .solar-banner-arrow{transform:translate(3px,-3px);}
+</style>
+
+<script>
+(function(){
+  const bc = document.getElementById('banner-canvas');
+  if(!bc) return;
+  const bx = bc.getContext('2d');
+  const bPlanets = [
+    {r:5, orbit:60,  speed:0.022, color:'#b5b5b0', angle:0.5},
+    {r:7, orbit:100, speed:0.016, color:'#e8cda0', angle:1.8},
+    {r:7, orbit:145, speed:0.012, color:'#4f9be8', angle:3.2},
+    {r:5, orbit:190, speed:0.009, color:'#c1440e', angle:4.5},
+    {r:18,orbit:255, speed:0.006, color:'#c88b3a', angle:0.9, rings:true},
+    {r:14,orbit:330, speed:0.004, color:'#e4d191', angle:2.2},
+    {r:10,orbit:395, speed:0.003, color:'#7de8e8', angle:5.1},
+    {r:9, orbit:455, speed:0.002, color:'#3f54ba', angle:1.2},
+  ];
+  let bW, bH, bCx, bCy;
+  function resizeBanner(){
+    bW = bc.width  = bc.offsetWidth;
+    bH = bc.height = bc.offsetHeight;
+    bCx = bW/2; bCy = bH/2;
+  }
+  resizeBanner();
+  window.addEventListener('resize', resizeBanner);
+
+  function hexToRgb(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];}
+  function lighten(h,a){const[r,g,b]=hexToRgb(h);return`rgb(${Math.min(r+a,255)},${Math.min(g+a,255)},${Math.min(b+a,255)})`;}
+  function darken(h,a){const[r,g,b]=hexToRgb(h);return`rgb(${Math.max(r-a,0)},${Math.max(g-a,0)},${Math.max(b-a,0)})`;}
+
+  const bStars = Array.from({length:180},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.1+0.2,a:Math.random()*0.7+0.1}));
+
+  function bLoop(){
+    bx.clearRect(0,0,bW,bH);
+
+    const scale = Math.min(bW,bH)/2*0.92 / bPlanets[bPlanets.length-1].orbit;
+
+    bPlanets.forEach(p=>{
+      bx.beginPath(); bx.arc(bCx,bCy,p.orbit*scale,0,Math.PI*2);
+      bx.strokeStyle='rgba(232,234,245,0.05)'; bx.lineWidth=0.8;
+      bx.setLineDash([3,7]); bx.stroke(); bx.setLineDash([]);
+    });
+
+    const sg = bx.createRadialGradient(bCx,bCy,0,bCx,bCy,22);
+    sg.addColorStop(0,'#fff8d0'); sg.addColorStop(0.4,'#f0c040');
+    sg.addColorStop(0.75,'#e06000'); sg.addColorStop(1,'rgba(200,60,0,0)');
+    bx.beginPath(); bx.arc(bCx,bCy,22,0,Math.PI*2);
+    bx.fillStyle=sg; bx.fill();
+
+    bPlanets.forEach(p=>{
+      p.angle += p.speed;
+      const x=bCx+Math.cos(p.angle)*p.orbit*scale;
+      const y=bCy+Math.sin(p.angle)*p.orbit*scale;
+      if(p.rings){
+        bx.save(); bx.translate(x,y); bx.scale(1,0.32);
+        const rg=bx.createRadialGradient(0,0,p.r*1.4,0,0,p.r*2.2);
+        rg.addColorStop(0,'rgba(228,209,145,0.45)');
+        rg.addColorStop(1,'rgba(228,209,145,0)');
+        bx.beginPath(); bx.arc(0,0,p.r*2.2,0,Math.PI*2);
+        bx.fillStyle=rg; bx.fill(); bx.restore();
+      }
+      const pg=bx.createRadialGradient(x-p.r*0.3,y-p.r*0.3,p.r*0.1,x,y,p.r);
+      pg.addColorStop(0,lighten(p.color,40));
+      pg.addColorStop(0.6,p.color);
+      pg.addColorStop(1,darken(p.color,40));
+      bx.beginPath(); bx.arc(x,y,p.r,0,Math.PI*2);
+      bx.fillStyle=pg; bx.fill();
+    });
+    requestAnimationFrame(bLoop);
+  }
+  requestAnimationFrame(bLoop);
+})();
+</script>
+
 <section class="section" id="planets">
   <p class="section-label">Solar System</p>
   <h2 class="section-title">THE EIGHT WORLDS</h2>

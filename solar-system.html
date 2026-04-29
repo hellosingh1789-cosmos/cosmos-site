@@ -175,6 +175,10 @@
       margin-bottom: 1.5rem;
     }
 
+    .panel-body { padding: 1.5rem; overflow-y: auto; max-height: 70vh; }
+    .panel-bullets { list-style: none; padding: 0; margin: 0 0 1.2rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    .panel-bullets li { font-family: 'Crimson Pro', serif; font-size: 0.95rem; color: rgba(232,234,245,0.72); line-height: 1.7; padding-left: 1.2rem; position: relative; }
+    .panel-bullets li::before { content: '\2014'; position: absolute; left: 0; color: #f0c040; font-size: 0.9rem; }
     .panel-stats {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -269,6 +273,7 @@
       transition: border-color 0.3s, color 0.3s;
     }
     .pause-btn:hover { border-color: var(--plasma); color: var(--plasma); }
+    .back-btn:hover { color: var(--plasma) !important; border-color: rgba(79,195,247,0.4) !important; }
 
     /* ─── Mobile ────────────────────────────────────────────── */
     @media (max-width: 600px) {
@@ -295,7 +300,10 @@
   <!-- Header -->
   <header>
     <a href="index.html" class="logo">COSMOS</a>
-    <span class="header-hint">Click any planet to explore</span>
+    <div style="display:flex;align-items:center;gap:1.5rem;">
+      <span class="header-hint">Click any planet to explore</span>
+      <a href="index.html" class="back-btn" style="font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,234,245,0.45);text-decoration:none;border:1px solid rgba(232,234,245,0.12);padding:0.45rem 1rem;transition:color 0.3s,border-color 0.3s;pointer-events:all;white-space:nowrap;">&#8592; Back to COSMOS</a>
+    </div>
   </header>
 
   <!-- Solar system canvas -->
@@ -316,7 +324,8 @@
       </div>
       <div class="panel-name"  id="panel-name"></div>
       <div class="panel-type"  id="panel-type"></div>
-      <p   class="panel-desc"  id="panel-desc"></p>
+      <ul  class="panel-bullets" id="panel-bullets"></ul>
+      <div class="panel-desc"  id="panel-desc"></div>
       <div class="panel-stats" id="panel-stats"></div>
     </div>
   </aside>
@@ -340,56 +349,56 @@
         name: "Mercury", type: "Terrestrial Planet",
         color: "#b5b5b0", glowColor: "#b5b5b0",
         radius: 5, orbitRadius: 90, speed: 0.048,
-        desc: "The swiftest world — scorched by day, frozen by night. Its 88-day year is the shortest in the solar system.",
+        desc: "<p>The swiftest world — scorched by day, frozen by night. Its 88-day year is the shortest in the solar system.</p>",
         stats: [{ val:"88 days",label:"Orbit Period"},{val:"4,879 km",label:"Diameter"},{val:"0",label:"Moons"},{val:"430°C",label:"Max Temp"}],
       },
       {
         name: "Venus", type: "Terrestrial Planet",
         color: "#e8cda0", glowColor: "#e8cda0",
         radius: 8, orbitRadius: 140, speed: 0.035,
-        desc: "A hellish world shrouded in thick sulfuric acid clouds. The hottest planet despite not being closest to the Sun.",
+        desc: "<p>A hellish world shrouded in thick sulfuric acid clouds. The hottest planet despite not being closest to the Sun.</p>",
         stats: [{ val:"225 days",label:"Orbit Period"},{val:"12,104 km",label:"Diameter"},{val:"0",label:"Moons"},{val:"465°C",label:"Avg Temp"}],
       },
       {
         name: "Earth", type: "Terrestrial Planet",
         color: "#4f9be8", glowColor: "#4f9be8",
         radius: 8.5, orbitRadius: 200, speed: 0.029,
-        desc: "Our pale blue dot — the only known world harboring life. A thin atmospheric shell stands between us and the void.",
+        desc: "<p>Our pale blue dot — the only known world harboring life. A thin atmospheric shell stands between us and the void.</p>",
         stats: [{ val:"365 days",label:"Orbit Period"},{val:"12,742 km",label:"Diameter"},{val:"1",label:"Moons"},{val:"15°C",label:"Avg Temp"}],
       },
       {
         name: "Mars", type: "Terrestrial Planet",
         color: "#c1440e", glowColor: "#c1440e",
         radius: 6, orbitRadius: 265, speed: 0.024,
-        desc: "The Red Planet — a cold desert world with the solar system's tallest volcano and a canyon that dwarfs the Grand Canyon.",
+        desc: "<p>The Red Planet — a cold desert world with the solar system's tallest volcano and a canyon that dwarfs the Grand Canyon.</p>",
         stats: [{ val:"687 days",label:"Orbit Period"},{val:"6,779 km",label:"Diameter"},{val:"2",label:"Moons"},{val:"-60°C",label:"Avg Temp"}],
       },
       {
         name: "Jupiter", type: "Gas Giant",
         color: "#c88b3a", glowColor: "#c88b3a",
         radius: 26, orbitRadius: 360, speed: 0.013,
-        desc: "King of the planets. Its Great Red Spot — a storm larger than Earth — has raged for over 350 years.",
+        desc: "<p>King of the planets. Its Great Red Spot — a storm larger than Earth — has raged for over 350 years.</p>",
         stats: [{ val:"11.9 yrs",label:"Orbit Period"},{val:"139,820 km",label:"Diameter"},{val:"95",label:"Moons"},{val:"-110°C",label:"Cloud Temp"}],
       },
       {
         name: "Saturn", type: "Gas Giant",
         color: "#e4d191", glowColor: "#e4d191",
         radius: 22, orbitRadius: 460, speed: 0.0096, hasRings: true,
-        desc: "The jewel of the solar system. Saturn's iconic rings are made of ice and rock, stretching 282,000 km but only metres thick.",
+        desc: "<p>The jewel of the solar system. Saturn's iconic rings are made of ice and rock, stretching 282,000 km but only metres thick.</p>",
         stats: [{ val:"29.5 yrs",label:"Orbit Period"},{val:"116,460 km",label:"Diameter"},{val:"146",label:"Moons"},{val:"-140°C",label:"Cloud Temp"}],
       },
       {
         name: "Uranus", type: "Ice Giant",
         color: "#7de8e8", glowColor: "#7de8e8",
         radius: 14, orbitRadius: 555, speed: 0.0068,
-        desc: "The tilted giant — Uranus rotates on its side at 98°, essentially rolling around the Sun like a bowling ball.",
+        desc: "<p>The tilted giant — Uranus rotates on its side at 98°, essentially rolling around the Sun like a bowling ball.</p>",
         stats: [{ val:"84 yrs",label:"Orbit Period"},{val:"50,724 km",label:"Diameter"},{val:"27",label:"Moons"},{val:"-195°C",label:"Avg Temp"}],
       },
       {
         name: "Neptune", type: "Ice Giant",
         color: "#3f54ba", glowColor: "#4f64ca",
         radius: 13, orbitRadius: 640, speed: 0.0054,
-        desc: "The windiest world — Neptune's storms reach 2,100 km/h. Its moon Triton orbits backwards and is slowly spiraling inward.",
+        desc: "<p>The windiest world — Neptune's storms reach 2,100 km/h. Its moon Triton orbits backwards and is slowly spiraling inward.</p>",
         stats: [{ val:"165 yrs",label:"Orbit Period"},{val:"49,244 km",label:"Diameter"},{val:"16",label:"Moons"},{val:"-200°C",label:"Avg Temp"}],
       },
     ];
@@ -488,7 +497,7 @@
       const scale = orbitScale();
       ctx.beginPath();
       ctx.arc(cx, cy, planet.orbitRadius * scale, 0, Math.PI * 2);
-      ctx.strokeStyle = hoveredPlanet === planet ? 'rgba(79,195,247,0.22)' : 'rgba(232,234,245,0.05)';
+      ctx.strokeStyle = hoveredPlanet === planet ? 'rgba(79,195,247,0.22)' : 'rgba(232,234,245,0.12)';
       ctx.lineWidth   = hoveredPlanet === planet ? 1.5 : 0.8;
       ctx.setLineDash([3, 7]);
       ctx.stroke();
@@ -568,8 +577,28 @@
     const panelName  = document.getElementById('panel-name');
     const panelType  = document.getElementById('panel-type');
     const panelDesc  = document.getElementById('panel-desc');
-    const panelStats = document.getElementById('panel-stats');
-    const panelSphere= document.getElementById('panel-sphere');
+    const panelStats   = document.getElementById('panel-stats');
+    const panelSphere  = document.getElementById('panel-sphere');
+    const panelBullets = document.getElementById('panel-bullets');
+
+    const SUN = {
+      name: "The Sun",
+      type: "G-Type Main-Sequence Star",
+      color: "#f0c040",
+      glowColor: "#f0c040",
+      bullets: [
+        "Contains 99.86% of all the mass in the solar system — over 1.3 million Earths could fit inside it.",
+        "Surface temperature of ~5,500°C, but the corona (outer atmosphere) mysteriously reaches over 1,000,000°C.",
+        "Every second, the Sun converts 600 million tonnes of hydrogen into helium through nuclear fusion."
+      ],
+      desc: "<p>The Sun is the beating heart of our solar system — a colossal sphere of superheated plasma held together by its own immense gravity. At its core, temperatures exceed 15 million °C, where nuclear fusion fuses hydrogen nuclei into helium, releasing the energy that has lit our sky for 4.6 billion years. That energy takes around 100,000 years to travel from the core to the surface, then just 8 minutes to reach Earth.</p><p style='margin-top:1rem;'>The Sun is currently halfway through its life. In roughly 5 billion years it will expand into a red giant, engulfing the inner planets, before shedding its outer layers as a planetary nebula and leaving behind a cooling white dwarf. For now, its solar wind — a constant stream of charged particles — fills the entire solar system, shaping planetary magnetospheres and painting auroras on worlds billions of kilometres away.</p>",
+      stats: [
+        { val: "4.6 Gyr",     label: "Age" },
+        { val: "1,392,700 km",label: "Diameter" },
+        { val: "15,000,000°C",label: "Core Temp" },
+        { val: "~5 Gyr",      label: "Life Remaining" },
+      ]
+    };
 
     function getPlanetPos(i) {
       const scale = orbitScale(), p = PLANETS[i];
@@ -585,6 +614,8 @@
         const { x, y, r } = getPlanetPos(i);
         if (Math.hypot(mx - x, my - y) <= r + 6) return i;
       }
+      // Check sun (radius ~30px)
+      if (Math.hypot(mx - cx, my - cy) <= 34) return 'sun';
       return -1;
     }
 
@@ -593,7 +624,16 @@
       panelTag.textContent  = 'Solar System — ' + planet.type;
       panelName.textContent = planet.name;
       panelType.textContent = planet.type;
-      panelDesc.textContent = planet.desc;
+      // Bullets
+      if (planet.bullets && planet.bullets.length) {
+        panelBullets.innerHTML = planet.bullets.map(b => `<li>${b}</li>`).join('');
+        panelBullets.style.display = 'flex';
+      } else {
+        panelBullets.innerHTML = '';
+        panelBullets.style.display = 'none';
+      }
+      // Desc — support plain text or HTML
+      panelDesc.innerHTML = planet.desc || '';
       const sz = 56;
       panelSphere.style.cssText = `width:${sz}px;height:${sz}px;border-radius:50%;box-shadow:0 0 40px 8px ${planet.glowColor};background:radial-gradient(circle at 35% 35%,${lighten(planet.color,40)},${planet.color} 60%,${darken(planet.color,40)})`;
       panelStats.innerHTML = planet.stats.map(s =>
@@ -615,9 +655,14 @@
     canvas.addEventListener('mousemove', e => {
       const { x, y } = getEventPos(e);
       const idx = hitTest(x, y);
-      hoveredPlanet = idx >= 0 ? PLANETS[idx] : null;
-      canvas.style.cursor = idx >= 0 ? 'pointer' : 'crosshair';
-      if (idx >= 0) {
+      hoveredPlanet = (idx >= 0 && idx !== 'sun') ? PLANETS[idx] : null;
+      canvas.style.cursor = idx !== -1 ? 'pointer' : 'crosshair';
+      if (idx === 'sun') {
+        label.textContent = 'The Sun';
+        label.style.left  = (cx + 36) + 'px';
+        label.style.top   = (cy - 14) + 'px';
+        label.classList.add('visible');
+      } else if (idx >= 0) {
         const pos = getPlanetPos(idx);
         label.textContent = PLANETS[idx].name;
         label.style.left  = (pos.x + 14) + 'px';
@@ -636,13 +681,16 @@
     canvas.addEventListener('click', e => {
       const { x, y } = getEventPos(e);
       const idx = hitTest(x, y);
-      idx >= 0 ? openPanel(PLANETS[idx]) : closePanel();
+      if (idx === 'sun') openPanel(SUN);
+      else if (idx >= 0) openPanel(PLANETS[idx]);
+      else closePanel();
     });
 
     canvas.addEventListener('touchstart', e => {
       const { x, y } = getEventPos(e);
       const idx = hitTest(x, y);
-      if (idx >= 0) { e.preventDefault(); openPanel(PLANETS[idx]); }
+      if (idx === 'sun') { e.preventDefault(); openPanel(SUN); }
+      else if (idx >= 0) { e.preventDefault(); openPanel(PLANETS[idx]); }
     }, { passive: false });
 
     // ─── Speed Control ────────────────────────────────────────────
