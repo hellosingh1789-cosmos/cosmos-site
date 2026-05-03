@@ -259,7 +259,7 @@
       position: relative;
     }
     .panel-bullets li::before {
-      content: '4';
+      content: '—';
       position: absolute;
       left: 0;
       color: #f0c040;
@@ -518,6 +518,12 @@
     let cachedScale = 1;
     let cachedPositions = PLANETS.map(() => ({ x: 0, y: 0, r: 0 }));
 
+    // ── Intro state ──────────────────────────────────────────────
+    let introComplete = false;
+    const planetAlpha = PLANETS.map(() => 0);
+    let introProgress = 0;
+    let sunIntroAlpha = 0;
+
     // Touch drag state
     let touchDrag     = false;
     let touchStartX   = 0, touchStartY = 0;
@@ -595,7 +601,7 @@
         y = Math.random() * H;
         angle = -Math.PI * 0.25 + Math.random() * (Math.PI * 0.5);
       }
-      const speed = 2.8 + Math.random() * 2.5;
+      const speed = 7.5 + Math.random() * 5.0;
       comets.push({
         x, y,
         vx: Math.cos(angle) * speed,
@@ -824,7 +830,10 @@
     }
 
     function drawOrbit(planet) {
-      // Uses pre-cached scale — no recalculation
+      const i = PLANETS.indexOf(planet);
+      const a = introComplete ? 1 : (cachedPositions[i] ? cachedPositions[i].alpha : 0);
+      if (a <= 0) return;
+      ctx.globalAlpha = a;
       ctx.beginPath();
       ctx.arc(cx + viewOffX, cy + viewOffY, planet.orbitRadius * cachedScale, 0, Math.PI * 2);
       const [or, og, ob] = hexToRgb(planet.color);
@@ -835,6 +844,7 @@
       ctx.setLineDash([3, 7]);
       ctx.stroke();
       ctx.setLineDash([]);
+      ctx.globalAlpha = 1;
     }
 
     function drawTrail(planet, i) {
@@ -858,7 +868,9 @@
 
     function drawPlanet(planet, angle, i) {
       // Use pre-cached position — no trig recalculation
-      const { x, y, r } = cachedPositions[i];
+      const { x, y, r, alpha } = cachedPositions[i];
+      if (alpha <= 0) return;
+      ctx.globalAlpha = alpha;
       const isSelected = selectedPlanet === planet;
       const isHovered  = hoveredPlanet  === planet;
 
@@ -898,6 +910,7 @@
         ctx.lineWidth = 1.5;
         ctx.stroke();
       }
+      ctx.globalAlpha = 1; // reset after per-planet alpha
     }
 
     // ─── Planet Texture Painter ──────────────────────────────────────
@@ -1058,12 +1071,59 @@
       ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fillStyle=lg; ctx.fill();
     }
 
+    // ─── Intro Helpers ────────────────────────────────────────────
+    function easeInOut(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+
+    function updateIntro(t) { /* no-op — handled by CSS + setTimeout sequencer */ }
+
+    // ── Intro sequencer ──────────────────────────────────────────
+    function runIntroSequence() {
+      // Step 1: Fade in starfield over 800ms
+      const RAMP_MS = 800, RAMP_STEPS = 40;
+      let step = 0;
+      const starsRamp = setInterval(() => {
+        introProgress = easeInOut(Math.min(++step / RAMP_STEPS, 1));
+        if (step >= RAMP_STEPS) clearInterval(starsRamp);
+      }, RAMP_MS / RAMP_STEPS);
+
+      // Step 2 (900ms): Fade in sun over 700ms
+      setTimeout(() => {
+        const SUN_STEPS = 35;
+        let s = 0;
+        const sunRamp = setInterval(() => {
+          sunIntroAlpha = easeInOut(Math.min(++s / SUN_STEPS, 1));
+          if (s >= SUN_STEPS) clearInterval(sunRamp);
+        }, 700 / SUN_STEPS);
+      }, 600);
+
+      // Step 3 (1700ms): Reveal planets one by one
+      PLANETS.forEach((_, i) => {
+        setTimeout(() => {
+          const P_STEPS = 20;
+          let p = 0;
+          const pRamp = setInterval(() => {
+            planetAlpha[i] = easeInOut(Math.min(++p / P_STEPS, 1));
+            if (p >= P_STEPS) { clearInterval(pRamp); }
+          }, 380 / P_STEPS);
+        }, 1700 + i * 180);
+      });
+
+      // Step 4: Mark complete after last planet finishes
+      const lastDone = 1700 + (PLANETS.length - 1) * 180 + 400;
+      setTimeout(() => { introComplete = true; }, lastDone);
+    }
+
+    setTimeout(runIntroSequence, 50);
+
     // ─── Main Loop ────────────────────────────────────────────────
     let lastTime = 0;
     function loop(ts) {
       const dt = Math.min(ts - lastTime, 50);
       lastTime = ts;
       const t  = ts * 0.001;
+
+      // ── Intro sequence ────────────────────────────────────────
+      updateIntro(t);
 
       // ── Update cached scale once per frame ───────────────────
       cachedScale = computeOrbitScale();
@@ -1079,26 +1139,37 @@
         });
       }
 
-      // Cache positions — computed once, reused by drawOrbit, drawTrail, drawPlanet, hitTest
+      // Cache positions — computed once, reused everywhere
       PLANETS.forEach((p, i) => {
-        const px = cx + viewOffX + Math.cos(angles[i]) * p.orbitRadius * cachedScale;
-        const py = cy + viewOffY + Math.sin(angles[i]) * p.orbitRadius * cachedScale;
-        cachedPositions[i] = { x: px, y: py, r: planetRadius(p) };
-        // Record trail
-        if (!paused) {
+        // During intro, planets slide in from slightly outside their orbit
+        const alpha   = introComplete ? 1 : planetAlpha[i];
+        const slideIn = introComplete ? 1 : (0.7 + 0.3 * alpha); // 0.7→1.0 scale approach
+        const px = cx + viewOffX + Math.cos(angles[i]) * p.orbitRadius * cachedScale * slideIn;
+        const py = cy + viewOffY + Math.sin(angles[i]) * p.orbitRadius * cachedScale * slideIn;
+        cachedPositions[i] = { x: px, y: py, r: planetRadius(p), alpha };
+        // Only record trail once planet is fully visible
+        if (!paused && alpha >= 1) {
           trails[i].push({ x: px, y: py });
           if (trails[i].length > TRAIL_LEN) trails[i].shift();
         }
       });
 
-      // ── Background ───────────────────────────────────────────
+      // ── Background (gated by intro starfield alpha) ───────────
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      ctx.globalAlpha = introComplete ? 1 : introProgress;
       drawStars(t, dt * 0.001);
+      ctx.globalAlpha = 1;
 
       // ── Draw scene ───────────────────────────────────────────
       PLANETS.forEach(p     => drawOrbit(p));
       PLANETS.forEach((p,i) => drawTrail(p, i));
+
+      // Sun with intro alpha
+      ctx.globalAlpha = introComplete ? 1 : sunIntroAlpha;
       drawSun(t);
+      ctx.globalAlpha = 1;
+
+      // Planets with per-planet intro alpha
       PLANETS.forEach((p,i) => drawPlanet(p, angles[i], i));
 
       requestAnimationFrame(loop);
