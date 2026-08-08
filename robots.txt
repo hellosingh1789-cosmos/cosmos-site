@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://galactic.website/sitemap.xml
