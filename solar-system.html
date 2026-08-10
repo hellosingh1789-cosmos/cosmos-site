@@ -3,10 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Solar System — COSMOS</title>
+  <title>Interactive Solar System — Explore All 8 Planets | Galactic</title>
+  <meta name="description" content="Explore an interactive, real-time animated Solar System. Click each planet — Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune — to discover key facts, stats, and descriptions.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://galactic.website/solar-system.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Interactive Solar System — Explore All 8 Planets">
+  <meta property="og:description" content="A real-time animated Solar System where you can click each planet to learn about its size, moons, temperature, and orbit. Includes the Sun, all 8 planets, and Saturn's rings.">
+  <meta property="og:url" content="https://galactic.website/solar-system.html">
+  <meta property="og:site_name" content="Galactic">
+  <meta property="og:image" content="https://galactic.website/gallery_sombrero.jpg">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Interactive Solar System",
+    "url": "https://galactic.website/solar-system.html",
+    "description": "An interactive, real-time animated Solar System visualization. Click each of the 8 planets to explore facts about Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune.",
+    "applicationCategory": "EducationalApplication",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Galactic",
+      "url": "https://galactic.website/"
+    }
+  }
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
   <style>
     /* ─── Reset & Base ─────────────────────────────────────── */
+    .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
@@ -397,12 +426,15 @@
 </head>
 <body>
 
+  <!-- Hidden SEO H1 — page is a canvas application with no visible heading -->
+  <h1 class="visually-hidden">Interactive Solar System — Explore the 8 Planets of Our Solar System</h1>
+
   <!-- Background starfield -->
   <canvas id="starfield"></canvas>
 
   <!-- Header -->
   <header>
-    <a href="index.html" class="logo">COSMOS</a>
+    <a href="https://galactic.website/" class="logo">COSMOS</a>
     <div style="display:flex;align-items:center;gap:1.5rem;">
       <span class="header-hint">Click any planet to explore</span>
       <a href="index.html" class="back-btn" style="font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,234,245,0.45);text-decoration:none;border:1px solid rgba(232,234,245,0.12);padding:0.45rem 1rem;transition:color 0.3s,border-color 0.3s;pointer-events:all;white-space:nowrap;">&#8592; Back to COSMOS</a>
