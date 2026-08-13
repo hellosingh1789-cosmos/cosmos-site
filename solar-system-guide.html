@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Solar System — Formation, Sun, Worlds & Outer Frontier | Galactic</title>
+<meta name="description" content="Explore the Solar System beyond the planets: how it formed, the Sun, the asteroid belt, Kuiper Belt, dwarf planets, comets, heliosphere, and the distant Oort Cloud.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://galactic.website/solar-system-guide.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Solar System — Galactic">
+<meta property="og:description" content="A deep exploration of our Solar System, from the Sun and planet-forming disk to the Kuiper Belt and distant Oort Cloud.">
+<meta property="og:url" content="https://galactic.website/solar-system-guide.html">
+<meta property="og:site_name" content="Galactic">
+<meta property="og:image" content="https://galactic.website/star_yellow_dwarf.jpg">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"The Solar System — Formation, Sun, Worlds & Outer Frontier",
+  "description":"An educational guide to the Solar System beyond the planets.",
+  "author":{"@type":"Organization","name":"Galactic"},
+  "publisher":{"@type":"Organization","name":"Galactic"},
+  "isPartOf":{"@type":"WebSite","name":"Galactic","url":"https://galactic.website/"}
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+:root{--void:#02030a;--deep:#070b18;--white:#e8eaf5;--gold:#f0c040;--plasma:#4fc3f7;--dim:rgba(232,234,245,.58);--line:rgba(79,195,247,.15)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--void);color:var(--white);font-family:'Space Mono',monospace;overflow-x:hidden;cursor:crosshair}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:20;padding:1.45rem 3rem;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(2,3,10,.95),transparent);backdrop-filter:blur(4px)}
+.logo{font:400 1.8rem 'Bebas Neue';letter-spacing:.3em;color:var(--gold);text-decoration:none}
+.navlinks{display:flex;gap:1.4rem}
+.navlinks a{color:rgba(232,234,245,.55);text-decoration:none;font:700 .58rem 'Space Mono';letter-spacing:.15em;text-transform:uppercase}
+.navlinks a:hover{color:var(--plasma)}
+.hero{min-height:92vh;position:relative;z-index:1;display:flex;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 6rem;overflow:hidden}
+.hero::before{content:'';position:absolute;width:720px;height:720px;border-radius:50%;right:-250px;top:-250px;background:rgba(240,192,64,.045);filter:blur(60px)}
+.hero-copy{max-width:1050px}
+.eyebrow,.kicker{color:var(--plasma);font-size:.6rem;letter-spacing:.35em;text-transform:uppercase}
+.hero h1{font:400 clamp(4.2rem,12vw,10rem)/.82 'Bebas Neue';letter-spacing:.025em;margin:1.3rem 0}
+.hero h1 span{color:var(--gold)}
+.hero p{max-width:760px;margin:auto;color:var(--dim);font:300 clamp(1.25rem,2.2vw,1.75rem)/1.45 'Crimson Pro'}
+.hero-rule{height:100px;width:1px;background:linear-gradient(var(--gold),transparent);margin:3rem auto 0}
+.toc{position:relative;z-index:2;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(7,11,24,.6)}
+.toc-inner{max-width:1250px;margin:auto;padding:1.3rem 2rem;display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;align-items:center}
+.toc-label{color:var(--gold);font-size:.5rem;letter-spacing:.2em}
+.toc a{color:rgba(232,234,245,.48);text-decoration:none;font-size:.53rem;letter-spacing:.1em;text-transform:uppercase}
+.toc a:hover{color:var(--plasma)}
+.section{position:relative;z-index:1;max-width:1150px;margin:auto;padding:8rem 2rem}
+.section-head{display:grid;grid-template-columns:.8fr 1.2fr;gap:4rem;align-items:end;margin-bottom:3rem}
+.section h2{font:400 clamp(3.2rem,7vw,6rem)/.85 'Bebas Neue';letter-spacing:.035em}
+.lead{color:var(--dim);font:300 1.35rem/1.55 'Crimson Pro'}
+.prose{max-width:850px;color:rgba(232,234,245,.68);font:300 1.18rem/1.7 'Crimson Pro'}
+.prose p+p{margin-top:1.3rem}
+.hero-image{margin-top:3rem;height:500px;position:relative;overflow:hidden;border:1px solid var(--line)}
+.hero-image img{width:100%;height:100%;object-fit:cover}
+.hero-image::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(2,3,10,.55),transparent 60%),linear-gradient(0deg,rgba(2,3,10,.7),transparent 45%)}
+.caption{font-size:.48rem;color:rgba(232,234,245,.35);letter-spacing:.08em;margin-top:.7rem}
+.timeline{position:relative;margin-top:4rem;border-left:1px solid rgba(240,192,64,.35);padding-left:2rem}
+.event{position:relative;padding:0 0 3rem}
+.event::before{content:'';position:absolute;left:-2.35rem;top:.2rem;width:7px;height:7px;border:1px solid var(--gold);background:var(--void);border-radius:50%}
+.event-year{color:var(--gold);font-size:.55rem;letter-spacing:.2em}
+.event h3{font:400 2.2rem 'Bebas Neue';margin:.35rem 0 .4rem}
+.event p{max-width:800px;color:var(--dim);font:300 1.1rem/1.55 'Crimson Pro'}
+.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);margin-top:3rem}
+.feature{background:rgba(7,11,24,.72);padding:2.2rem;min-height:310px}
+.feature img{width:100%;height:170px;object-fit:cover;margin-bottom:1.3rem}
+.feature h3{font:400 2.3rem 'Bebas Neue';letter-spacing:.03em}
+.feature p{color:var(--dim);font:300 1.08rem/1.55 'Crimson Pro';margin-top:.6rem}
+.fact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);margin-top:3rem}
+.fact{background:rgba(7,11,24,.7);padding:2rem;min-height:210px}
+.fact-number{font:400 3rem 'Bebas Neue';color:var(--gold)}
+.fact h3{font:400 1.5rem 'Bebas Neue';margin:.2rem 0 .6rem}
+.fact p{color:var(--dim);font:300 1rem/1.5 'Crimson Pro'}
+.callout{margin-top:3rem;padding:2.5rem;border:1px solid rgba(240,192,64,.22);background:rgba(240,192,64,.035)}
+.callout strong{color:var(--gold);font:400 1.7rem 'Bebas Neue'}
+.callout p{margin-top:.6rem;color:var(--dim);font:300 1.15rem/1.55 'Crimson Pro'}
+footer{border-top:1px solid var(--line);padding:4rem 2rem;text-align:center;color:rgba(232,234,245,.3);font-size:.5rem;letter-spacing:.14em;position:relative;z-index:1}
+footer a{color:inherit}
+.reveal{opacity:0;transform:translateY(20px);transition:.7s}
+.reveal.show{opacity:1;transform:none}
+@media(max-width:800px){
+ nav{padding:1.2rem 1rem}.navlinks{gap:.7rem}.navlinks a{font-size:.46rem}
+ .section-head{grid-template-columns:1fr;gap:1.3rem}.feature-grid,.fact-grid{grid-template-columns:1fr}
+ .hero-image{height:340px}.section{padding:6rem 1.2rem}
+}
+@media(max-width:520px){.navlinks a:nth-child(2){display:none}.hero{min-height:80vh}.toc-inner{padding:1rem}.toc-label{width:100%}}
+</style>
+</head>
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+
+<nav>
+  <a class="logo" href="index.html">GALACTIC</a>
+  <div class="navlinks">
+    <a href="index.html#planets">Planets</a>
+    <a href="solar-system.html">Interactive Model</a>
+    <a href="index.html">Home</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow">The Solar System · Beyond the planets</div>
+    <h1>OUR <span>NEIGHBORHOOD</span></h1>
+    <p>The Solar System is not simply a collection of eight planets. It is a vast, evolving system of stars, worlds, debris, ice, magnetic fields, and ancient leftovers from its birth.</p>
+    <div class="hero-rule"></div>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-inner">
+    <span class="toc-label">Explore</span>
+    <a href="#formation">Formation</a>
+    <a href="#sun">The Sun</a>
+    <a href="#asteroids">Asteroid Belt</a>
+    <a href="#outer">Outer Solar System</a>
+    <a href="#kuiper">Kuiper Belt</a>
+    <a href="#oort">Oort Cloud</a>
+    <a href="#heliosphere">Heliosphere</a>
+  </div>
+</div>
+
+<main>
+<section class="section reveal" id="formation">
+  <div class="section-head">
+    <div><div class="kicker">4.6 billion years ago</div><h2>HOW IT ALL<br>BEGAN</h2></div>
+    <p class="lead">Before there were planets, there was a cloud of gas and dust. Gravity turned that cloud into the architecture we see today.</p>
+  </div>
+  <div class="prose">
+    <p>Our Solar System formed about 4.6 billion years ago from a cold, rotating cloud of gas and dust called the solar nebula. A disturbance—possibly a shock wave from a nearby stellar event—helped trigger gravitational collapse.</p>
+    <p>As the cloud collapsed, most of its material fell toward the center and became increasingly dense and hot. The rest flattened into a rotating protoplanetary disk. At the center, a young Sun began gathering enough mass and pressure for nuclear fusion to ignite.</p>
+    <p>Inside the disk, tiny grains collided and stuck together. Dust became pebbles, pebbles became planetesimals, and gravity eventually assembled many of those bodies into planets. The leftover material became asteroids, comets, dwarf planets, moons, and countless smaller objects.</p>
+  </div>
+  <div class="timeline">
+    <div class="event"><div class="event-year">01 · COLLAPSE</div><h3>The Solar Nebula Falls Inward</h3><p>Gravity causes a giant cloud of gas and dust to collapse. Conservation of angular momentum makes the material spin faster and flatten into a disk.</p></div>
+    <div class="event"><div class="event-year">02 · IGNITION</div><h3>The Sun Is Born</h3><p>Material concentrates at the center until temperatures and pressures become high enough for sustained hydrogen fusion—the process that powers the Sun today.</p></div>
+    <div class="event"><div class="event-year">03 · ACCRETION</div><h3>Worlds Assemble</h3><p>Within the disk, collisions and gravity build larger bodies. Rocky planets form in the hotter inner region, while giant planets grow farther out where ices can survive.</p></div>
+    <div class="event"><div class="event-year">04 · CLEARING</div><h3>A System Takes Shape</h3><p>Solar wind, gravity, collisions, and planetary migration reshape the young system. The remaining debris becomes the smaller bodies still orbiting the Sun.</p></div>
+  </div>
+</section>
+
+<section class="section reveal" id="sun">
+  <div class="section-head">
+    <div><div class="kicker">The star at the center</div><h2>MEET<br>THE SUN</h2></div>
+    <p class="lead">The Sun contains nearly all of the Solar System's mass and supplies the energy that drives Earth's climate, weather, and life.</p>
+  </div>
+  <div class="hero-image"><img src="star_yellow_dwarf.jpg" alt="The Sun, a yellow dwarf star"></div>
+  <div class="caption">Our Sun is a G-type main-sequence star, commonly called a yellow dwarf.</div>
+  <div class="prose" style="margin-top:2.5rem">
+    <p>The Sun is a huge sphere of plasma roughly 1.39 million kilometers across. It is powered by nuclear fusion in its core, where hydrogen nuclei combine to form helium and release enormous amounts of energy.</p>
+    <p>That energy moves outward through the Sun and eventually escapes from its visible surface, the photosphere. The Sun also constantly releases charged particles in the solar wind. Those particles travel far beyond the planets and help define the giant bubble around our star called the heliosphere.</p>
+  </div>
+  <div class="fact-grid">
+    <div class="fact"><div class="fact-number">99.86%</div><h3>Most of the System's Mass</h3><p>Almost all of the Solar System's mass is concentrated in the Sun.</p></div>
+    <div class="fact"><div class="fact-number">1.39M</div><h3>Kilometers Across</h3><p>The Sun's diameter is about 109 times Earth's diameter.</p></div>
+    <div class="fact"><div class="fact-number">~4.6B</div><h3>Years Old</h3><p>The Sun formed at roughly the same time as the rest of the Solar System.</p></div>
+  </div>
+</section>
+
+<section class="section reveal" id="asteroids">
+  <div class="section-head">
+    <div><div class="kicker">Between Mars & Jupiter</div><h2>THE ASTEROID<br>BELT</h2></div>
+    <p class="lead">A vast population of rocky leftovers from the Solar System's formation—far more interesting than a simple ring of rocks.</p>
+  </div>
+  <div class="feature-grid">
+    <article class="feature"><img src="world_asteroid.jpg" alt="An asteroid in space"><h3>PLANETARY BUILDING BLOCKS</h3><p>The asteroid belt contains remnants of the material that could have formed a planet. Jupiter's strong gravity helped prevent those fragments from easily assembling into one large world.</p></article>
+    <article class="feature"><h3>NOT A SOLID WALL OF ROCK</h3><p>Spacecraft can travel through the asteroid belt without weaving between packed rocks. The objects are separated by enormous distances, and most of the belt's volume is empty space.</p><p style="margin-top:1rem">The largest object in the main belt is Ceres, a dwarf planet whose rounded shape distinguishes it from most smaller asteroids.</p></article>
+  </div>
+</section>
+
+<section class="section reveal" id="outer">
+  <div class="section-head">
+    <div><div class="kicker">Beyond Neptune</div><h2>THE OUTER<br>FRONTIER</h2></div>
+    <p class="lead">The Solar System doesn't suddenly end after Neptune. Beyond it lies a huge population of icy bodies and ancient material.</p>
+  </div>
+  <div class="prose">
+    <p>Far beyond the giant planets, temperatures are low enough for volatile substances such as water, methane, and ammonia to remain frozen. These distant regions preserve some of the most primitive material left over from the Solar System's formation.</p>
+  </div>
+  <div class="feature-grid">
+    <article class="feature" id="kuiper"><h3>THE KUIPER BELT</h3><p>The Kuiper Belt is a broad, flattened region beyond Neptune populated by icy bodies. Pluto is one of its most famous residents. Many short-period comets originate from this distant reservoir.</p></article>
+    <article class="feature"><h3>DWARF PLANETS</h3><p>Pluto, Eris, Haumea, Makemake, and Ceres are recognized dwarf planets. They are large enough for gravity to make them roughly round, but they have not cleared their orbital neighborhoods.</p></article>
+  </div>
+</section>
+
+<section class="section reveal" id="oort">
+  <div class="section-head">
+    <div><div class="kicker">Theoretical distant reservoir</div><h2>THE OORT<br>CLOUD</h2></div>
+    <p class="lead">If the Kuiper Belt is the Solar System's icy outskirts, the Oort Cloud may be its enormous spherical frontier.</p>
+  </div>
+  <div class="hero-image" style="height:430px;background:radial-gradient(circle at center,rgba(240,192,64,.18) 0 2%,rgba(79,195,247,.06) 8%,transparent 30%),radial-gradient(circle,rgba(232,234,245,.12) 1px,transparent 1px);background-size:auto,31px 31px">
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2">
+      <div style="width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,#fff4b0,#f0c040 35%,#c87520 65%,transparent 70%);box-shadow:0 0 55px rgba(240,192,64,.35)"></div>
+    </div>
+  </div>
+  <div class="prose" style="margin-top:2.5rem">
+    <p>The Oort Cloud is a hypothesized, extremely distant shell of icy objects surrounding the Solar System. We have not directly observed it as a cloud, but the long-period comets that enter the inner Solar System provide evidence for a distant reservoir of this kind.</p>
+    <p>Unlike the flattened planetary system, the Oort Cloud is expected to extend in all directions. Some models place its outer edge thousands to perhaps tens of thousands of astronomical units from the Sun. At those distances, the Sun's gravitational hold becomes extraordinarily weak.</p>
+  </div>
+  <div class="callout"><strong>Think about the scale.</strong><p>One astronomical unit is the average Earth–Sun distance. Neptune orbits at about 30 AU. The Oort Cloud, if it exists as predicted, would be vastly farther away—making the planetary region a tiny central neighborhood inside a much larger stellar environment.</p></div>
+</section>
+
+<section class="section reveal" id="heliosphere">
+  <div class="section-head">
+    <div><div class="kicker">Where the Sun's influence reaches</div><h2>THE<br>HELIOPHERE</h2></div>
+    <p class="lead">The Solar System has a boundary shaped not only by gravity, but by a wind of charged particles flowing outward from the Sun.</p>
+  </div>
+  <div class="prose">
+    <p>The solar wind streams continuously from the Sun. As it travels outward, it creates a vast bubble called the heliosphere. The boundary where the solar wind is slowed dramatically by the surrounding interstellar medium is called the heliopause.</p>
+    <p>Voyager 1 and Voyager 2 crossed the heliopause and entered interstellar space, giving humanity direct measurements from beyond the Sun's dominant particle environment. Even there, the Sun remains part of the story: gravity continues to influence objects far beyond the planets.</p>
+  </div>
+  <div class="fact-grid">
+    <div class="fact"><div class="fact-number">8</div><h3>Planets</h3><p>The familiar worlds are only one component of the Solar System.</p></div>
+    <div class="fact"><div class="fact-number">1</div><h3>Star</h3><p>The Sun dominates the system's mass and controls the orbits of its major bodies.</p></div>
+    <div class="fact"><div class="fact-number">∞</div><h3>More to Discover</h3><p>From small bodies to distant comet reservoirs, the system is still being explored.</p></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  GALACTIC · THE SOLAR SYSTEM IS HOME, BUT IT IS ALSO A FRONTIER.<br><br>
+  <a href="index.html">RETURN TO GALACTIC</a> · <a href="solar-system.html">OPEN INTERACTIVE SOLAR SYSTEM</a>
+</footer>
+
+<script>
+const c=document.getElementById('stars'),x=c.getContext('2d');let stars=[];
+function resize(){
+ c.width=innerWidth*devicePixelRatio;c.height=innerHeight*devicePixelRatio;
+ c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';
+ x.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+ stars=Array.from({length:Math.min(260,Math.floor(innerWidth*innerHeight/6500))},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:.15+Math.random()*1.1,a:.15+Math.random()*.6}));
+}
+function draw(){x.clearRect(0,0,innerWidth,innerHeight);for(const s of stars){x.globalAlpha=s.a;x.fillStyle='#fff';x.beginPath();x.arc(s.x,s.y,s.r,0,Math.PI*2);x.fill()}x.globalAlpha=1;requestAnimationFrame(draw)}
+resize();addEventListener('resize',resize);draw();
+const observer=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(e=>observer.observe(e));
+</script>
+</body>
+</html>
