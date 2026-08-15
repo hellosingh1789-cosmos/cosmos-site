@@ -26,7 +26,7 @@
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <style>
-:root{--void:#02030a;--deep:#070b18;--white:#e8eaf5;--gold:#f0c040;--plasma:#4fc3f7;--dim:rgba(232,234,245,.58);--line:rgba(79,195,247,.15)}
+:root{--void:#02030a;--deep:#070b18;--star-white:#e8eaf5;--white:#e8eaf5;--gold:#f0c040;--plasma:#4fc3f7;--dim:rgba(232,234,245,.58);--line:rgba(79,195,247,.15)}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--void);color:var(--white);font-family:'Space Mono',monospace;overflow-x:hidden;cursor:crosshair}
@@ -100,12 +100,13 @@ footer a{color:inherit}
 <body>
 <canvas id="stars" aria-hidden="true"></canvas>
 
-<nav>
-  <a class="logo" href="index.html">GALACTIC</a>
-  <div class="navlinks">
-    <a href="index.html#planets">Planets</a>
-    <a href="solar-system.html">Interactive Model</a>
-    <a href="index.html">Home</a>
+<nav style="position:fixed;top:0;left:0;right:0;z-index:20;padding:1.45rem 3rem;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(2,3,10,.95),transparent);backdrop-filter:blur(4px);">
+  <a style="font:400 1.8rem 'Bebas Neue';letter-spacing:.3em;color:#f0c040;text-decoration:none;" href="https://galactic.website/">COSMOS</a>
+  <div style="display:flex;gap:1.4rem;align-items:center;">
+    <a style="color:rgba(232,234,245,.65);text-decoration:none;font:700 .72rem 'Space Mono';letter-spacing:.11em;text-transform:uppercase;" href="https://galactic.website/#planets">Planets</a>
+    <a style="color:rgba(232,234,245,.65);text-decoration:none;font:700 .72rem 'Space Mono';letter-spacing:.11em;text-transform:uppercase;" href="https://galactic.website/solar-system.html">Interactive Model</a>
+    <a style="color:rgba(232,234,245,.65);text-decoration:none;font:700 .72rem 'Space Mono';letter-spacing:.11em;text-transform:uppercase;" href="https://galactic.website/timeline.html">Timeline</a>
+    <a style="color:rgba(232,234,245,.65);text-decoration:none;font:700 .72rem 'Space Mono';letter-spacing:.11em;text-transform:uppercase;" href="https://galactic.website/">&#8592; Home</a>
   </div>
 </nav>
 
@@ -211,7 +212,7 @@ footer a{color:inherit}
 
 <section class="section reveal" id="heliosphere">
   <div class="section-head">
-    <div><div class="kicker">Where the Sun's influence reaches</div><h2>THE<br>HELIOPHERE</h2></div>
+    <div><div class="kicker">Where the Sun's influence reaches</div><h2>THE<br>HELIOSPHERE</h2></div>
     <p class="lead">The Solar System has a boundary shaped not only by gravity, but by a wind of charged particles flowing outward from the Sun.</p>
   </div>
   <div class="prose">
@@ -226,9 +227,16 @@ footer a{color:inherit}
 </section>
 </main>
 
-<footer>
-  GALACTIC · THE SOLAR SYSTEM IS HOME, BUT IT IS ALSO A FRONTIER.<br><br>
-  <a href="index.html">RETURN TO GALACTIC</a> · <a href="solar-system.html">OPEN INTERACTIVE SOLAR SYSTEM</a>
+<footer style="border-top:1px solid rgba(79,195,247,.15);padding:3rem 2rem;text-align:center;color:rgba(232,234,245,.3);font-size:.55rem;letter-spacing:.14em;position:relative;z-index:1;background:rgba(7,11,24,.8);">
+  <a href="https://galactic.website/" style="font:400 1.5rem 'Bebas Neue';letter-spacing:.3em;color:#f0c040;text-decoration:none;opacity:0.5;">COSMOS</a>
+  <p style="margin-top:1rem;">THE SOLAR SYSTEM IS HOME, BUT IT IS ALSO A FRONTIER.</p>
+  <p style="margin-top:1.2rem;display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;">
+    <a href="https://galactic.website/" style="color:rgba(232,234,245,.45);text-decoration:none;">&#8592; Return to Galactic</a>
+    <a href="https://galactic.website/solar-system.html" style="color:#4fc3f7;text-decoration:none;">Interactive Solar System &#8599;</a>
+    <a href="https://galactic.website/timeline.html" style="color:rgba(232,234,245,.45);text-decoration:none;">Space Exploration Timeline &#8599;</a>
+    <a href="https://galactic.website/contact.html" style="color:rgba(232,234,245,.45);text-decoration:none;">Contact</a>
+  </p>
+  <p style="margin-top:1.5rem;">&copy; <script>document.write(new Date().getFullYear())</script> COSMOS. All rights reserved.</p>
 </footer>
 
 <script>
