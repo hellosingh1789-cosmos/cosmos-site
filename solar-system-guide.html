@@ -34,7 +34,7 @@ body{background:var(--void);color:var(--white);font-family:'Space Mono',monospac
 nav{position:fixed;top:0;left:0;right:0;z-index:20;padding:1.45rem 3rem;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(2,3,10,.95),transparent);backdrop-filter:blur(4px)}
 .logo{font:400 1.8rem 'Bebas Neue';letter-spacing:.3em;color:var(--gold);text-decoration:none}
 .navlinks{display:flex;gap:1.4rem}
-.navlinks a{color:rgba(232,234,245,.55);text-decoration:none;font:700 .58rem 'Space Mono';letter-spacing:.15em;text-transform:uppercase}
+.navlinks a{color:rgba(232,234,245,.65);text-decoration:none;font:700 .78rem 'Space Mono';letter-spacing:.11em;text-transform:uppercase;white-space:nowrap}
 .navlinks a:hover{color:var(--plasma)}
 .hero{min-height:92vh;position:relative;z-index:1;display:flex;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 6rem;overflow:hidden}
 .hero::before{content:'';position:absolute;width:720px;height:720px;border-radius:50%;right:-250px;top:-250px;background:rgba(240,192,64,.045);filter:blur(60px)}
@@ -45,9 +45,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:20;padding:1.45rem 3rem;display:
 .hero p{max-width:760px;margin:auto;color:var(--dim);font:300 clamp(1.25rem,2.2vw,1.75rem)/1.45 'Crimson Pro'}
 .hero-rule{height:100px;width:1px;background:linear-gradient(var(--gold),transparent);margin:3rem auto 0}
 .toc{position:relative;z-index:2;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(7,11,24,.6)}
-.toc-inner{max-width:1250px;margin:auto;padding:1.3rem 2rem;display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;align-items:center}
-.toc-label{color:var(--gold);font-size:.5rem;letter-spacing:.2em}
-.toc a{color:rgba(232,234,245,.48);text-decoration:none;font-size:.53rem;letter-spacing:.1em;text-transform:uppercase}
+.toc-inner{max-width:1400px;margin:auto;padding:1.6rem 2rem;display:flex;flex-wrap:wrap;gap:.9rem 2.25rem;align-items:center;justify-content:center;text-align:center}
+.toc-label{color:var(--gold);font-size:.68rem;letter-spacing:.2em}
+.toc a{color:rgba(232,234,245,.65);text-decoration:none;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;padding:.3rem 0}
 .toc a:hover{color:var(--plasma)}
 .section{position:relative;z-index:1;max-width:1150px;margin:auto;padding:8rem 2rem}
 .section-head{display:grid;grid-template-columns:.8fr 1.2fr;gap:4rem;align-items:end;margin-bottom:3rem}
@@ -83,11 +83,18 @@ footer a{color:inherit}
 .reveal{opacity:0;transform:translateY(20px);transition:.7s}
 .reveal.show{opacity:1;transform:none}
 @media(max-width:800px){
- nav{padding:1.2rem 1rem}.navlinks{gap:.7rem}.navlinks a{font-size:.46rem}
+ nav{padding:1.2rem 1rem}.navlinks{gap:.9rem}.navlinks a{font-size:.58rem}
  .section-head{grid-template-columns:1fr;gap:1.3rem}.feature-grid,.fact-grid{grid-template-columns:1fr}
- .hero-image{height:340px}.section{padding:6rem 1.2rem}
+ .hero-image{height:340px}.section{padding:6rem 1.2rem}.toc-inner{gap:.7rem 1.2rem}.toc a{font-size:.65rem}
 }
 @media(max-width:520px){.navlinks a:nth-child(2){display:none}.hero{min-height:80vh}.toc-inner{padding:1rem}.toc-label{width:100%}}
+
+.oort-figure{overflow:hidden;background:#02030a;border:1px solid rgba(79,195,247,.16)}
+.oort-figure img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.oort-caption{margin-top:1rem;color:rgba(232,234,245,.48);font:300 1rem/1.45 'Crimson Pro'}
+.oort-caption strong{color:var(--gold);font-weight:400}
+.oort-caption a{color:var(--plasma);text-decoration:none}
+.oort-caption a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
@@ -191,11 +198,10 @@ footer a{color:inherit}
     <div><div class="kicker">Theoretical distant reservoir</div><h2>THE OORT<br>CLOUD</h2></div>
     <p class="lead">If the Kuiper Belt is the Solar System's icy outskirts, the Oort Cloud may be its enormous spherical frontier.</p>
   </div>
-  <div class="hero-image" style="height:430px;background:radial-gradient(circle at center,rgba(240,192,64,.18) 0 2%,rgba(79,195,247,.06) 8%,transparent 30%),radial-gradient(circle,rgba(232,234,245,.12) 1px,transparent 1px);background-size:auto,31px 31px">
-    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2">
-      <div style="width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,#fff4b0,#f0c040 35%,#c87520 65%,transparent 70%);box-shadow:0 0 55px rgba(240,192,64,.35)"></div>
-    </div>
-  </div>
+  <figure class="hero-image oort-figure" style="height:430px">
+    <img src="https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2014/12/kuiper_belt_and_oort_cloud_in_context/15106869-1-eng-GB/Kuiper_Belt_and_Oort_Cloud_in_context_pillars.jpg" alt="ESA illustration showing the Kuiper Belt and the much more distant Oort Cloud in context" loading="lazy">
+  </figure>
+  <div class="caption oort-caption">Illustration showing the Kuiper Belt and the much more distant Oort Cloud in context. The Oort Cloud has not been directly observed; this is a scientific illustration of the region scientists think may surround the Solar System. <strong>Credit: ESA</strong> · <a href="https://www.esa.int/ESA_Multimedia/Images/2014/12/Kuiper_Belt_and_Oort_Cloud_in_context" target="_blank" rel="noopener">ESA source</a></div>
   <div class="prose" style="margin-top:2.5rem">
     <p>The Oort Cloud is a hypothesized, extremely distant shell of icy objects surrounding the Solar System. We have not directly observed it as a cloud, but the long-period comets that enter the inner Solar System provide evidence for a distant reservoir of this kind.</p>
     <p>Unlike the flattened planetary system, the Oort Cloud is expected to extend in all directions. Some models place its outer edge thousands to perhaps tens of thousands of astronomical units from the Sun. At those distances, the Sun's gravitational hold becomes extraordinarily weak.</p>
