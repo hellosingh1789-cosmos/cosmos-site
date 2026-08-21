@@ -115,7 +115,7 @@
   .timeline-event{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;}
   .timeline-detail{font-family:'Crimson Pro',serif;font-size:0.95rem;color:rgba(232,234,245,0.5);line-height:1.6;}
   footer{position:relative;z-index:1;border-top:1px solid rgba(232,234,245,0.06);background:var(--deep);}
-  .footer-top{display:grid;grid-template-columns:2fr 1fr;gap:4rem;padding:5rem 3rem 3rem;}
+  .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;padding:5rem 3rem 3rem;}
   .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:0.3em;color:var(--gold);margin-bottom:1.2rem;}
   .footer-col-title{font-size:0.6rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;}
   .footer-about-text{font-family:'Crimson Pro',serif;font-size:0.95rem;color:rgba(232,234,245,0.45);line-height:1.7;margin-bottom:0.8rem;}
@@ -129,6 +129,7 @@
   .footer-copyright{font-size:0.6rem;letter-spacing:0.2em;color:rgba(232,234,245,0.25);text-transform:uppercase;}
   .footer-copy{font-size:0.6rem;letter-spacing:0.2em;color:rgba(232,234,245,0.2);text-transform:uppercase;}
   @media(max-width:900px){.footer-top{grid-template-columns:1fr 1fr;gap:2rem;}}
+  @media(max-width:1100px){.footer-top{grid-template-columns:1fr 1fr;gap:2.5rem;}}
   @media(max-width:600px){.footer-top{grid-template-columns:1fr;padding:3rem 1.5rem 2rem;}.footer-bottom{flex-direction:column;gap:0.5rem;text-align:center;padding:1.2rem 1.5rem;}}
   @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
   @keyframes scanline{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
@@ -696,6 +697,18 @@
     <div class="footer-col">
       <div class="footer-col-title">About the Creator</div>
       <p class="footer-about-text" style="font-size:0.75rem;line-height:1.8;color:rgba(232,234,245,0.5);">This site was made with compassion by Daksh Singh. His love for astronomy and coding produced this passion project. He hopes you find what you were looking for, and wishes you happy exploring! If you need anything, found errors, or just want to chat, reach him via the <a href="https://galactic.website/contact.html" style="color:var(--plasma);text-decoration:none;">Contact</a> page.</p>
+    </div>
+
+    <!-- Explore -->
+    <div class="footer-col">
+      <div class="footer-col-title">Explore</div>
+      <ul class="footer-links">
+        <li><a href="https://galactic.website/solar-system-guide.html">Solar System Guide</a></li>
+        <li><a href="https://galactic.website/solar-system.html">Interactive Solar System</a></li>
+        <li><a href="https://galactic.website/timeline.html">Space Exploration Timeline</a></li>
+        <li><a href="https://galactic.website/#planets">The Eight Worlds</a></li>
+        <li><a href="https://galactic.website/#gallery">Deep Space Gallery</a></li>
+      </ul>
     </div>
 
     <!-- Legal -->
