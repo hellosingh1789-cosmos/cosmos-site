@@ -84,7 +84,8 @@
   .section-label::before{content:'';width:40px;height:1px;background:var(--gold);}
   .section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,5rem);letter-spacing:0.05em;margin-bottom:4rem;}
   .card-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:rgba(255,255,255,0.03);}
-  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5px;background:rgba(255,255,255,0.03);}
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5px;background:transparent;}
+  .card-grid::after{content:"";display:block;}
   .card{background:var(--deep);padding:0;position:relative;overflow:hidden;cursor:pointer;transition:transform 0.4s ease;}
   .card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(79,195,247,0.05),transparent);opacity:0;transition:opacity 0.4s;z-index:1;}
   .card:hover{transform:translateY(-4px);}
