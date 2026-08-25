@@ -115,7 +115,7 @@
   .timeline-event{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;}
   .timeline-detail{font-family:'Crimson Pro',serif;font-size:0.95rem;color:rgba(232,234,245,0.5);line-height:1.6;}
   footer{position:relative;z-index:1;border-top:1px solid rgba(232,234,245,0.06);background:var(--deep);}
-  .footer-top{display:grid;grid-template-columns:2fr 1fr;gap:4rem;padding:5rem 3rem 3rem;}
+  .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2.5rem;padding:5rem 3rem 3rem;}
   .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:0.3em;color:var(--gold);margin-bottom:1.2rem;}
   .footer-col-title{font-size:0.6rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;}
   .footer-about-text{font-family:'Crimson Pro',serif;font-size:0.95rem;color:rgba(232,234,245,0.45);line-height:1.7;margin-bottom:0.8rem;}
@@ -310,7 +310,7 @@
 </div>
 
 <nav aria-label="Main navigation">
-  <a href="https://galactic.website/" class="nav-logo">COSMOS</a>
+  <a href="https://galactic.website/" class="nav-logo">GALACTIC</a>
   <div class="nav-links">
 
     <!-- Planets -->
@@ -670,9 +670,21 @@
 
     <!-- About -->
     <div class="footer-col footer-about">
-      <div class="footer-brand">COSMOS</div>
-      <p class="footer-about-text">COSMOS is an independent space education website dedicated to making the wonders of the universe accessible to everyone. From the eight worlds of our solar system to the mysteries at the edge of human knowledge, COSMOS explores it all — with accuracy, depth, and a sense of wonder.</p>
-      <p class="footer-about-text">All scientific content is based on current research from NASA, ESA, and peer-reviewed astrophysics literature. COSMOS is a passion project, not affiliated with any government space agency or institution.</p>
+      <div class="footer-brand">GALACTIC</div>
+      <p class="footer-about-text">Galactic is an independent space education website dedicated to making the wonders of the universe accessible to everyone. From the eight worlds of our solar system to the mysteries at the edge of human knowledge, Galactic explores it all — with accuracy, depth, and a sense of wonder.</p>
+      <p class="footer-about-text">All scientific content is based on current research from NASA, ESA, and peer-reviewed astrophysics literature. Galactic is a passion project, not affiliated with any government space agency or institution.</p>
+    </div>
+
+    <!-- Explore -->
+    <div class="footer-col">
+      <div class="footer-col-title">Explore</div>
+      <ul class="footer-links">
+        <li><a href="https://galactic.website/solar-system-guide.html">Solar System Guide</a></li>
+        <li><a href="https://galactic.website/solar-system.html">Interactive Solar System</a></li>
+        <li><a href="https://galactic.website/timeline.html">Space Exploration Timeline</a></li>
+        <li><a href="https://galactic.website/#planets">The Eight Worlds</a></li>
+        <li><a href="https://galactic.website/#gallery">Deep Space Gallery</a></li>
+      </ul>
     </div>
 
     <!-- Legal -->
@@ -681,13 +693,14 @@
       <ul class="footer-links">
         <li><a href="https://galactic.website/privacy.html" target="_blank">Privacy Policy</a></li>
         <li><a href="https://galactic.website/resources.html" target="_blank">External Resources</a></li>
+        <li><a href="https://galactic.website/contact.html">Contact</a></li>
       </ul>
     </div>
 
   </div>
 
   <div class="footer-bottom">
-    <p class="footer-copyright">&copy; <span id="footerYear"></span> COSMOS. All rights reserved.</p>
+    <p class="footer-copyright">&copy; <span id="footerYear"></span> Galactic. All rights reserved.</p>
     <p class="footer-copy">An exploration of the universe &nbsp;&mdash;&nbsp; Built with curiosity.</p>
   </div>
 </footer>
@@ -981,12 +994,20 @@ const TITANS=[
 "The Hubble tension is currently the most pressing crisis in cosmology. The expansion rate of the universe measured from the CMB (assuming the standard cosmological model) is about 67 km/s/Mpc. The expansion rate measured directly from supernovae, Cepheid variable stars, and gravitational wave standard sirens in the nearby universe is about 73 km/s/Mpc. This 8% discrepancy, now confirmed at a statistical significance of ~5 sigma across multiple independent measurement methods, is almost certainly not a systematic error. If it is real, it implies that the standard cosmological model \u2014 dark matter, dark energy, and inflation \u2014 is incomplete, and that something fundamental about the universe's composition or evolution is not yet understood."]}
 ];
 
+// Pages with dedicated URLs instead of modals
+const PLANET_PAGES = { 'Mercury': 'https://galactic.website/mercury.html' };
+
 function buildCard(item,category){
   const d=document.createElement('div');
   d.className='card';
   d.setAttribute('data-name',item.name);
-  d.innerHTML=`<div class="card-img">${item.img?`<img src="${item.img}" alt="${item.name}">`:`<div class="card-placeholder">${item.emoji}</div>`}</div><div class="card-body"><div class="card-name">${item.name}</div><div class="card-type">${item.type}</div><p class="card-desc">${item.short}</p><div class="card-stats">${item.facts.slice(0,3).map(f=>`<div class="stat"><span class="stat-val">${f.v}</span><span class="stat-label">${f.l}</span></div>`).join('')}</div></div><div class="card-cta">Read More &#8594;</div>`;
-  d.addEventListener('click',()=>openModal(item,category));
+  const ctaLabel = PLANET_PAGES[item.name] ? 'Explore &#8599;' : 'Read More &#8594;';
+  d.innerHTML=`<div class="card-img">${item.img?`<img src="${item.img}" alt="${item.name}">`:`<div class="card-placeholder">${item.emoji}</div>`}</div><div class="card-body"><div class="card-name">${item.name}</div><div class="card-type">${item.type}</div><p class="card-desc">${item.short}</p><div class="card-stats">${item.facts.slice(0,3).map(f=>`<div class="stat"><span class="stat-val">${f.v}</span><span class="stat-label">${f.l}</span></div>`).join('')}</div></div><div class="card-cta">${ctaLabel}</div>`;
+  if (PLANET_PAGES[item.name]) {
+    d.addEventListener('click', () => window.location.href = PLANET_PAGES[item.name]);
+  } else {
+    d.addEventListener('click',()=>openModal(item,category));
+  }
   return d;
 }
 

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mercury — The Swiftest World | Galactic</title>
+<meta name="description" content="An in-depth guide to Mercury — the smallest planet and closest to the Sun. Explore its extreme temperatures, cratered surface, oversized iron core, polar ice, and the missions that have revealed its secrets.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://galactic.website/mercury.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mercury — The Swiftest World | Galactic">
+<meta property="og:description" content="Discover Mercury — a world of extremes scorched by day and frozen by night, with a mysterious giant iron core, polar ice, and a history of violent impacts.">
+<meta property="og:url" content="https://galactic.website/mercury.html">
+<meta property="og:site_name" content="Galactic">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"Mercury — The Swiftest World","description":"An in-depth educational guide to Mercury, the smallest and innermost planet of the Solar System.","url":"https://galactic.website/mercury.html","publisher":{"@type":"Organization","name":"Galactic","url":"https://galactic.website/"}}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{--void:#02030a;--deep:#070b18;--star-white:#e8eaf5;--gold:#f0c040;--plasma:#4fc3f7;--mercury:#b5b5b0;}
+html{scroll-behavior:smooth;}
+body{background:var(--void);color:var(--star-white);font-family:'Space Mono',monospace;overflow-x:hidden;}
+#starfield{position:fixed;inset:0;z-index:0;pointer-events:none;}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 3rem;background:linear-gradient(to bottom,rgba(2,3,10,0.95),transparent);backdrop-filter:blur(4px);}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.3em;color:var(--gold);text-decoration:none;}
+.nav-links{display:flex;align-items:center;gap:1.4rem;}
+.nav-link{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(232,234,245,0.55);text-decoration:none;transition:color 0.3s;}
+.nav-link:hover{color:var(--plasma);}
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 3rem 6rem;z-index:1;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse at 70% 40%,rgba(181,181,176,0.08) 0%,transparent 65%),radial-gradient(ellipse at 20% 80%,rgba(79,195,247,0.04) 0%,transparent 50%),var(--void);}
+.hero-fade{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to bottom,rgba(2,3,10,0.3) 0%,rgba(2,3,10,0.1) 40%,rgba(2,3,10,0.75) 75%,var(--void) 100%);}
+.hero-content{position:relative;z-index:2;max-width:820px;}
+.hero-eyebrow{font-size:0.6rem;letter-spacing:0.5em;text-transform:uppercase;color:var(--mercury);margin-bottom:1.2rem;display:flex;align-items:center;gap:1rem;}
+.hero-eyebrow::before{content:'';width:40px;height:1px;background:var(--mercury);}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(4.5rem,12vw,10rem);letter-spacing:0.01em;line-height:0.88;animation:fadeUp 0.9s ease forwards;opacity:0;animation-delay:0.2s;}
+.hero-title .accent{color:var(--mercury);}
+.hero-sub{font-family:'Crimson Pro',serif;font-size:clamp(1rem,2vw,1.25rem);font-style:italic;color:rgba(232,234,245,0.7);max-width:560px;margin-top:1.8rem;line-height:1.75;animation:fadeUp 0.9s ease forwards;opacity:0;animation-delay:0.45s;}
+.hero-scroll{position:absolute;bottom:2.5rem;right:3rem;font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(232,234,245,0.3);display:flex;align-items:center;gap:0.8rem;animation:fadeUp 0.9s ease forwards;opacity:0;animation-delay:0.7s;z-index:2;}
+.scroll-line{width:48px;height:1px;background:rgba(232,234,245,0.15);position:relative;overflow:hidden;}
+.scroll-line::after{content:'';position:absolute;inset:0;background:var(--mercury);animation:scanline 2s ease-in-out infinite;}
+.section{position:relative;z-index:1;padding:7rem 3rem;}
+.section-inner{max-width:820px;margin:0 auto;}
+.section-label{font-size:0.58rem;letter-spacing:0.5em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:flex;align-items:center;gap:1rem;}
+.section-label::before{content:'';width:40px;height:1px;background:var(--gold);}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);letter-spacing:0.04em;line-height:0.95;margin-bottom:2.5rem;}
+.prose p{font-family:'Crimson Pro',serif;font-size:1.08rem;color:rgba(232,234,245,0.72);line-height:1.85;margin-bottom:1.5rem;}
+.prose p:last-child{margin-bottom:0;}
+.glance-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:rgba(255,255,255,0.04);margin-bottom:3.5rem;}
+.glance-item{background:var(--deep);padding:1.8rem 1.6rem;display:flex;flex-direction:column;gap:0.5rem;}
+.glance-val{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.06em;color:var(--mercury);line-height:1;}
+.glance-label{font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(232,234,245,0.4);}
+.glance-desc{font-family:'Crimson Pro',serif;font-size:0.88rem;color:rgba(232,234,245,0.5);line-height:1.6;margin-top:0.3rem;}
+.highlight{border-left:3px solid var(--mercury);padding:1.4rem 1.8rem;background:rgba(181,181,176,0.04);margin:2rem 0;}
+.highlight p{font-family:'Crimson Pro',serif;font-size:1.05rem;color:rgba(232,234,245,0.78);line-height:1.78;margin:0;}
+.feature-split{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:2rem;}
+.feature-block h3{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.1em;color:var(--plasma);margin-bottom:0.9rem;}
+.feature-block p{font-family:'Crimson Pro',serif;font-size:1rem;color:rgba(232,234,245,0.65);line-height:1.8;}
+.mission-list{display:flex;flex-direction:column;gap:0;margin-top:1rem;}
+.mission-item{display:grid;grid-template-columns:100px 1fr;gap:2rem;padding:2rem 0;border-bottom:1px solid rgba(232,234,245,0.06);}
+.mission-item:last-child{border-bottom:none;}
+.mission-year{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.1em;color:var(--gold);padding-top:0.15rem;}
+.mission-name{font-size:0.65rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--star-white);margin-bottom:0.6rem;}
+.mission-desc{font-family:'Crimson Pro',serif;font-size:1rem;color:rgba(232,234,245,0.62);line-height:1.75;}
+.context-strip{background:rgba(7,11,24,0.7);border:1px solid rgba(232,234,245,0.06);border-left:3px solid var(--gold);padding:2rem 2.2rem;margin-top:2rem;}
+.context-strip p{font-family:'Crimson Pro',serif;font-size:1.05rem;color:rgba(232,234,245,0.68);line-height:1.8;margin-bottom:1rem;}
+.context-strip p:last-child{margin-bottom:0;}
+.section-divider{width:100%;height:1px;background:linear-gradient(to right,transparent,rgba(79,195,247,0.15),transparent);border:none;margin:0;}
+.page-nav{display:flex;justify-content:space-between;align-items:center;padding:2.5rem 3rem;border-top:1px solid rgba(232,234,245,0.06);position:relative;z-index:1;}
+.page-nav a{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,234,245,0.45);text-decoration:none;display:flex;align-items:center;gap:0.6rem;transition:color 0.3s;}
+.page-nav a:hover{color:var(--plasma);}
+footer{position:relative;z-index:1;padding:2.5rem 3rem;border-top:1px solid rgba(232,234,245,0.06);background:var(--deep);display:flex;justify-content:space-between;align-items:center;}
+.footer-brand{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.3em;color:var(--gold);opacity:0.4;text-decoration:none;}
+.footer-copy{font-size:0.52rem;letter-spacing:0.2em;color:rgba(232,234,245,0.2);text-transform:uppercase;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scanline{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+@media(max-width:768px){nav{padding:1rem 1.5rem;}.nav-links{gap:0.8rem;}.nav-link{font-size:0.52rem;}}
+@media(max-width:640px){.glance-grid{grid-template-columns:1fr 1fr;}.feature-split{grid-template-columns:1fr;gap:2rem;}.section{padding:5rem 1.5rem;}.hero{padding:0 1.5rem 5rem;}.mission-item{grid-template-columns:1fr;gap:0.4rem;}.page-nav{padding:2rem 1.5rem;flex-direction:column;gap:1rem;}footer{flex-direction:column;gap:0.8rem;text-align:center;padding:1.8rem 1.5rem;}}
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+<nav>
+  <a href="https://galactic.website/" class="nav-logo">GALACTIC</a>
+  <div class="nav-links">
+    <a href="https://galactic.website/#planets" class="nav-link">Planets</a>
+    <a href="https://galactic.website/solar-system-guide.html" class="nav-link">Solar System Guide</a>
+    <a href="https://galactic.website/solar-system.html" class="nav-link">Interactive Model</a>
+    <a href="https://galactic.website/timeline.html" class="nav-link">Timeline</a>
+    <a href="https://galactic.website/" class="nav-link">&#8592; Home</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-fade"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Terrestrial Planet &middot; 0.39 AU from the Sun</p>
+    <h1 class="hero-title">MER<span class="accent">CURY</span></h1>
+    <p class="hero-sub">The smallest planet and the fastest — completing a year in just 88 days. Scorched to 430&deg;C in the day, plunging to -180&deg;C at night. A world that defies every expectation.</p>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div>Scroll to explore</div>
+</section>
+
+<hr class="section-divider">
+
+<section class="section" id="glance">
+  <div class="section-inner">
+    <p class="section-label reveal">Quick Facts</p>
+    <h2 class="section-title reveal">MERCURY AT A GLANCE</h2>
+    <div class="glance-grid reveal">
+      <div class="glance-item"><span class="glance-val">88</span><span class="glance-label">Days per Year</span><span class="glance-desc">The shortest year of any planet — Mercury races around the Sun faster than any other world.</span></div>
+      <div class="glance-item"><span class="glance-val">4,879 km</span><span class="glance-label">Diameter</span><span class="glance-desc">Smaller than Jupiter's moon Ganymede. The tiniest planet in the solar system.</span></div>
+      <div class="glance-item"><span class="glance-val">0</span><span class="glance-label">Moons</span><span class="glance-desc">Mercury has no moons and no rings — just a barren, cratered world alone in space.</span></div>
+      <div class="glance-item"><span class="glance-val">430&deg;C</span><span class="glance-label">Maximum Temperature</span><span class="glance-desc">Hot enough to melt lead on the sun-facing side — despite not being closest to the Sun by average distance.</span></div>
+      <div class="glance-item"><span class="glance-val">&minus;180&deg;C</span><span class="glance-label">Minimum Temperature</span><span class="glance-desc">The night side plunges to some of the coldest temperatures in the inner solar system.</span></div>
+      <div class="glance-item"><span class="glance-val">0.39 AU</span><span class="glance-label">Distance from Sun</span><span class="glance-desc">Less than 40% of Earth's distance from the Sun — yet Venus is actually hotter due to its thick atmosphere.</span></div>
+    </div>
+    <div class="prose reveal">
+      <p>Mercury is a planet of superlatives and surprises. It's the smallest planet, the closest to the Sun, and the fastest orbiting. It has the most eccentric orbit of any planet and the most extreme daily temperature swings in the solar system. It has almost no atmosphere, no moons, and no rings. By most definitions it should be one of the most straightforward worlds to understand — and yet Mercury has consistently defied our expectations at every turn.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<section class="section" id="extremes">
+  <div class="section-inner">
+    <p class="section-label reveal">Temperature &amp; Orbit</p>
+    <h2 class="section-title reveal">A WORLD OF EXTREMES</h2>
+    <div class="prose reveal">
+      <p>Mercury's temperature swings are the most dramatic of any planet in the solar system — and understanding why tells you something fundamental about atmospheres. On Earth, our atmosphere acts like a blanket, absorbing heat during the day and releasing it slowly at night, keeping temperatures relatively stable. Mercury has almost no atmosphere to speak of — just a wispy exosphere of atoms kicked off the surface by solar wind and meteorite impacts. So when the Sun blazes down, temperatures soar to around 430&deg;C. Then night falls, and with no atmospheric blanket to hold the warmth in, temperatures plummet to around -180&deg;C. That's a swing of over 600 degrees between day and night on the same planet.</p>
+      <p>Mercury's orbit is also one of the strangest in the solar system. It's highly elliptical — more oval-shaped than any other planet — meaning the distance between Mercury and the Sun changes dramatically throughout the year. At its closest point (perihelion), Mercury is just 46 million kilometres from the Sun. At its furthest (aphelion), it stretches to 70 million kilometres. That means from the surface of Mercury, the Sun would appear to change size noticeably over the course of a single orbit.</p>
+    </div>
+    <div class="highlight reveal">
+      <p>Here's one of Mercury's strangest quirks: a day on Mercury lasts longer than a year. One full rotation takes about 59 Earth days, but Mercury orbits the Sun in only 88 Earth days. Because of this 3:2 spin-orbit resonance, there are places on Mercury's surface where the Sun rises, moves slowly across the sky, briefly reverses direction, then continues forward — all before setting. If you stood on Mercury, you'd experience a sunrise that backs up before moving forward again.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<section class="section" id="surface">
+  <div class="section-inner">
+    <p class="section-label reveal">Surface &amp; Geology</p>
+    <h2 class="section-title reveal">SURFACE &amp; GEOLOGY</h2>
+    <div class="prose reveal">
+      <p>At first glance, Mercury's surface looks a lot like our Moon — heavily cratered, ancient, and grey. Both are rocky worlds with surfaces shaped primarily by billions of years of meteorite impacts. But look more closely and Mercury reveals geology that's entirely its own.</p>
+      <p>The most striking features on Mercury are its lobate scarps — long, winding cliff faces that stretch for hundreds of kilometres across the surface, sometimes cutting right through craters. These formed as Mercury's interior slowly cooled and contracted over billions of years, causing the crust to buckle and fold like the skin of a shrinking apple. Scientists estimate Mercury has shrunk in diameter by as much as 7 kilometres since it formed — significant on a planet just 4,879 kilometres across.</p>
+    </div>
+    <div class="feature-split reveal">
+      <div class="feature-block">
+        <h3>Caloris Basin</h3>
+        <p>The most dramatic impact feature on Mercury is the Caloris Basin — one of the largest impact craters in the entire solar system at roughly 1,550 kilometres wide. The collision that created it was so violent that shockwaves travelled all the way around the planet and converged on the opposite side, creating a chaotic region of fractured terrain called the Weird Terrain. It's a visible scar from a collision that would have been catastrophic beyond imagination.</p>
+      </div>
+      <div class="feature-block">
+        <h3>Smooth Volcanic Plains</h3>
+        <p>Mercury wasn't always just a battered, dead world. Evidence from MESSENGER showed extensive smooth plains covering large parts of the surface — remnants of ancient volcanic eruptions that flooded low-lying areas with lava billions of years ago. Some of these plains are younger than Caloris Basin itself, suggesting Mercury had an active volcanic history well after its formation. Whether any volcanism persists today remains an open question.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<section class="section" id="interior">
+  <div class="section-inner">
+    <p class="section-label reveal">Interior Structure</p>
+    <h2 class="section-title reveal">THE MYSTERIOUS INTERIOR</h2>
+    <div class="prose reveal">
+      <p>Mercury's interior is one of the great unsolved puzzles in planetary science. The iron core makes up roughly 85% of the planet's radius and about 60–70% of its total mass — the largest core by proportion of any planet in the solar system. If you could strip away Mercury's rocky mantle and crust, you'd be left with a core roughly the same size as our Moon.</p>
+      <p>Why is Mercury's core so disproportionately large? The leading hypothesis involves a giant impact early in the solar system's history — a massive collision that stripped away much of Mercury's rocky outer layers, leaving the dense iron core dominant. Another possibility is that the intense heat of the early Sun evaporated Mercury's lighter rocky material. Neither explanation is fully settled, and BepiColombo's measurements may finally resolve the debate.</p>
+    </div>
+    <div class="highlight reveal">
+      <p>Despite being so small and so close to the Sun, Mercury generates its own magnetic field — something only Earth does among the rocky planets. Mercury's field is about 1% the strength of Earth's, but it's real, and it creates a small magnetosphere that deflects some of the solar wind. The fact that such a small, slowly rotating planet has any magnetic field at all suggests its iron core is at least partially molten — which is itself surprising given how long Mercury has had to cool down.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<section class="section" id="ice">
+  <div class="section-inner">
+    <p class="section-label reveal">Polar Craters</p>
+    <h2 class="section-title reveal">ICE ON MERCURY?</h2>
+    <div class="prose reveal">
+      <p>Here's something that seems impossible: water ice on the planet closest to the Sun. And yet, it's there. Mercury's axis is tilted by less than one degree — nearly perfectly upright. The floors of craters near the poles are in permanent shadow, never receiving direct sunlight, and temperatures in those frozen shadows can drop to around -200&deg;C — cold enough to preserve water ice for billions of years.</p>
+      <p>Radar observations from Earth first detected highly reflective patches at Mercury's poles in the early 1990s. MESSENGER confirmed it: water ice and frozen volatile compounds are preserved in permanently shadowed polar craters, covered in places by a thin layer of dark organic material that acts as insulation. Some of these ice deposits may be hundreds of metres thick. The water was most likely delivered by comets and asteroids over billions of years — the same process thought to have brought water to early Earth.</p>
+    </div>
+    <div class="context-strip reveal">
+      <p>The ice at Mercury's poles is one of the most counterintuitive discoveries in planetary science. It illustrates a principle astronomers encounter again and again: in the right conditions, even the most hostile environments can harbour stable reservoirs of water. The same logic applies to permanently shadowed craters on our Moon, and to the subsurface oceans of icy moons like Europa and Enceladus.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<section class="section" id="exploration">
+  <div class="section-inner">
+    <p class="section-label reveal">Space Missions</p>
+    <h2 class="section-title reveal">EXPLORING MERCURY</h2>
+    <div class="prose reveal">
+      <p>Getting to Mercury is surprisingly difficult. To reach it from Earth, a spacecraft has to shed an enormous amount of orbital energy to slow down enough to enter orbit rather than fly past. This typically requires multiple gravity-assist flybys of other planets, adding years to the journey. As a result, Mercury remains one of the least visited planets in the solar system despite being our neighbour.</p>
+    </div>
+    <div class="mission-list reveal">
+      <div class="mission-item">
+        <div class="mission-year">1974–75</div>
+        <div>
+          <div class="mission-name">Mariner 10 — NASA</div>
+          <p class="mission-desc">The first spacecraft to visit Mercury, Mariner 10 performed three flybys between 1974 and 1975. It mapped about 45% of the surface, discovered Mercury's magnetic field — which was a complete surprise — and returned the first close-up images of the planet. For nearly three decades it remained the only mission to have visited Mercury.</p>
+        </div>
+      </div>
+      <div class="mission-item">
+        <div class="mission-year">2011–15</div>
+        <div>
+          <div class="mission-name">MESSENGER — NASA</div>
+          <p class="mission-desc">MESSENGER became the first spacecraft to orbit Mercury in 2011, after a seven-year journey involving flybys of Earth, Venus, and Mercury itself. Over four years it mapped the entire surface, confirmed the polar ice deposits, measured the magnetic field in detail, and revealed Mercury's complex volcanic history. MESSENGER intentionally impacted Mercury's surface in 2015 when its fuel was exhausted.</p>
+        </div>
+      </div>
+      <div class="mission-item">
+        <div class="mission-year">2026+</div>
+        <div>
+          <div class="mission-name">BepiColombo — ESA / JAXA</div>
+          <p class="mission-desc">The most ambitious Mercury mission ever attempted, BepiColombo is a joint ESA and JAXA mission launched in 2018. It consists of two separate orbiters that will separate upon arrival — one studying the surface and interior, the other the magnetic field and space environment. BepiColombo is expected to enter Mercury orbit in 2026, and scientists hope it will finally explain the mystery of Mercury's oversized core.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<section class="section" id="context">
+  <div class="section-inner">
+    <p class="section-label reveal">Bigger Picture</p>
+    <h2 class="section-title reveal">MERCURY IN THE SOLAR SYSTEM</h2>
+    <div class="prose reveal">
+      <p>Mercury's position in the solar system makes it a critical reference point for understanding how rocky planets form and evolve. It sits in the innermost orbit, where the young Sun's heat was most intense, and it bears the scars of a violently active early solar system. Its oversized core, shrunken crust, and ancient craters are a record of events that shaped every rocky planet — including Earth.</p>
+      <p>In about five billion years, the Sun will expand into a red giant and may engulf Mercury entirely. Long before that, Mercury's highly elliptical orbit will continue to evolve under the gravitational influence of Jupiter and the other planets. Simulations suggest there's a small but non-zero chance that over billions of years, Mercury's orbit could become destabilised enough to cause a collision with Venus or even the Sun — a reminder that the architecture of our solar system isn't permanent.</p>
+    </div>
+    <div class="context-strip reveal">
+      <p>Every close look we get at Mercury challenges something we thought we understood about planetary science. Its unexpected magnetic field contradicts simple models of planetary cooling. Its polar ice sits on the most Sun-blasted planet in the solar system. Its giant core suggests a history of violence we're still piecing together. Mercury isn't just interesting as a destination — it's a key to understanding how all rocky worlds, including our own, came to be.</p>
+      <p>Explore the other worlds of our solar system, or launch the <a href="https://galactic.website/solar-system.html" style="color:var(--plasma);text-decoration:none;">interactive Solar System</a> to see Mercury's orbit in real time alongside all eight planets. For the full story of how we got here, visit the <a href="https://galactic.website/solar-system-guide.html" style="color:var(--plasma);text-decoration:none;">Solar System Guide</a>.</p>
+    </div>
+  </div>
+</section>
+
+<div class="page-nav">
+  <a href="https://galactic.website/#planets">&#8592; All Planets</a>
+  <a href="https://galactic.website/solar-system-guide.html">Solar System Guide &#8599;</a>
+</div>
+
+<footer>
+  <a href="https://galactic.website/" class="footer-brand">GALACTIC</a>
+  <p class="footer-copy">&copy; <span id="yr"></span> Galactic. All rights reserved.</p>
+</footer>
+
+<script>
+const canvas=document.getElementById('starfield'),ctx=canvas.getContext('2d');
+let stars=[];
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+function initStars(){stars=[];for(let i=0;i<280;i++)stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.3+0.15,speed:Math.random()*0.0025+0.0004,phase:Math.random()*Math.PI*2,a:Math.random()*0.5+0.15});}
+function drawStars(t){ctx.clearRect(0,0,canvas.width,canvas.height);stars.forEach(s=>{const a=s.a*(0.6+0.4*Math.sin(t*s.speed*1000+s.phase));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(232,234,245,${a})`;ctx.fill();});requestAnimationFrame(drawStars);}
+window.addEventListener('resize',()=>{resize();initStars();});
+resize();initStars();requestAnimationFrame(drawStars);
+const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+document.getElementById('yr').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
