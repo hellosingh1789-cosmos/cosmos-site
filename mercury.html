@@ -114,7 +114,7 @@ footer{position:relative;z-index:1;padding:2.5rem 3rem;border-top:1px solid rgba
       <div class="glance-item"><span class="glance-val">88</span><span class="glance-label">Days per Year</span><span class="glance-desc">The shortest year of any planet — Mercury races around the Sun faster than any other world.</span></div>
       <div class="glance-item"><span class="glance-val">4,879 km</span><span class="glance-label">Diameter</span><span class="glance-desc">Smaller than Jupiter's moon Ganymede. The tiniest planet in the solar system.</span></div>
       <div class="glance-item"><span class="glance-val">0</span><span class="glance-label">Moons</span><span class="glance-desc">Mercury has no moons and no rings — just a barren, cratered world alone in space.</span></div>
-      <div class="glance-item"><span class="glance-val">430&deg;C</span><span class="glance-label">Maximum Temperature</span><span class="glance-desc">Hot enough to melt lead on the sun-facing side — despite not being closest to the Sun by average distance.</span></div>
+      <div class="glance-item"><span class="glance-val">430&deg;C</span><span class="glance-label">Maximum Temperature</span><span class="glance-desc">Extremely hot on the sun-facing side — Mercury's surface reaches temperatures well above the melting point of many common metals, despite not being the closest planet to the Sun on average.</span></div>
       <div class="glance-item"><span class="glance-val">&minus;180&deg;C</span><span class="glance-label">Minimum Temperature</span><span class="glance-desc">The night side plunges to some of the coldest temperatures in the inner solar system.</span></div>
       <div class="glance-item"><span class="glance-val">0.39 AU</span><span class="glance-label">Distance from Sun</span><span class="glance-desc">Less than 40% of Earth's distance from the Sun — yet Venus is actually hotter due to its thick atmosphere.</span></div>
     </div>
@@ -220,10 +220,10 @@ footer{position:relative;z-index:1;padding:2.5rem 3rem;border-top:1px solid rgba
         </div>
       </div>
       <div class="mission-item">
-        <div class="mission-year">2026+</div>
+        <div class="mission-year">Nov 2026</div>
         <div>
           <div class="mission-name">BepiColombo — ESA / JAXA</div>
-          <p class="mission-desc">The most ambitious Mercury mission ever attempted, BepiColombo is a joint ESA and JAXA mission launched in 2018. It consists of two separate orbiters that will separate upon arrival — one studying the surface and interior, the other the magnetic field and space environment. BepiColombo is expected to enter Mercury orbit in 2026, and scientists hope it will finally explain the mystery of Mercury's oversized core.</p>
+          <p class="mission-desc">The most ambitious Mercury mission ever attempted, BepiColombo is a joint ESA and JAXA mission launched in October 2018. It completed the last of its nine planetary flybys in January 2025 and is now on its final approach to Mercury, with orbit insertion scheduled for November 2026 — delayed by about a year from the original December 2025 target after a thruster issue in 2024 reduced ion engine output. Once in orbit, its two spacecraft will separate: the Mercury Planetary Orbiter will map the surface and study the interior, while the Japanese Mio orbiter will analyse the magnetic field and magnetosphere. Scientists hope BepiColombo will finally explain why Mercury's core is so disproportionately large.</p>
         </div>
       </div>
     </div>
@@ -261,8 +261,9 @@ footer{position:relative;z-index:1;padding:2.5rem 3rem;border-top:1px solid rgba
 const canvas=document.getElementById('starfield'),ctx=canvas.getContext('2d');
 let stars=[];
 function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
-function initStars(){stars=[];for(let i=0;i<280;i++)stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.3+0.15,speed:Math.random()*0.0025+0.0004,phase:Math.random()*Math.PI*2,a:Math.random()*0.5+0.15});}
-function drawStars(t){ctx.clearRect(0,0,canvas.width,canvas.height);stars.forEach(s=>{const a=s.a*(0.6+0.4*Math.sin(t*s.speed*1000+s.phase));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(232,234,245,${a})`;ctx.fill();});requestAnimationFrame(drawStars);}
+function initStars(){stars=[];for(let i=0;i<280;i++)stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.3+0.15,speed:Math.random()*0.0008+0.0002,phase:Math.random()*Math.PI*2,a:Math.random()*0.5+0.15});}
+function drawStars(t){ctx.clearRect(0,0,canvas.width,canvas.height);stars.forEach(s=>{// Use a very slow sine — t is in seconds, so t*s.speed gives a cycle every few seconds
+const a=s.a*(0.55+0.45*Math.sin(t*s.speed+s.phase));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(232,234,245,${a})`;ctx.fill();});requestAnimationFrame(drawStars);}
 window.addEventListener('resize',()=>{resize();initStars();});
 resize();initStars();requestAnimationFrame(drawStars);
 const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:0.1});
