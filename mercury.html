@@ -41,12 +41,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 /* Mercury planet image — right side */
 .hero-planet{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;}
 .hero-planet img{position:relative;z-index:2;width:min(620px,96%);height:auto;display:block;animation:planetFadeIn 1.4s ease forwards;opacity:0;animation-delay:0.55s;}
-/* Small targeted fix: the image's background is pure black, but the page behind it isn't quite
-   pure black (a subtle gradient is baked into .hero-bg), so a thin seam is visible at the image's
-   edge. This vignette repaints just that fringe in the page's own background colour, clipped to a
-   circle and faded fully to transparent at its own edge so it never adds a border of its own. */
-.hero-planet::after{content:'';position:absolute;z-index:3;width:min(620px,96%);aspect-ratio:1/1;border-radius:50%;pointer-events:none;
-  background:radial-gradient(circle at 50% 50%,transparent 44%,rgba(2,3,10,0.5) 60%,rgba(2,3,10,0.88) 74%,transparent 100%);}
 @keyframes planetFadeIn{from{opacity:0;transform:translateY(14px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
 /* Scroll indicator — bottom left */
 .hero-scroll{position:absolute;bottom:2.5rem;left:3rem;font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(232,234,245,0.3);display:flex;align-items:center;gap:0.8rem;animation:fadeUp 0.9s ease forwards;opacity:0;animation-delay:0.7s;z-index:3;}
