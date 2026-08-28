@@ -40,10 +40,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .hero-sub{font-family:'Crimson Pro',serif;font-size:clamp(0.95rem,1.6vw,1.18rem);font-style:italic;color:rgba(232,234,245,0.7);max-width:480px;margin-top:1.8rem;line-height:1.75;animation:fadeUp 0.9s ease forwards;opacity:0;animation-delay:0.45s;}
 /* Mercury planet image — right side */
 .hero-planet{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;}
-.hero-planet::before{content:'';position:absolute;width:min(520px,80%);aspect-ratio:1/1;border-radius:50%;background:radial-gradient(circle at 42% 40%,rgba(140,150,170,0.10),rgba(79,195,247,0.025) 55%,transparent 72%);filter:blur(20px);pointer-events:none;z-index:1;}
 .hero-planet img{position:relative;z-index:2;width:min(620px,96%);height:auto;display:block;animation:planetFadeIn 1.4s ease forwards;opacity:0;animation-delay:0.55s;
-  /* True alpha-cutout image — no background pixels to blend, so the edge is exact */
-  filter:drop-shadow(0 0 60px rgba(120,135,165,0.14)) drop-shadow(0 0 130px rgba(79,195,247,0.05));}
+  /* True alpha-cutout image — glow follows the photo's real silhouette via drop-shadow,
+     rather than a separate gradient shape that wouldn't line up with the actual edge */
+  filter:drop-shadow(0 0 45px rgba(120,135,165,0.16)) drop-shadow(0 0 100px rgba(79,195,247,0.06));}
 @keyframes planetFadeIn{from{opacity:0;transform:translateY(14px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
 /* Scroll indicator — bottom left */
 .hero-scroll{position:absolute;bottom:2.5rem;left:3rem;font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(232,234,245,0.3);display:flex;align-items:center;gap:0.8rem;animation:fadeUp 0.9s ease forwards;opacity:0;animation-delay:0.7s;z-index:3;}
@@ -54,7 +54,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
   .hero-inner{grid-template-columns:1fr;gap:0;padding-top:9rem;padding-bottom:4rem;}
   .hero-planet{order:-1;margin-bottom:0;}
   .hero-planet img{width:min(340px,72%);}
-  .hero-planet::before{width:min(300px,60%);}
   .hero{padding:0 2rem;}
   .hero-scroll{left:2rem;bottom:1.8rem;}
 }
@@ -62,7 +61,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
   .hero{padding:0 1.5rem;}
   .hero-inner{padding-top:8rem;padding-bottom:3rem;}
   .hero-planet img{width:min(260px,78%);}
-  .hero-planet::before{width:min(220px,60%);}
   .hero-scroll{left:1.5rem;}
 }
 .section{position:relative;z-index:1;padding:7rem 3rem;}
