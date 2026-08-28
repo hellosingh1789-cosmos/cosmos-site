@@ -40,14 +40,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .hero-sub{font-family:'Crimson Pro',serif;font-size:clamp(0.95rem,1.6vw,1.18rem);font-style:italic;color:rgba(232,234,245,0.7);max-width:480px;margin-top:1.8rem;line-height:1.75;animation:fadeUp 0.9s ease forwards;opacity:0;animation-delay:0.45s;}
 /* Mercury planet image — right side */
 .hero-planet{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;}
-.hero-planet::before{content:'';position:absolute;width:min(520px,80%);aspect-ratio:1/1;border-radius:50%;background:radial-gradient(circle at 42% 40%,rgba(181,181,176,0.12),rgba(181,181,176,0.03) 55%,transparent 72%);filter:blur(20px);pointer-events:none;z-index:1;}
+.hero-planet::before{content:'';position:absolute;width:min(520px,80%);aspect-ratio:1/1;border-radius:50%;background:radial-gradient(circle at 42% 40%,rgba(140,150,170,0.10),rgba(79,195,247,0.025) 55%,transparent 72%);filter:blur(20px);pointer-events:none;z-index:1;}
 .hero-planet img{position:relative;z-index:2;width:min(620px,96%);height:auto;display:block;animation:planetFadeIn 1.4s ease forwards;opacity:0;animation-delay:0.55s;
   mix-blend-mode:screen;
-  /* Soft glow to blend into dark background */
-  filter:drop-shadow(0 0 70px rgba(181,181,176,0.16)) drop-shadow(0 0 140px rgba(181,181,176,0.07));
+  /* Soft glow to blend into dark background — cool-toned to match the void, not warm grey */
+  filter:drop-shadow(0 0 60px rgba(120,135,165,0.14)) drop-shadow(0 0 130px rgba(79,195,247,0.05));
   /* Mask edges to fade naturally into space, larger solid core since art is a full dramatic sphere */
-  -webkit-mask-image:radial-gradient(ellipse 68% 68% at 50% 50%,black 62%,transparent 100%);
-  mask-image:radial-gradient(ellipse 68% 68% at 50% 50%,black 62%,transparent 100%);}
+  -webkit-mask-image:radial-gradient(ellipse 68% 68% at 50% 50%,black 58%,transparent 96%);
+  mask-image:radial-gradient(ellipse 68% 68% at 50% 50%,black 58%,transparent 96%);}
+/* Vignette painted over the image edge in the hero's own background colour, so the fringe
+   resolves to an exact match instead of a mismatched grey/black halo. Clipped to a circle and
+   faded fully to transparent at its own edge so it never shows a hard border against the page. */
+.hero-planet::after{content:'';position:absolute;z-index:3;width:min(620px,96%);aspect-ratio:1/1;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle at 50% 50%,transparent 44%,rgba(2,3,10,0.5) 60%,rgba(2,3,10,0.88) 74%,transparent 100%);}
 @keyframes planetFadeIn{from{opacity:0;transform:translateY(14px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
 /* Scroll indicator — bottom left */
 .hero-scroll{position:absolute;bottom:2.5rem;left:3rem;font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(232,234,245,0.3);display:flex;align-items:center;gap:0.8rem;animation:fadeUp 0.9s ease forwards;opacity:0;animation-delay:0.7s;z-index:3;}
