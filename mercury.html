@@ -43,9 +43,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .hero-planet img{position:relative;z-index:2;width:min(620px,96%);height:auto;display:block;animation:planetFadeIn 1.4s ease forwards;opacity:0;animation-delay:0.55s;}
 @keyframes planetFadeIn{from{opacity:0;transform:translateY(14px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
 /* Scroll indicator — bottom left */
-.hero-scroll{position:absolute;bottom:2.5rem;left:3rem;font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(232,234,245,0.3);display:flex;align-items:center;gap:0.8rem;animation:fadeUp 0.9s ease forwards;opacity:0;animation-delay:0.7s;z-index:3;}
-.scroll-line{width:48px;height:1px;background:rgba(232,234,245,0.15);position:relative;overflow:hidden;}
+.hero-scroll{position:absolute;bottom:2.5rem;left:3rem;font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(232,234,245,0.42);text-decoration:none;display:flex;align-items:center;gap:0.8rem;animation:fadeUp 0.9s ease forwards;opacity:0;animation-delay:0.7s;z-index:3;cursor:pointer;transition:color 0.4s ease;}
+.hero-scroll:hover,.hero-scroll:focus-visible{color:rgba(232,234,245,0.7);}
+.scroll-line{width:48px;height:1px;background:rgba(232,234,245,0.15);position:relative;overflow:hidden;flex-shrink:0;}
 .scroll-line::after{content:'';position:absolute;inset:0;background:var(--mercury);animation:scanline 2s ease-in-out infinite;}
+.scroll-arrow{display:inline-block;font-size:1.3rem;line-height:1;margin-left:0.5rem;animation:scrollArrowDrift 2.6s ease-in-out infinite;}
+@keyframes scrollArrowDrift{0%,100%{transform:translateY(0);}50%{transform:translateY(4px);}}
 /* Responsive */
 @media(max-width:900px){
   .hero-inner{grid-template-columns:1fr;gap:0;padding-top:9rem;padding-bottom:4rem;}
@@ -137,7 +140,7 @@ footer{position:relative;z-index:1;padding:2.5rem 3rem;border-top:1px solid rgba
     </div>
   </div>
 
-  <div class="hero-scroll"><div class="scroll-line"></div>Scroll to explore</div>
+  <a href="#glance" class="hero-scroll" aria-label="Scroll to explore"><div class="scroll-line"></div>Scroll to explore <span class="scroll-arrow">↓</span></a>
 </section>
 
 <hr class="section-divider">
