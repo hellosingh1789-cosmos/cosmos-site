@@ -40,7 +40,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .hero-sub{font-family:'Crimson Pro',serif;font-size:clamp(0.95rem,1.6vw,1.18rem);font-style:italic;color:rgba(232,234,245,0.7);max-width:480px;margin-top:1.8rem;line-height:1.75;animation:fadeUp 0.9s ease forwards;opacity:0;animation-delay:0.45s;}
 /* Mercury planet image — right side */
 .hero-planet{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;}
-.hero-planet img{position:relative;z-index:2;width:min(620px,96%);height:auto;display:block;animation:planetFadeIn 1.4s ease forwards;opacity:0;animation-delay:0.55s;}
+.planet-glow{position:absolute;z-index:1;width:min(520px,80%);aspect-ratio:1/1;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(181,181,176,0.16) 0%,rgba(79,195,247,0.05) 45%,transparent 72%);filter:blur(60px);pointer-events:none;animation:fadeUp 1.6s ease forwards;opacity:0;animation-delay:0.3s;}
+.hero-planet img{position:relative;z-index:2;width:min(620px,96%);height:auto;display:block;animation:planetFadeIn 1.4s ease forwards;opacity:0;animation-delay:0.55s;-webkit-mask-image:radial-gradient(circle at 50% 50%,#000 0%,#000 90%,transparent 100%);mask-image:radial-gradient(circle at 50% 50%,#000 0%,#000 90%,transparent 100%);}
+.planet-rim{position:absolute;z-index:3;width:min(620px,96%);aspect-ratio:1/1;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 36% 32%,transparent 48%,rgba(2,3,10,0.5) 88%,rgba(2,3,10,0.78) 100%);mix-blend-mode:multiply;pointer-events:none;}
 @keyframes planetFadeIn{from{opacity:0;transform:translateY(14px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
 /* Scroll indicator — bottom left */
 .hero-scroll{position:absolute;bottom:2.5rem;left:3rem;font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(232,234,245,0.42);text-decoration:none;display:flex;align-items:center;gap:0.8rem;animation:fadeUp 0.9s ease forwards;opacity:0;animation-delay:0.7s;z-index:3;cursor:pointer;transition:color 0.4s ease;}
@@ -54,6 +56,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
   .hero-inner{grid-template-columns:1fr;gap:0;padding-top:9rem;padding-bottom:4rem;}
   .hero-planet{order:-1;margin-bottom:0;}
   .hero-planet img{width:min(340px,72%);}
+  .planet-rim{width:min(340px,72%);}
+  .planet-glow{width:min(300px,60%);}
   .hero{padding:0 2rem;}
   .hero-scroll{left:2rem;bottom:1.8rem;}
 }
@@ -61,6 +65,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
   .hero{padding:0 1.5rem;}
   .hero-inner{padding-top:8rem;padding-bottom:3rem;}
   .hero-planet img{width:min(260px,78%);}
+  .planet-rim{width:min(260px,78%);}
+  .planet-glow{width:min(220px,62%);}
   .hero-scroll{left:1.5rem;}
 }
 .section{position:relative;z-index:1;padding:7rem 3rem;}
@@ -131,12 +137,14 @@ footer{position:relative;z-index:1;padding:2.5rem 3rem;border-top:1px solid rgba
 
     <!-- RIGHT: planet image -->
     <div class="hero-planet">
+      <div class="planet-glow" aria-hidden="true"></div>
       <img
         src="mercury-hero-alpha.png"
         alt="Mercury — NASA photograph of the planet's heavily cratered, sunlit surface"
         width="1040"
         height="1040"
       >
+      <div class="planet-rim" aria-hidden="true"></div>
     </div>
   </div>
 
