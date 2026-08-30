@@ -95,6 +95,28 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .context-strip{background:rgba(7,11,24,0.7);border:1px solid rgba(232,234,245,0.06);border-left:3px solid var(--gold);padding:2rem 2.2rem;margin-top:2rem;}
 .context-strip p{font-family:'Crimson Pro',serif;font-size:1.05rem;color:rgba(232,234,245,0.68);line-height:1.8;margin-bottom:1rem;}
 .context-strip p:last-child{margin-bottom:0;}
+/* Orbital diagram — Mercury vs Earth orbit comparison */
+.orbit-diagram{--od-size:480px;--od-sun:60px;--od-mercury-orbit:224px;--od-earth-orbit:420px;--od-mercury-dot:14px;--od-earth-dot:20px;position:relative;width:var(--od-size);height:var(--od-size);margin:3.5rem auto 2.5rem;}
+.orbit-sun{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:var(--od-sun);height:var(--od-sun);border-radius:50%;background:radial-gradient(circle at 38% 32%,#fbe192,var(--gold) 55%,#a9791f 100%);box-shadow:0 0 34px rgba(240,192,64,0.28),0 0 8px rgba(240,192,64,0.4);z-index:2;}
+.orbit-path{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;border:1px solid rgba(232,234,245,0.14);z-index:1;}
+.orbit-path-earth{border-color:rgba(79,195,247,0.12);}
+.orbit-path-mercury{width:var(--od-mercury-orbit);height:var(--od-mercury-orbit);}
+.orbit-path-earth{width:var(--od-earth-orbit);height:var(--od-earth-orbit);}
+.orbit-pivot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;animation:od-spin linear infinite;z-index:3;}
+.orbit-pivot-mercury{width:var(--od-mercury-orbit);height:var(--od-mercury-orbit);animation-duration:4s;}
+.orbit-pivot-earth{width:var(--od-earth-orbit);height:var(--od-earth-orbit);animation-duration:16.6s;}
+.orbit-dot{position:absolute;top:0;left:50%;transform:translate(-50%,-50%);border-radius:50%;display:block;}
+.orbit-dot-mercury{width:var(--od-mercury-dot);height:var(--od-mercury-dot);background:radial-gradient(circle at 35% 30%,#dcdcd6,#9a9a94 55%,#5c5c56 100%);box-shadow:inset -1.5px -2px 3px rgba(0,0,0,0.5),0 0 6px rgba(181,181,176,0.22);}
+.orbit-dot-earth{width:var(--od-earth-dot);height:var(--od-earth-dot);background:radial-gradient(circle at 35% 30%,#8fd0ff,#2f7fc0 55%,#123252 100%);box-shadow:inset -2px -3px 4px rgba(0,0,0,0.5),0 0 8px rgba(79,195,247,0.22);}
+@keyframes od-spin{from{transform:translate(-50%,-50%) rotate(0deg);}to{transform:translate(-50%,-50%) rotate(360deg);}}
+.orbit-legend{display:flex;gap:2.4rem;justify-content:center;flex-wrap:wrap;margin:0 auto 3rem;}
+.orbit-legend-item{display:flex;align-items:center;gap:0.65rem;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,234,245,0.5);}
+.legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0;}
+.legend-dot-mercury{background:radial-gradient(circle at 35% 30%,#dcdcd6,#8f8f8a 60%,#55554f 100%);}
+.legend-dot-earth{background:radial-gradient(circle at 35% 30%,#8fd0ff,#2f6fb0 60%,#123252 100%);}
+@media(prefers-reduced-motion:reduce){.orbit-pivot-mercury,.orbit-pivot-earth{animation:none;}}
+@media(max-width:900px){.orbit-diagram{--od-size:380px;--od-sun:48px;--od-mercury-orbit:178px;--od-earth-orbit:330px;--od-mercury-dot:12px;--od-earth-dot:17px;}}
+@media(max-width:640px){.orbit-diagram{--od-size:270px;--od-sun:36px;--od-mercury-orbit:128px;--od-earth-orbit:238px;--od-mercury-dot:10px;--od-earth-dot:14px;margin:2.5rem auto 2rem;}.orbit-legend{gap:1.6rem;margin-bottom:2.5rem;}}
 .section-divider{width:100%;height:1px;background:linear-gradient(to right,transparent,rgba(79,195,247,0.15),transparent);border:none;margin:0;}
 .page-nav{display:flex;justify-content:space-between;align-items:center;padding:2.5rem 3rem;border-top:1px solid rgba(232,234,245,0.06);position:relative;z-index:1;}
 .page-nav a{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,234,245,0.45);text-decoration:none;display:flex;align-items:center;gap:0.6rem;transition:color 0.3s;}
@@ -149,6 +171,32 @@ footer{position:relative;z-index:1;padding:2.5rem 3rem;border-top:1px solid rgba
   </div>
 
   <a href="#glance" class="hero-scroll" aria-label="Scroll to explore"><div class="scroll-line"></div>Scroll to explore <span class="scroll-arrow">↓</span></a>
+</section>
+
+<hr class="section-divider">
+
+<section class="section" id="year">
+  <div class="section-inner">
+    <p class="section-label reveal">Orbit &amp; Time</p>
+    <h2 class="section-title reveal">A YEAR IN 88 DAYS</h2>
+    <div class="prose reveal">
+      <p>A "year" is just the time it takes a planet to complete one full orbit of the Sun — and on Mercury, that happens fast. Mercury orbits the Sun in about 88 Earth days, while Earth takes 365. Mercury is closer to the Sun and moving much faster along a much shorter path, so it laps the Sun roughly 4.15 times in the time it takes Earth to go around once. The diagram below shows both orbits to scale, moving at their true relative speeds.</p>
+    </div>
+    <div class="orbit-diagram reveal" role="img" aria-label="Diagram of the Sun with Mercury and Earth orbiting at their true relative speeds. Mercury completes an orbit every 88 Earth days; Earth completes an orbit every 365 days — so Mercury laps the Sun about 4.15 times for every one Earth orbit.">
+      <div class="orbit-sun" aria-hidden="true"></div>
+      <div class="orbit-path orbit-path-earth" aria-hidden="true"></div>
+      <div class="orbit-path orbit-path-mercury" aria-hidden="true"></div>
+      <div class="orbit-pivot orbit-pivot-earth" aria-hidden="true"><span class="orbit-dot orbit-dot-earth"></span></div>
+      <div class="orbit-pivot orbit-pivot-mercury" aria-hidden="true"><span class="orbit-dot orbit-dot-mercury"></span></div>
+    </div>
+    <div class="orbit-legend reveal" aria-hidden="true">
+      <div class="orbit-legend-item"><span class="legend-dot legend-dot-mercury"></span>Mercury &middot; 88 Days</div>
+      <div class="orbit-legend-item"><span class="legend-dot legend-dot-earth"></span>Earth &middot; 365 Days</div>
+    </div>
+    <div class="prose reveal">
+      <p>Watch it long enough and the pattern becomes obvious: Mercury doesn't just orbit faster, it orbits <em>dramatically</em> faster. By the time Earth has made its way a quarter of the way around the Sun, Mercury has already completed a full year of its own — sunrise to sunrise, season to season, start to finish — and is well into its next one.</p>
+    </div>
+  </div>
 </section>
 
 <hr class="section-divider">
