@@ -117,6 +117,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 @media(prefers-reduced-motion:reduce){.orbit-pivot-mercury,.orbit-pivot-earth{animation:none;}}
 @media(max-width:900px){.orbit-diagram{--od-size:380px;--od-sun:58px;--od-mercury-orbit:178px;--od-earth-orbit:330px;--od-mercury-dot:15px;--od-earth-dot:20px;}}
 @media(max-width:640px){.orbit-diagram{--od-size:270px;--od-sun:43px;--od-mercury-orbit:128px;--od-earth-orbit:238px;--od-mercury-dot:12px;--od-earth-dot:17px;margin:2.5rem auto 2rem;}.orbit-legend{gap:1.6rem;margin-bottom:2.5rem;}}
+.scale-figure{margin:2.8rem 0;}
+.scale-figure img{display:block;width:100%;height:auto;border:1px solid rgba(232,234,245,0.08);}
+.scale-figure figcaption{font-family:'Crimson Pro',serif;font-style:italic;font-size:0.92rem;color:rgba(232,234,245,0.5);line-height:1.7;margin-top:1rem;}
 .section-divider{width:100%;height:1px;background:linear-gradient(to right,transparent,rgba(79,195,247,0.15),transparent);border:none;margin:0;}
 .page-nav{display:flex;justify-content:space-between;align-items:center;padding:2.5rem 3rem;border-top:1px solid rgba(232,234,245,0.06);position:relative;z-index:1;}
 .page-nav a{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,234,245,0.45);text-decoration:none;display:flex;align-items:center;gap:0.6rem;transition:color 0.3s;}
@@ -213,6 +216,10 @@ footer{position:relative;z-index:1;padding:2.5rem 3rem;border-top:1px solid rgba
       <div class="glance-item"><span class="glance-val">&minus;180&deg;C</span><span class="glance-label">Minimum Temperature</span><span class="glance-desc">The night side plunges to some of the coldest temperatures in the inner solar system.</span></div>
       <div class="glance-item"><span class="glance-val">0.39 AU</span><span class="glance-label">Distance from Sun</span><span class="glance-desc">Less than 40% of Earth's distance from the Sun — yet Venus is actually hotter due to its thick atmosphere.</span></div>
     </div>
+    <figure class="scale-figure reveal">
+      <img src="mercury-earth-scale.jpg" alt="Size comparison of the Moon, Mercury, and Earth side by side, showing Mercury only slightly larger than Earth's Moon and dwarfed by Earth" width="1920" height="1080" loading="lazy">
+      <figcaption>Mercury next to Earth and the Moon, to scale. At roughly 4,879 km across, Mercury is only a little larger than our own Moon — and just 38% the diameter of Earth.</figcaption>
+    </figure>
     <div class="prose reveal">
       <p>Mercury is a planet of superlatives and surprises. It's the smallest planet, the closest to the Sun, and the fastest orbiting. It has the most eccentric orbit of any planet and the most extreme daily temperature swings in the solar system. It has almost no atmosphere, no moons, and no rings. By most definitions it should be one of the most straightforward worlds to understand — and yet Mercury has consistently defied our expectations at every turn.</p>
     </div>
