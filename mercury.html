@@ -119,7 +119,15 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 @media(max-width:640px){.orbit-diagram{--od-size:270px;--od-sun:43px;--od-mercury-orbit:128px;--od-earth-orbit:238px;--od-mercury-dot:12px;--od-earth-dot:17px;margin:2.5rem auto 2rem;}.orbit-legend{gap:1.6rem;margin-bottom:2.5rem;}}
 .scale-figure{margin:2.8rem 0;}
 .scale-figure img{display:block;width:100%;height:auto;border:1px solid rgba(232,234,245,0.08);}
-.scale-figure figcaption{font-family:'Crimson Pro',serif;font-style:italic;font-size:0.92rem;color:rgba(232,234,245,0.5);line-height:1.7;margin-top:1rem;}
+.scale-figure figcaption p{font-family:'Crimson Pro',serif;font-style:italic;font-size:0.92rem;color:rgba(232,234,245,0.5);line-height:1.7;margin-top:1rem;margin-bottom:0;}
+.scale-figure figcaption .img-credit{font-family:'Space Mono',monospace;font-style:normal;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(232,234,245,0.32);margin-top:0.6rem;}
+.scale-figure figcaption .img-credit a{color:rgba(232,234,245,0.45);text-decoration:none;border-bottom:1px solid rgba(232,234,245,0.2);}
+.scale-figure figcaption .img-credit a:hover{color:var(--plasma);border-color:var(--plasma);}
+.sources-strip{padding:2.2rem 3rem;border-top:1px solid rgba(232,234,245,0.06);position:relative;z-index:1;}
+.sources-title{font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(232,234,245,0.32);margin-bottom:0.6rem;}
+.sources-text{font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.02em;color:rgba(232,234,245,0.4);line-height:1.9;}
+.sources-text a{color:rgba(232,234,245,0.6);text-decoration:none;border-bottom:1px solid rgba(232,234,245,0.25);}
+.sources-text a:hover{color:var(--plasma);border-color:var(--plasma);}
 .section-divider{width:100%;height:1px;background:linear-gradient(to right,transparent,rgba(79,195,247,0.15),transparent);border:none;margin:0;}
 .page-nav{display:flex;justify-content:space-between;align-items:center;padding:2.5rem 3rem;border-top:1px solid rgba(232,234,245,0.06);position:relative;z-index:1;}
 .page-nav a{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,234,245,0.45);text-decoration:none;display:flex;align-items:center;gap:0.6rem;transition:color 0.3s;}
@@ -132,7 +140,7 @@ footer{position:relative;z-index:1;padding:2.5rem 3rem;border-top:1px solid rgba
 .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease;}
 .reveal.visible{opacity:1;transform:translateY(0);}
 @media(max-width:768px){nav{padding:1rem 1.5rem;}.nav-links{gap:0.8rem;}.nav-link{font-size:0.52rem;}}
-@media(max-width:640px){.glance-grid{grid-template-columns:1fr 1fr;}.feature-split{grid-template-columns:1fr;gap:2rem;}.section{padding:5rem 1.5rem;}.hero{padding:0 1.5rem 5rem;}.mission-item{grid-template-columns:1fr;gap:0.4rem;}.page-nav{padding:2rem 1.5rem;flex-direction:column;gap:1rem;}footer{flex-direction:column;gap:0.8rem;text-align:center;padding:1.8rem 1.5rem;}}
+@media(max-width:640px){.glance-grid{grid-template-columns:1fr 1fr;}.feature-split{grid-template-columns:1fr;gap:2rem;}.section{padding:5rem 1.5rem;}.hero{padding:0 1.5rem 5rem;}.mission-item{grid-template-columns:1fr;gap:0.4rem;}.page-nav{padding:2rem 1.5rem;flex-direction:column;gap:1rem;}footer{flex-direction:column;gap:0.8rem;text-align:center;padding:1.8rem 1.5rem;}.sources-strip{padding:1.8rem 1.5rem;}}
 </style>
 </head>
 <body>
@@ -218,7 +226,10 @@ footer{position:relative;z-index:1;padding:2.5rem 3rem;border-top:1px solid rgba
     </div>
     <figure class="scale-figure reveal">
       <img src="mercury-earth-scale.jpg" alt="Size comparison of the Moon, Mercury, and Earth side by side, showing Mercury only slightly larger than Earth's Moon and dwarfed by Earth" width="1920" height="1080" loading="lazy">
-      <figcaption>Mercury next to Earth and the Moon, to scale. At roughly 4,879 km across, Mercury is only a little larger than our own Moon — and just 38% the diameter of Earth.</figcaption>
+      <figcaption>
+        <p>Mercury next to Earth and the Moon, to scale. At roughly 4,879 km across, Mercury is only a little larger than our own Moon — and just 38% the diameter of Earth.</p>
+        <p class="img-credit">Image: <a href="https://starwalk.space/en/news/facts-about-mercury-all-you-need-to-know" target="_blank" rel="noopener">Star Walk</a></p>
+      </figcaption>
     </figure>
     <div class="prose reveal">
       <p>Mercury is a planet of superlatives and surprises. It's the smallest planet, the closest to the Sun, and the fastest orbiting. It has the most eccentric orbit of any planet and the most extreme daily temperature swings in the solar system. It has almost no atmosphere, no moons, and no rings. By most definitions it should be one of the most straightforward worlds to understand — and yet Mercury has consistently defied our expectations at every turn.</p>
@@ -348,6 +359,11 @@ footer{position:relative;z-index:1;padding:2.5rem 3rem;border-top:1px solid rgba
     </div>
   </div>
 </section>
+
+<div class="sources-strip">
+  <p class="sources-title">Sources &amp; Credits</p>
+  <p class="sources-text">Planetary data and mission imagery via <a href="https://solarsystem.nasa.gov/planets/mercury/overview/" target="_blank" rel="noopener">NASA</a>. Mercury/Earth/Moon size-comparison image courtesy of <a href="https://starwalk.space/en/news/facts-about-mercury-all-you-need-to-know" target="_blank" rel="noopener">Star Walk</a>.</p>
+</div>
 
 <div class="page-nav">
   <a href="https://galactic.website/#planets">&#8592; All Planets</a>
